@@ -1,65 +1,103 @@
-import Image from "next/image";
+"use client"
+
+import axios from "axios"
+import { signIn, signOut, useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
+
+interface Owner{
+  login:string
+  id:number
+  avatar_url:string
+  url:string
+  type:string
+}
+
+interface Repo{
+  id:number
+  name:string
+  full_name:string,
+  private:boolean,
+  owner:Owner
+}
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+  const { data: session } = useSession()
+  const [repos,setRepos]=useState<Repo[]>([])
+  useEffect(()=>{
+     if(!session) return
+
+     const fetchRepos=async()=>{
+      console.log("Repos fetching")
+     const res = await axios.get("/api/github/repos")
+console.log("Response data:", res.data)
+console.log("Is array:", Array.isArray(res.data))
+setRepos(res.data)
+
+
+     }
+     fetchRepos()
+  },[session])
+
+    const handleConnect=async(repoId:number,fullName:string,owner:string)=>{
+      try{
+        const res=await axios.post("/api/github/connect",{
+          repoId,
+          fullName,
+          owner
+        })
+        console.log(res.data)
+        window.location.href="https://github.com/apps/AI-PR-RISK/installations/new"
+        alert("succes")
+      }catch(error)
+      {
+        console.log(error)
+        alert("error happens")
+      }
+
+  }
+
+
+  if (!session) {
+    return (
+      <main className="h-screen flex items-center justify-center">
+        <button
+          onClick={() => signIn("github")}
+          className="px-4 py-2 bg-black text-white rounded"
+        >
+          Login with GitHub
+        </button>
       </main>
-    </div>
-  );
+    )
+  }
+
+
+  return (
+    <main className=" bg-cyan-800 h-screen flex flex-col items-center justify-center gap-4">
+      <p>Logged in as {session.user?.name}</p>
+      <button
+        onClick={() => signOut()}
+        className="px-4 py-2 bg-red-500 text-white rounded"
+      >
+        Logout
+      </button>
+       <ul className="space-y-2 py-20 mb-10">
+        {repos.map((repo) => (
+          <li
+            key={repo.id}
+            className="p-3 border rounded flex justify-between items-center"
+          >
+            <span>{repo.name}</span>
+            <span>{repo.full_name}</span>
+            {/* <span>{repo.private}</span> */}
+
+            <button onClick={()=>handleConnect(repo.id,repo.full_name,repo.owner.login)}
+              className="px-3 py-1 bg-blue-600 text-white rounded text-sm"
+            >
+              Connect
+            </button>
+          </li>
+        ))}
+      </ul>
+    </main>
+  )
 }

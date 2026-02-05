@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
-}
+} */
 
 @theme inline {
   --color-background: var(--background);
@@ -18,9 +18,58 @@
     --foreground: #ededed;
   }
 }
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 98%;
+}
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+background-color: #020808; /* Very dark teal, almost black */
+  background-image:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(45, 212, 191, 0.15) 0%, /* Stronger Teal center */
+      rgba(4, 44, 40, 0.3) 40%,    /* Mid-tone greenish/teal */
+      #000000 100%                 /* Fades to black at edges */
+    );
+  background-attachment: fixed; /* Keeps the glow in place when scrolling */
+  color: white;
+  min-height: 100vh;
+}
+@layer utilities {
+  .hero-glow-exact {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(
+      circle at center,
+      rgba(45, 212, 191, 0.15) 0%,
+      rgba(45, 212, 191, 0.05) 25%,
+      rgba(0, 0, 0, 0) 60%
+    );
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+  .spotlight-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  height: 70vh;
+  /* Specifically using #2dd4bf (Teal) at very low opacity */
+  background: radial-gradient(
+    circle at center,
+    rgba(45, 212, 191, 0.12) 0%,
+    rgba(45, 212, 191, 0.03) 35%,
+    transparent 70%
+  );
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
 }

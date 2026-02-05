@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       String       @id @default(cuid())
+  githubId String       @unique
+  name     String?
+  repos    Repository[]
+}
+
+model Repository {
+  id             String        @id @default(cuid())
+  githubRepoId   Int           @unique
+  fullName       String
+  owner          String
+  installationId Int
+  userId         String
+  user           User          @relation(fields: [userId], references: [id])
+  createdAt      DateTime      @default(now())
+  pullRequests   PullRequest[]
+}
+
+model PullRequest {
+  id           String            @id @default(cuid())
+  githubPrId   BigInt            @unique
+  prNumber     Int
+  title        String
+  state        String
+  author       String
+  additions    Int
+  deletions    Int
+  changedFiles Int
+  repoId       String
+  repository   Repository        @relation(fields: [repoId], references: [id])
+  createdAt    DateTime          @default(now())
+  risk         PullRequestRisk[]
+}
+
+model PullRequestRisk {
+  id                String  @id @default(cuid())
+  pullRequestId     String  @unique
+  commentPosted     Boolean @default(false)
+  hasDependencyRisk Boolean
+  hasAuthRisk       Boolean
+  hasMalciousRisk   Boolean
+
+  malciousReasons String[]
+  affectedFiles   String[]
+
+  createdAt DateTime @default(now())
+
+  pullRequest PullRequest @relation(fields: [pullRequestId], references: [id])
+}
