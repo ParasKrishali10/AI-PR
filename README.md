@@ -1,36 +1,217 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🛡️ PR Risk Analyzer (Backend)
 
-## Getting Started
+A GitHub App backend that analyzes pull requests, extracts deterministic risk signals, and uses AI only to explain context to human reviewers—without replacing human judgment.
 
-First, run the development server:
+🚩 Problem
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Pull requests often combine multiple types of changes:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+dependency updates
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+authentication or access-control logic changes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+risky execution patterns
 
-## Learn More
+Reviewers typically:
 
-To learn more about Next.js, take a look at the following resources:
+lack time to deeply inspect every PR
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+miss subtle interactions between changes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+have no historical context across pull requests
 
-## Deploy on Vercel
+Most tools attempt to detect vulnerabilities.
+This system focuses on early risk signaling to help reviewers decide where to look first.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+💡 What This Backend Does
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This service provides PR-time risk signals by:
+
+Listening to GitHub pull request webhooks
+
+Processing events asynchronously via a queue
+
+Extracting deterministic security-relevant signals
+
+Persisting signals for auditability and retries
+
+Using AI to generate explanatory context
+
+Posting advisory comments directly on pull requests
+
+⚠️ This system does not approve, block, or reject PRs.
+It assists human reviewers.
+
+🧠 Core Design Philosophy
+
+Rules for facts.
+AI for explanation.
+Humans for judgment.
+
+Detection logic is deterministic and reproducible
+
+AI is used only for interpretation and communication
+
+AI output is advisory, never authoritative
+
+🏗️ High-Level Architecture
+GitHub Webhook
+      ↓
+Redis Queue (BullMQ)
+      ↓
+Worker
+ ├─ Fetch PR files
+ ├─ Extract risk signals
+ ├─ Persist results (DB)
+ ├─ Generate AI explanation
+ └─ Post PR comment
+
+🔍 Risk Signals Extracted
+1️⃣ Dependency Risk
+
+Triggered when dependency definition files are modified, including:
+
+package.json, yarn.lock
+
+requirements.txt
+
+pom.xml, go.mod
+
+2️⃣ Auth / Access-Control Risk
+
+Triggered when files related to:
+
+authentication
+
+middleware
+
+guards or policies
+
+permissions
+
+are modified.
+
+3️⃣ Suspicious / Malicious Code Signals
+
+Heuristic pattern detection for:
+
+dynamic code execution (eval)
+
+shell execution (exec, spawn)
+
+OS-level commands (rm -rf)
+
+runtime execution patterns
+
+These are signals, not vulnerability claims.
+
+🤖 Why AI Is Used (and Why It’s Limited)
+❌ AI is NOT used to:
+
+review code correctness
+
+detect vulnerabilities
+
+assign risk probabilities
+
+approve or block PRs
+
+✅ AI IS used to:
+
+explain how multiple signals interact
+
+provide human-readable context
+
+reduce reviewer cognitive load
+
+AI operates only on persisted, deterministic signals, not raw code.
+
+💬 Example PR Comment
+
+⚠️ Automated Risk Signal (Advisory Only)
+
+This PR modifies authentication-related logic while introducing new execution paths.
+Combined with dependency changes, this increases the review surface area and may require closer inspection of access control and execution flow.
+
+Generated from deterministic risk signals to assist human reviewers.
+
+🗄️ Data Model (Core Tables)
+
+Repository
+
+PullRequest
+
+PullRequestRisk
+
+PullRequestRisk stores:
+
+dependency risk flag
+
+auth risk flag
+
+suspicious code risk flag
+
+detected reasons
+
+affected files
+
+comment-posted status
+
+This ensures:
+
+retry safety
+
+auditability
+
+reproducible behavior
+
+🔁 Event Handling
+
+Handled GitHub events:
+
+pull_request.opened
+
+pull_request.reopened
+
+pull_request.synchronize
+
+synchronize ensures risk is re-computed whenever new commits are pushed to an open PR.
+
+🛠️ Tech Stack
+Backend
+
+Node.js
+
+Prisma
+
+PostgreSQL
+
+Redis + BullMQ
+
+GitHub App API
+
+AI
+
+Gemini / OpenAI
+
+Provider-agnostic, stateless usage
+
+🚀 What Makes This Backend Different
+
+Focuses on review prioritization, not vulnerability scanning
+
+Event-driven, asynchronous, retry-safe
+
+Clear separation between detection and explanation
+
+Responsible AI usage with bounded scope
+
+Designed for real-world GitHub workflows
+
+⚠️ What This System Is NOT
+
+❌ A vulnerability scanner (e.g. Snyk, CodeQL)
+
+❌ An approval or blocking system
+
+❌ A replacement for human reviewers
