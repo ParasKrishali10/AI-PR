@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "fetch:prs": "tsx --env-file=.env scripts/evaluation/fetchPRs.ts"
+,
     "worker": "tsx app/lib/prProcessor.ts",
     "worker:watch": "tsx watch app/lib/prProcessor.ts"
   },
