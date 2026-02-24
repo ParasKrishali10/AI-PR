@@ -8,8 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "fetch:prs": "tsx --env-file=.env scripts/evaluation/fetchPRs.ts"
-,
+    "fetch:prs": "tsx --env-file=.env scripts/evaluation/fetchPRs.ts",
+    "interactive-label": "tsx --env-file=.env scripts/evaluation/interactiveLabel.ts",
     "worker": "tsx app/lib/prProcessor.ts",
     "worker:watch": "tsx watch app/lib/prProcessor.ts"
   },
@@ -24,6 +24,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "framer-motion": "^12.31.0",
+    "glob": "^13.0.6",
     "ioredis": "^5.9.2",
     "lucide-react": "^0.563.0",
     "next": "16.1.4",
