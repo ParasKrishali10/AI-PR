@@ -21,6 +21,6 @@ export function analyzePR(pr: AnalyzablePr){
         score+=20
         rules.push("Malicious risk detected")
     }
-    const riskLevel=score>70?"High":score>=40?"Medium":"LOW"
+    const riskLevel=score>=60?"HIGH":score>=40?"MEDIUM":"LOW"
     return {score,riskLevel,rules}
 }

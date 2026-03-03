@@ -3,6 +3,7 @@ import path from 'path'
 import {prisma} from '../../app/lib/prisma';
 import { createAppAuth } from '@octokit/auth-app';
 import { Octokit } from '@octokit/rest';
+import { number } from 'framer-motion';
 
 const DATASET_DIR=path.join(
   process.cwd(),
@@ -39,12 +40,37 @@ async function fetchPRs(){
         per_page:50,
       })
 
+      const enrichedPRs=[]
+      for(const pr of res.data){
+        const details=await octokit.pulls.get({
+          owner,
+          repo:repoName,
+          pull_number:pr.number
+        })
+
+        const files=await octokit.pulls.listFiles({
+          owner,
+          repo:repoName,
+          pull_number:pr.number
+        })
+
+        enrichedPRs.push({
+          number:pr.number,
+          title:pr.title,
+          additions:details.data.additions,
+          deletions:details.data.deletions,
+          changed_files:details.data.changed_files,
+          files:files.data.map(f=>f.filename)
+        })
+
+      }
+
       const repoDir=path.join(DATASET_DIR,safeName(repoName))
       fs.mkdirSync(repoDir,{recursive:true})
 
          await fs.promises.writeFile(
          path.join(repoDir, "prs.json"),
-         JSON.stringify(res.data, null, 2)
+         JSON.stringify(enrichedPRs, null, 2)
       )
 
       const labelsPath=path.join(repoDir,"labels.json")

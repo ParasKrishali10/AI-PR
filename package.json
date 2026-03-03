@@ -11,7 +11,8 @@
     "fetch:prs": "tsx --env-file=.env scripts/evaluation/fetchPRs.ts",
     "interactive-label": "tsx --env-file=.env scripts/evaluation/interactiveLabel.ts",
     "worker": "tsx app/lib/prProcessor.ts",
-    "worker:watch": "tsx watch app/lib/prProcessor.ts"
+    "worker:watch": "tsx watch app/lib/prProcessor.ts",
+    "evaluate":"tsx scripts/evaluation/evaluate.ts"
   },
   "dependencies": {
     "@google/genai": "^1.39.0",

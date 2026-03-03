@@ -52,9 +52,9 @@ async function ask(question:string):Promise<string>{
 
     const answer = await ask("Label? (h/m/l/skip): ");
 
-    if(answer==="h") labels[String(pr.id)]="high"
-    else if(answer==="m") labels[String(pr.id)]="medium"
-    else if(answer==="l") labels[String(pr.id)]="low"
+   if(answer==="h") labels[String(pr.id)]="HIGH"
+else if(answer==="m") labels[String(pr.id)]="MEDIUM"
+else if(answer==="l") labels[String(pr.id)]="LOW"
 
     }
 
