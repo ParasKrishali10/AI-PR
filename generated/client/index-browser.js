@@ -162,6 +162,12 @@ exports.Prisma.PullRequestRiskScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.WebhookEventScalarFieldEnum = {
+  id: 'id',
+  deliveryId: 'deliveryId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -182,7 +188,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Repository: 'Repository',
   PullRequest: 'PullRequest',
-  PullRequestRisk: 'PullRequestRisk'
+  PullRequestRisk: 'PullRequestRisk',
+  WebhookEvent: 'WebhookEvent'
 };
 
 /**

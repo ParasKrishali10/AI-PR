@@ -65,3 +65,9 @@ model PullRequestRisk{
 
 
 }
+
+model WebhookEvent{
+  id Int @id @default(autoincrement())
+  deliveryId String @unique
+  createdAt DateTime @default(now())
+}

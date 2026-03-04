@@ -31,7 +31,6 @@ export default function PRRiskHero() {
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center bg-[#000000] overflow-hidden">
 
-      {/* THE FIX: The Teal Spotlight Layer */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-teal-500/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="spotlight-background" />
 
@@ -41,7 +40,6 @@ export default function PRRiskHero() {
         animate="visible"
         className="relative z-10 flex flex-col items-center text-center px-4 max-w-5xl"
       >
-        {/* 1. Main Heading */}
         <motion.h1
           variants={item}
           className="text-[48px] md:text-[86px] font-bold tracking-tight text-white leading-[1.05] mb-6"
@@ -49,8 +47,6 @@ export default function PRRiskHero() {
           AI-Assisted <br />
           PR Risk Signals
         </motion.h1>
-
-        {/* 2. Subheading */}
         <motion.p
           variants={item}
           className="text-zinc-400 text-lg md:text-xl font-medium max-w-2xl mx-auto mb-14"
@@ -59,7 +55,6 @@ export default function PRRiskHero() {
           Early risk signals to help reviewers decide where to look first.
         </motion.p>
 
-        {/* 3. The Search Bar with Glass Effect to catch the spotlight */}
         <motion.div variants={item} className="w-full max-w-2xl mb-16">
           <div className="bg-[#0f0f0f]/60 border border-zinc-800/60 rounded-2xl px-6 py-5 flex justify-between items-center backdrop-blur-xl group hover:border-teal-500/20 transition-all">
             <div className="flex items-center gap-3">
@@ -70,23 +65,48 @@ export default function PRRiskHero() {
           </div>
         </motion.div>
 
-        {/* 4. The Signal Cards */}
-        <motion.div variants={item} className="flex flex-wrap justify-center gap-4 w-full">
-          {riskSignals.map((signal) => (
-            <div
-              key={signal.title}
-              className="bg-[#0f0f0f]/40 border border-zinc-800/40 rounded-3xl p-6 flex flex-col items-start gap-1 hover:bg-zinc-800/40 transition-all min-w-[260px] text-left group"
-            >
-              <div className="flex items-center gap-3 mb-1">
-                 <div className="p-2 bg-zinc-900 rounded-lg border border-zinc-800 group-hover:border-teal-500/20">
-                    {signal.icon}
-                 </div>
-                 <span className="text-white font-bold text-lg tracking-tight">{signal.title}</span>
-              </div>
-              <span className="text-zinc-500 text-sm">{signal.desc}</span>
-            </div>
-          ))}
-        </motion.div>
+        <motion.div
+  variants={item}
+  className="group relative flex justify-center items-center w-full py-12"
+>
+  {riskSignals.map((signal, index) => {
+
+    const rotationAngle = (index - Math.floor(riskSignals.length / 2)) * 15;
+
+    return (
+      <div
+        key={signal.title}
+        style={{ "--r": rotationAngle } as React.CSSProperties}
+        className="
+          /* Base styles & Dark Glassmorphism */
+          relative flex flex-col items-start gap-1 p-6 text-left min-w-[260px] rounded-3xl
+          bg-[#0f0f0f]/60 backdrop-blur-md border border-zinc-800/60 shadow-2xl
+
+          /* The Animation Mechanics */
+          transition-all duration-500 ease-out
+
+          /* The Default State: Overlapped and Tilted */
+          -mx-8 [transform:rotate(calc(var(--r)*1deg))]
+
+          /* The Hover State: Straighten up and spread out */
+          group-hover:[transform:rotate(0deg)] group-hover:mx-3 group-hover:bg-zinc-800/40
+        "
+      >
+        <div className="flex items-center gap-3 mb-1">
+          <div className="p-2 bg-zinc-900 rounded-lg border border-zinc-800 group-hover:border-teal-500/20 transition-colors">
+            {signal.icon}
+          </div>
+          <span className="text-white font-bold text-lg tracking-tight">
+            {signal.title}
+          </span>
+        </div>
+        <span className="text-zinc-500 text-sm">
+          {signal.desc}
+        </span>
+      </div>
+    );
+  })}
+</motion.div>
       </motion.div>
     </section>
   );

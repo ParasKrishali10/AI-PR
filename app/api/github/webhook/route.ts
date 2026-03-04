@@ -5,6 +5,22 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req:NextRequest){
     const event=req.headers.get("x-github-event")
     const payload=await req.json()
+    const deliveryId=req.headers.get("x-github-delivery")
+
+    if(!deliveryId){
+        return NextResponse.json({error:"Missing Github Delivery ID"},{status:400})
+    }
+    try{
+        await prisma.webhookEvent.create({
+            data:{deliveryId}
+        })
+    }catch(error){
+        console.log("Dupliacte webhook delivery ignored",deliveryId)
+        return NextResponse.json(
+            {message:"Duplicate event ignored"},
+            {status:200}
+        )
+    }
 
     if(event=="installation" && payload.action==="created"){
         const installationId=payload.installation.id

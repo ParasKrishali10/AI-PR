@@ -13,7 +13,7 @@ export default function dummy(){
       <Features />
       <IntegrationSteps/>
       <FooterCTA/>
-      <BlueprintRiskCard title="AI-PR" repo="PR-RISK" riskScore={78} status="Critical" author="alice.dev" aiSummary = "The modification to verifySession() bypasses the previous rate-limit check. Combined with the new dependency, this increases the risk of session hijacking."/>
+      {/* <BlueprintRiskCard title="AI-PR" repo="PR-RISK" riskScore={78} status="Critical" author="alice.dev" aiSummary = "The modification to verifySession() bypasses the previous rate-limit check. Combined with the new dependency, this increases the risk of session hijacking."/> */}
     </main>
     )
 }

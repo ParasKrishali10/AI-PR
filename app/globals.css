@@ -73,3 +73,100 @@ background-color: #020808; /* Very dark teal, almost black */
   pointer-events: none;
   z-index: 0;
 }
+
+.container {
+  width: 240px;
+  height: 294px;
+  perspective: 900px;
+}
+
+.card {
+  height: 100%;
+  width: 100%;
+  background-color: aliceblue;
+  position: relative;
+  transition: transform 1500ms;
+  transform-style: preserve-3d;
+  border-radius: 2rem;
+}
+
+.container:hover > .card {
+  cursor: pointer;
+  transform: rotateY(180deg) rotateZ(180deg);
+}
+
+.front, .back {
+  height: 100%;
+  width: 100%;
+  border-radius: 2rem;
+  position: absolute;
+  box-shadow: 0 0 10px 2px rgba(50, 50, 50, 2.5);
+  backface-visibility: hidden;
+  color: aliceblue;
+  background: linear-gradient(-135deg,
+#0703f7, #bcff04);
+}
+
+.front, .back {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.back {
+  transform: rotateY(180deg) rotateZ(180deg);
+}
+
+.back-heading, .front-heading {
+  font-size: 28px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .glass {
+  position: relative;
+  width: 180px;
+  height: 200px;
+  background: linear-gradient(#fff2, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  border-radius: 10px;
+  margin: 0 -45px;
+  backdrop-filter: blur(10px);
+  transform: rotate(calc(var(--r) * 1deg));
+}
+
+.container:hover .glass {
+  transform: rotate(0deg);
+  margin: 0 10px;
+}
+
+.container .glass::before {
+  content: attr(data-text);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+.container .glass svg {
+  font-size: 2.5em;
+  fill: #fff;
+}

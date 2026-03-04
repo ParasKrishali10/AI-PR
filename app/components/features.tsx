@@ -7,7 +7,6 @@ export default function Features() {
   return (
     <section className="relative w-full py-24 px-4 flex flex-col items-center">
 
-      {/* Section Header */}
       <div className="max-w-3xl text-center mb-16">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
           Deterministic Signals. <span className="text-teal-400">AI Context.</span>
@@ -17,10 +16,8 @@ export default function Features() {
         </p>
       </div>
 
-      {/* THE BENTO GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full">
 
-        {/* Card 1: Large Wide (The Core Logic) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -42,8 +39,6 @@ export default function Features() {
             auth middleware, and sensitive logic. If we flag it, it changed.
           </p>
         </motion.div>
-
-        {/* Card 2: Tall (The AI Brain) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,14 +56,10 @@ export default function Features() {
               to generate a human-readable summary.
             </p>
           </div>
-
-          {/* Visual Mockup of an AI Comment */}
           <div className="bg-[#050505] rounded-xl p-4 border border-zinc-800 text-sm font-mono text-zinc-500">
             <span className="text-blue-400">@PR-Bot:</span> This PR modifies auth logic in <span className="text-zinc-300">middleware.ts</span> and adds 2 new dependencies.
           </div>
         </motion.div>
-
-        {/* Card 3: Small (Human in Loop) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -82,8 +73,6 @@ export default function Features() {
             We never block PRs. We flag them so humans know where to look.
           </p>
         </motion.div>
-
-        {/* Card 4: Small (Audit Trail) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -97,6 +86,60 @@ export default function Features() {
             Every signal is persisted to PostgreSQL for compliance and review.
           </p>
         </motion.div>
+    <div className="container">
+  <div className="card">
+    <div className="front">
+      <p className="front-heading">
+           <FileCode className="text-orange-400 mb-6" size={32} />
+          <h3 className="text-xl font-bold text-white mb-2">Full Audit History</h3>
+        </p>
+    </div>
+    <div className="back">
+      <p className="back-heading">Back card</p>
+     <p className="text-zinc-500 text-sm">
+            Every signal is persisted to PostgreSQL for compliance and review.
+          </p>
+    </div>
+  </div>
+</div>
+    <div className="container">
+  <div className="card">
+    <div className="front">
+      <p className="front-heading">
+           <FileCode className="text-orange-400 mb-6" size={32} />
+          <h3 className="text-xl font-bold text-white mb-2">Full Audit History</h3>
+        </p>
+    </div>
+    <div className="back">
+      <p className="back-heading">Back card</p>
+     <p className="text-zinc-500 text-sm">
+            Every signal is persisted to PostgreSQL for compliance and review.
+          </p>
+    </div>
+  </div>
+</div>
+<div className="group h-72 w-64 [perspective:1000px]">
+  <div className="relative h-full w-full rounded-2xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+
+    <div className="absolute inset-0 h-full w-full rounded-2xl bg-zinc-900 p-6 [backface-visibility:hidden]">
+      <div className="flex flex-col h-full">
+        <FileCode className="text-orange-400 mb-6" size={32} />
+        <h3 className="text-xl font-bold text-white mb-2">Full Audit History</h3>
+        <p className="text-zinc-400 text-sm mt-auto">Hover to learn more</p>
+      </div>
+    </div>
+
+    <div className="absolute inset-0 h-full w-full rounded-2xl bg-gradient-to-br from-green-400 to-blue-600 p-6 [transform:rotateY(180deg)] [backface-visibility:hidden]">
+      <div className="flex flex-col h-full justify-center text-center">
+        <h3 className="text-xl font-bold text-white mb-4">How it works</h3>
+        <p className="text-white/90 text-sm leading-relaxed">
+          Every signal is persisted to PostgreSQL for compliance and review.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
 
       </div>
     </section>

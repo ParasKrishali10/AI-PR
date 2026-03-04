@@ -63,3 +63,9 @@ model PullRequestRisk {
 
   pullRequest PullRequest @relation(fields: [pullRequestId], references: [id])
 }
+
+model WebhookEvent {
+  id         Int      @id @default(autoincrement())
+  deliveryId String   @unique
+  createdAt  DateTime @default(now())
+}
