@@ -25,13 +25,7 @@
 
 body {
 background-color: #020808; /* Very dark teal, almost black */
-  background-image:
-    radial-gradient(
-      circle at 50% 30%,
-      rgba(45, 212, 191, 0.15) 0%, /* Stronger Teal center */
-      rgba(4, 44, 40, 0.3) 40%,    /* Mid-tone greenish/teal */
-      #000000 100%                 /* Fades to black at edges */
-    );
+
   background-attachment: fixed; /* Keeps the glow in place when scrolling */
   color: white;
   min-height: 100vh;
