@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function MainS() {
   return (
-    <section className="font-inter relative min-h-screen flex items-center justify-center text-center bg-[#020617] text-white overflow-hidden">
+    <section className="font-inter relative min-h-screen flex items-center justify-center text-center bg: #0a0a0a text-white overflow-hidden">
 
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[radial-gradient(circle,rgba(56,189,248,0.35),transparent_70%)] blur-3xl"></div>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b1a_1px,transparent_1px),linear-gradient(to_bottom,#1e293b1a_1px,transparent_1px)] bg-[size:60px_60px]"></div>

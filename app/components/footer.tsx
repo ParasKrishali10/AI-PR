@@ -11,13 +11,13 @@ export default function FooterCTA() {
     <footer className={`relative w-full pt-32 pb-10 flex flex-col items-center bg-[#020808] overflow-hidden ${inter.className}`}>
 
       {/* THE BOTTOM GLOW (Sunrise Effect) */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-teal-500/20 blur-[120px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-sky-400/40 blur-[100px] rounded-full pointer-events-none z-0" />
 
       {/* MAIN CTA CONTENT */}
       <div className="relative z-10 text-center max-w-3xl px-6 mb-24">
         <h2 className="text-5xl md:text-7xl font-semibold text-white mb-8 tracking-tighter leading-tight">
           Ready to ship <br />
-          with <span className="text-teal-400">confidence?</span>
+          with <span className="text-[#00a2ff]">confidence?</span>
         </h2>
 
         <p className="text-zinc-400 text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed">

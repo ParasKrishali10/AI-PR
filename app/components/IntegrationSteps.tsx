@@ -23,7 +23,7 @@ export default function IntegrationSteps() {
     >
       <div className="mb-24 text-center max-w-2xl px-6 relative z-10">
         <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tighter">
-          Ready in <span className="text-teal-400">minutes</span>, not days.
+          Ready in <span className="text-[#00a2ff]">minutes</span>, not days.
         </h2>
         <p className="text-zinc-400 text-lg">
           No complex CI/CD pipelines to rewrite. Just install the app and protect your main branch.

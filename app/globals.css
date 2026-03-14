@@ -24,7 +24,7 @@
 }
 
 body {
-background-color: #020808; /* Very dark teal, almost black */
+background: #0a0a0a; /* Very dark teal, almost black */
 
   background-attachment: fixed; /* Keeps the glow in place when scrolling */
   color: white;
@@ -56,7 +56,6 @@ background-color: #020808; /* Very dark teal, almost black */
   transform: translate(-50%, -50%);
   width: 90vw;
   height: 70vh;
-  /* Specifically using #2dd4bf (Teal) at very low opacity */
   background: radial-gradient(
     circle at center,
     rgba(45, 212, 191, 0.12) 0%,
@@ -167,8 +166,8 @@ background-color: #020808; /* Very dark teal, almost black */
 
 .container {
   position: relative;
-  width: 320px;
-  height: 380px;
+  width: 420px;
+  height: 480px;
   transition: 200ms;
 }
 
@@ -216,7 +215,7 @@ background-color: #020808; /* Very dark teal, almost black */
 }
 
 .title {
-  opacity: 0;
+  opacity: 1;
   transition: 300ms ease-in-out;
   position: absolute;
   font-size: 28px;
@@ -816,4 +815,16 @@ background-color: #020808; /* Very dark teal, almost black */
 #card:hover .corner-elements span {
   border-color: rgba(92, 103, 255, 0.8);
   box-shadow: 0 0 10px rgba(92, 103, 255, 0.5);
+}
+
+.description {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.65);
 }
