@@ -7,6 +7,17 @@ import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const handleConnect=async()=>{
+      try{
+        window.location.href="https://github.com/apps/AI-PR-RISK/installations/new"
+        // alert("succes")
+      }catch(error)
+      {
+        console.log(error)
+        // alert("error happens")
+      }
+
+  }
 export default function IntegrationSteps() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -60,7 +71,7 @@ export default function IntegrationSteps() {
                    <span className="text-zinc-300 font-medium">PR Risk Analyzer</span>
                    <span className="ml-auto bg-blue-500/10 text-blue-400 text-xs px-2 py-1 rounded border border-blue-500/20">Official</span>
                 </div>
-                <button className="w-full py-2 bg-white text-black font-semibold rounded-lg hover:bg-zinc-200 transition-colors">
+                <button className="w-full py-2 bg-white text-black font-semibold rounded-lg hover:bg-zinc-200 transition-colors" onClick={handleConnect}>
                    Install on Organization
                 </button>
              </div>

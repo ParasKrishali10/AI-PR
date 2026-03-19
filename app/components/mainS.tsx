@@ -1,10 +1,21 @@
 "use client"
 import { Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { signIn, signOut, useSession } from "next-auth/react"
+const handleConnect=async()=>{
+      try{
+        window.location.href="https://github.com/apps/AI-PR-RISK/installations/new"
+        // alert("succes")
+      }catch(error)
+      {
+        console.log(error)
+        // alert("error happens")
+      }
 
+  }
 export default function MainS() {
   return (
-    <section className="font-inter relative min-h-screen flex items-center justify-center text-center bg: #0a0a0a text-white overflow-hidden">
+    <section className="font-inter relative min-h-screen flex items-center justify-center text-center bg-[#020617] text-white overflow-hidden">
 
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[radial-gradient(circle,rgba(56,189,248,0.35),transparent_70%)] blur-3xl"></div>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b1a_1px,transparent_1px),linear-gradient(to_bottom,#1e293b1a_1px,transparent_1px)] bg-[size:60px_60px]"></div>
@@ -29,10 +40,10 @@ export default function MainS() {
         <div className="flex gap-4 justify-center mt-8">
           <button className="px-8 flex py-3 gap-2 rounded-full bg-gradient-to-r from-white to-gray-300 text-black font-medium transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">
             <Sparkles className='size-5 mt-1'/>
-            <span className='text-lg font-semibold'>Connect GitHub</span>
+            <span className='text-lg font-semibold' onClick={() => signIn("github")}>Connect GitHub</span>
           </button>
 
-          <button className="px-6 py-3 bg-black shadow-lg shadow-cyan-700 rounded-full border-2 border-grey-900">
+          <button onClick={() => signIn("github")} className="px-6 py-3 bg-black shadow-lg shadow-cyan-700 rounded-full border-2 border-grey-900">
             View On GitHub
           </button>
         </div>

@@ -27,13 +27,11 @@ export default function Home() {
      if(!session) return
 
      const fetchRepos=async()=>{
-      console.log("Repos fetching")
+     console.log("Repos fetching")
      const res = await axios.get("/api/github/repos")
-console.log("Response data:", res.data)
-console.log("Is array:", Array.isArray(res.data))
-setRepos(res.data)
-
-
+     console.log("Response data:", res.data)
+     console.log("Is array:", Array.isArray(res.data))
+     setRepos(res.data)
      }
      fetchRepos()
   },[session])
@@ -46,7 +44,7 @@ setRepos(res.data)
           owner
         })
         console.log(res.data)
-        window.location.href="https://github.com/apps/AI-PR-RISK/installations/new"
+        // window.location.href="https://github.com/apps/AI-PR-RISK/installations/new"
         alert("succes")
       }catch(error)
       {

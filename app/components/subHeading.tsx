@@ -2,7 +2,7 @@
 import CountUp from "react-countup"
 export async function SubHeading() {
   return (
-    <section className="relative w-full bg: #0a0a0a flex flex-col items-center justify-center overflow-hidden py-24 mt-[100px]">
+    <section className="relative w-full bg-[#020617] flex flex-col items-center justify-center overflow-hidden py-24 mt-[100px]">
 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[radial-gradient(white_1px,transparent_1px)] bg-[size:30px_30px] opacity-[0.1] [mask-image:radial-gradient(ellipse_at_top,white,transparent_70%)] "></div>
 

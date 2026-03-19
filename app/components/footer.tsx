@@ -6,6 +6,17 @@ import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const handleConnect=async()=>{
+      try{
+        window.location.href="https://github.com/apps/AI-PR-RISK/installations/new"
+        // alert("succes")
+      }catch(error)
+      {
+        console.log(error)
+        // alert("error happens")
+      }
+
+  }
 export default function FooterCTA() {
   return (
     <footer className={`relative w-full pt-32 pb-10 flex flex-col items-center bg-[#020808] overflow-hidden ${inter.className}`}>
@@ -26,7 +37,7 @@ export default function FooterCTA() {
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
           {/* Primary Button */}
-          <button className="group relative px-8 py-4 bg-teal-400 text-black font-semibold rounded-full text-lg hover:bg-teal-300 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(45,212,191,0.3)] hover:shadow-[0_0_30px_rgba(45,212,191,0.5)]">
+          <button className="group relative px-8 py-4 bg-teal-400 text-black font-semibold rounded-full text-lg hover:bg-teal-300 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(45,212,191,0.3)] hover:shadow-[0_0_30px_rgba(45,212,191,0.5)]" onClick={handleConnect}>
             Install on GitHub
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </button>
