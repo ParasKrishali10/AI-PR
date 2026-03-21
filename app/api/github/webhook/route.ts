@@ -148,6 +148,37 @@ export async function POST(req:NextRequest){
 
 
     }
+    if(event==="pull_request" && (payload.action==="closed")){
+        const pr=payload.pull_request;
+        const repo=payload.repository
+
+        console.log(`PR ${payload.action} : `,pr.title)
+
+        const dbRepo=await prisma.repository.findUnique({
+            where:{
+                githubRepoId:repo.id
+            }
+        })
+
+        if(!dbRepo)
+        {
+            console.log("Repo not connected , skipping PR")
+            return NextResponse.json({message:"Repo not connected"},{status:405})
+        }
+
+        if(payload.pull_request.merged){
+           await prisma.pullRequest.update({
+                  where: { githubPrId:pr.id },
+                    data:{
+                    state:"merged"
+                }
+            })
+        }
+
+
+
+
+    }
 
     if(event==="pull_request" && payload.action==="reopened"){
         const pr=payload.pull_request;

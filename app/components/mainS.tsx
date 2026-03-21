@@ -2,6 +2,8 @@
 import { Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { signIn, signOut, useSession } from "next-auth/react"
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 const handleConnect=async()=>{
       try{
         window.location.href="https://github.com/apps/AI-PR-RISK/installations/new"
@@ -14,6 +16,8 @@ const handleConnect=async()=>{
 
   }
 export default function MainS() {
+
+
   return (
     <section className="font-inter relative min-h-screen flex items-center justify-center text-center bg-[#020617] text-white overflow-hidden">
 
