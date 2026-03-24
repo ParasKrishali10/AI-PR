@@ -1,329 +1,397 @@
-# 🛡️ PR Risk Analyzer (Backend)
+# 🛡️ AI-PR-RISK (Backend)
 
-A GitHub App backend that analyzes pull requests, extracts **deterministic risk signals**, and uses **AI only to explain context to human reviewers** — without replacing human judgment.
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
+![Next.js](https://img.shields.io/badge/Next.js-AppRouter-black)
+![Redis](https://img.shields.io/badge/Redis-Queue-red)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
----
-
-## 🚩 Problem
-
-Pull requests often combine multiple types of changes:
-- dependency updates
-- authentication or access-control logic changes
-- risky execution patterns
-
-Reviewers typically:
-- lack time to deeply inspect every PR
-- miss subtle interactions between changes
-- have no historical context across pull requests
-
-Most tools focus on **finding vulnerabilities**.  
-This system focuses on **early risk signaling** to help reviewers decide *where to look first*.
+A GitHub App backend that analyzes pull requests, extracts deterministic risk signals, and uses AI **only for explanation — never decision-making**.
 
 ---
 
-## 💡 What This Backend Does
+# 🚩 Problem
 
-This service provides PR-time risk signals by:
+Pull requests often contain:
 
-1. Listening to GitHub pull request webhooks
-2. Processing events asynchronously via a queue
-3. Extracting deterministic security-relevant signals
-4. Persisting signals for auditability and retries
-5. Using AI to generate **explanatory context**
-6. Posting advisory comments directly on pull requests
+* Dependency changes
+* Auth / permission updates
+* Risky execution patterns
 
-> ⚠️ This system does **not** approve, block, or reject pull requests.  
-> It assists human reviewers.
+Reviewers:
 
----
+* Don’t have enough time
+* Miss subtle interactions
+* Lack historical context
 
-## 🧠 Core Design Philosophy
-
-**Rules for facts.  
-AI for explanation.  
-Humans for judgment.**
-
-- Detection logic is deterministic and reproducible
-- AI is used only for interpretation and communication
-- AI output is advisory, never authoritative
-
----
-GitHub Webhook
-↓
-Redis Queue (BullMQ)
-↓
-Worker
-├─ Fetch PR files
-├─ Extract risk signals
-├─ Persist results (DB)
-├─ Generate AI explanation
-└─ Post PR comment
-
+👉 This system helps **prioritize review effort**, not replace it.
 
 ---
 
-## 🔍 Risk Signals Extracted
+# 💡 What This Backend Does
 
-### 1️⃣ Dependency Risk
-Triggered when dependency definition files are modified, including:
-- `package.json`, `yarn.lock`
-- `requirements.txt`
-- `pom.xml`, `go.mod`
+* Listens to GitHub webhooks
+* Queues PR events (BullMQ)
+* Extracts deterministic risk signals
+* Stores results (PostgreSQL)
+* Uses AI to explain risks
+* Posts advisory comments on PRs
 
----
-
-### 2️⃣ Auth / Access-Control Risk
-Triggered when files related to:
-- authentication
-- middleware
-- guards or policies
-- permissions
-
-are modified.
+⚠️ Does NOT approve, block, or reject PRs.
 
 ---
 
-### 3️⃣ Suspicious / Malicious Code Signals
-Heuristic pattern detection for:
-- dynamic code execution (`eval`)
-- shell execution (`exec`, `spawn`)
-- OS-level commands (`rm -rf`)
-- runtime execution patterns
+# 🧠 Core Philosophy
 
-> These are **signals**, not vulnerability claims.
+* **Rules → Facts**
+* **AI → Explanation**
+* **Humans → Judgment**
 
 ---
 
-## 🤖 Why AI Is Used (and Why It’s Limited)
+# 🏗️ Architecture Diagram
 
-### ❌ AI is NOT used to:
-- review code correctness
-- detect vulnerabilities
-- assign risk probabilities
-- approve or block PRs
-
-### ✅ AI IS used to:
-- explain how multiple deterministic signals interact
-- provide human-readable context
-- reduce reviewer cognitive load
-
-AI operates **only on persisted risk signals**, not raw code.
-
----
-
-## 💬 Example PR Comment
-
-> ⚠️ **Automated Risk Signal (Advisory Only)**  
->  
-> This PR modifies authentication-related logic while introducing new execution paths.  
-> Combined with dependency changes, this increases the review surface area and may require closer inspection of access control and execution flow.  
->  
-> _Generated from deterministic risk signals to assist human reviewers._
-
----
-
-## 🗄️ Data Model (Core Tables)
-
-- `Repository`
-- `PullRequest`
-- `PullRequestRisk`
-
-`PullRequestRisk` stores:
-- dependency risk flag
-- auth risk flag
-- suspicious code risk flag
-- detected reasons
-- affected files
-- comment-posted status
-
-This ensures:
-- retry safety
-- auditability
-- reproducible behavior
+```
+                ┌────────────────────┐
+                │   GitHub Webhook   │
+                └─────────┬──────────┘
+                          │
+                          ▼
+                ┌────────────────────┐
+                │   API Server       │
+                │ (Next.js Routes)   │
+                └─────────┬──────────┘
+                          │ enqueue job
+                          ▼
+                ┌────────────────────┐
+                │   Redis Queue      │
+                │    (BullMQ)        │
+                └─────────┬──────────┘
+                          │
+                          ▼
+                ┌────────────────────┐
+                │     Worker         │
+                │  (Background Job)  │
+                └─────────┬──────────┘
+                          │
+        ┌─────────────────┼──────────────────┐
+        ▼                 ▼                  ▼
+ Fetch PR Files   Extract Risk Signals   Store in DB
+        │                 │                  │
+        └────────────┬────┴──────┬──────────┘
+                     ▼           ▼
+              Generate AI   Post GitHub
+              Explanation     Comment
+```
 
 ---
 
-## 🔁 Event Handling
+# 🔁 Execution Flow
 
-Handled GitHub events:
-- `pull_request.opened`
-- `pull_request.reopened`
-- `pull_request.synchronize`
-
-`synchronize` ensures risk is re-computed whenever new commits are pushed to an open PR.
+```
+Webhook → API → Queue → Worker → DB + AI → GitHub Comment
+```
 
 ---
 
-## 🛠️ Tech Stack
+# 🧱 Project Structure
+
+```
+AI-PR-RISK/
+├── app/
+│   ├── api/
+│   │   ├── github/
+│   │   ├── queue/
+│   │   ├── repos/
+│   │   └── prs/
+│   │
+│   ├── lib/
+│   │   ├── github.ts
+│   │   ├── prProcessor.ts
+│   │   ├── queue.ts
+│   │   └── utils.ts
+│   │
+│   ├── pull-requests/
+│   ├── queue/
+│   ├── repos/
+│   └── settings/
+```
+
+---
+
+# ⚙️ Local Setup
+
+## Install
+
+```bash
+npm install
+```
+
+## Environment Variables
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/pr_risk
+REDIS_URL=redis://localhost:6379
+
+GITHUB_APP_ID=your_app_id
+GITHUB_PRIVATE_KEY=your_private_key
+GITHUB_WEBHOOK_SECRET=your_secret
+
+GEMINI_API_KEY=your_key
+```
+
+---
+
+## Run Services
 
 ### Backend
-- Node.js
-- Prisma
-- PostgreSQL
-- Redis + BullMQ
-- GitHub App API
 
-### AI
-- Gemini / OpenAI  
-- Provider-agnostic, stateless usage
+```bash
+npm run dev
+```
 
----
+### Worker (REQUIRED)
 
-## 🚀 What Makes This Backend Different
-
-- Focuses on **review prioritization**, not vulnerability scanning
-- Event-driven, asynchronous, retry-safe
-- Clear separation between detection and explanation
-- Responsible AI usage with bounded scope
-- Designed for real-world GitHub workflows
+```bash
+npm run worker
+```
 
 ---
 
-## ⚠️ What This System Is NOT
+## Redis
 
-- ❌ A vulnerability scanner (e.g. Snyk, CodeQL)
-- ❌ An approval or blocking system
-- ❌ A replacement for human reviewers
-
----
-## 🏗️ High-Level Architecture
-
-GitHub Webhook
-↓
-Redis Queue (BullMQ)
-↓
-Worker
-├─ Fetch PR files
-├─ Extract risk signals
-├─ Persist results (DB)
-├─ Generate AI explanation
-└─ Post PR comment
-
+```bash
+docker run -d -p 6379:6379 redis
+```
 
 ---
 
-## 🔍 Risk Signals Extracted
+## Webhook (ngrok)
 
-### 1️⃣ Dependency Risk
-Triggered when dependency definition files are modified, including:
-- `package.json`, `yarn.lock`
-- `requirements.txt`
-- `pom.xml`, `go.mod`
+```bash
+ngrok http 3000
+```
 
----
+Webhook URL:
 
-### 2️⃣ Auth / Access-Control Risk
-Triggered when files related to:
-- authentication
-- middleware
-- guards or policies
-- permissions
-
-are modified.
+```
+https://<ngrok-url>/api/webhook
+```
 
 ---
 
-### 3️⃣ Suspicious / Malicious Code Signals
-Heuristic pattern detection for:
-- dynamic code execution (`eval`)
-- shell execution (`exec`, `spawn`)
-- OS-level commands (`rm -rf`)
-- runtime execution patterns
+# 📡 API Documentation
 
-> These are **signals**, not vulnerability claims.
+## 🔗 Base URL
 
----
-
-## 🤖 Why AI Is Used (and Why It’s Limited)
-
-### ❌ AI is NOT used to:
-- review code correctness
-- detect vulnerabilities
-- assign risk probabilities
-- approve or block PRs
-
-### ✅ AI IS used to:
-- explain how multiple deterministic signals interact
-- provide human-readable context
-- reduce reviewer cognitive load
-
-AI operates **only on persisted risk signals**, not raw code.
+```
+http://localhost:3000/api
+```
 
 ---
 
-## 💬 Example PR Comment
+## 1️⃣ GitHub Webhook
 
-> ⚠️ **Automated Risk Signal (Advisory Only)**  
->  
-> This PR modifies authentication-related logic while introducing new execution paths.  
-> Combined with dependency changes, this increases the review surface area and may require closer inspection of access control and execution flow.  
->  
-> _Generated from deterministic risk signals to assist human reviewers._
+### POST `/api/github/webhook`
 
----
+Handles GitHub events.
 
-## 🗄️ Data Model (Core Tables)
+### Headers
 
-- `Repository`
-- `PullRequest`
-- `PullRequestRisk`
+```
+x-github-event: pull_request
+x-hub-signature-256: <signature>
+```
 
-`PullRequestRisk` stores:
-- dependency risk flag
-- auth risk flag
-- suspicious code risk flag
-- detected reasons
-- affected files
-- comment-posted status
+### Body
 
-This ensures:
-- retry safety
-- auditability
-- reproducible behavior
+GitHub webhook payload
+
+### Behavior
+
+* Validates signature
+* Enqueues job
 
 ---
 
-## 🔁 Event Handling
+## 2️⃣ Connect GitHub
 
-Handled GitHub events:
-- `pull_request.opened`
-- `pull_request.reopened`
-- `pull_request.synchronize`
+### GET `/api/github/connect`
 
-`synchronize` ensures risk is re-computed whenever new commits are pushed to an open PR.
+Initiates GitHub OAuth flow.
 
 ---
 
-## 🛠️ Tech Stack
+## 3️⃣ OAuth Callback
 
-### Backend
-- Node.js
-- Prisma
-- PostgreSQL
-- Redis + BullMQ
-- GitHub App API
+### GET `/api/github/callback`
 
-### AI
-- Gemini / OpenAI  
-- Provider-agnostic, stateless usage
+Handles GitHub OAuth response.
 
 ---
 
-## 🚀 What Makes This Backend Different
+## 4️⃣ Fetch Repositories
 
-- Focuses on **review prioritization**, not vulnerability scanning
-- Event-driven, asynchronous, retry-safe
-- Clear separation between detection and explanation
-- Responsible AI usage with bounded scope
-- Designed for real-world GitHub workflows
+### GET `/api/github/repos`
+
+Returns connected repositories.
 
 ---
 
-## ⚠️ What This System Is NOT
+## 5️⃣ Queue Trigger (Internal)
 
-- ❌ A vulnerability scanner (e.g. Snyk, CodeQL)
-- ❌ An approval or blocking system
-- ❌ A replacement for human reviewers
+### POST `/api/queue`
+
+Adds job manually (for testing)
+
+```json
+{
+  "repo": "owner/repo",
+  "prNumber": 123
+}
+```
 
 ---
 
+## 6️⃣ PR Processing
+
+### GET `/api/prs`
+
+Fetch PR-related data (if implemented)
+
+---
+
+# 🔍 Risk Signals
+
+### Dependency Risk
+
+* package.json
+* yarn.lock
+* requirements.txt
+
+---
+
+### Auth Risk
+
+* middleware
+* guards
+* permissions
+
+---
+
+### Suspicious Code
+
+* eval()
+* exec()
+* spawn()
+* rm -rf
+
+⚠️ These are signals — NOT vulnerabilities.
+
+---
+
+# 🤖 AI Usage
+
+### ❌ NOT used for:
+
+* vulnerability detection
+* correctness checks
+* approvals
+
+### ✅ Used for:
+
+* explanation
+* summarization
+* context building
+
+---
+
+# 🗄️ Data Model
+
+Tables:
+
+* Repository
+* PullRequest
+* PullRequestRisk
+
+Includes:
+
+* risk flags
+* reasons
+* affected files
+* comment status
+
+---
+
+# ⚠️ Common Issues
+
+### Worker not running
+
+```bash
+npm run worker
+```
+
+---
+
+### Redis not running
+
+```bash
+docker run -d -p 6379:6379 redis
+```
+
+---
+
+### Webhook not triggering
+
+```bash
+ngrok http 3000
+```
+
+---
+
+# 🚀 Key Features
+
+* Event-driven architecture
+* Async job processing
+* Retry-safe system
+* AI-assisted explanations
+* Clean separation of concerns
+
+---
+
+# ❌ What This Is NOT
+
+* Not a vulnerability scanner
+* Not an auto-approval system
+* Not replacing human reviewers
+
+---
+
+# 🧠 Developer Notes
+
+* Worker is horizontally scalable
+* Queue ensures reliability
+* Fully async pipeline
+* Designed for real GitHub workflows
+
+---
+
+# 📌 Future Improvements
+
+* Add dashboard UI
+* Metrics & monitoring
+* Multi-repo scaling
+* Role-based access
+* Advanced heuristics
+
+---
+
+# ⭐ Summary
+
+This backend helps developers **focus on risky PRs first**, using:
+
+✔ deterministic signals
+✔ async processing
+✔ AI explanations
+
+👉 Without replacing human judgment.
