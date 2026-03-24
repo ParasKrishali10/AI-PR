@@ -10,12 +10,16 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
+    const user=await prisma.user.findUnique({
+      where:{githubId:id}
+    })
 
     const repos = await prisma.repository.findMany({
-      where: {userId: id }
+      where: {userId: user?.id }
     });
+    console.log(repos.length)
 
-    return NextResponse.json({ count: repos });
+    return NextResponse.json(repos);
 
   } catch (error) {
     return NextResponse.json(

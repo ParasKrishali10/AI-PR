@@ -7,6 +7,7 @@ import { useDashboard } from "@/app/components/dashboard/DashboardContext";
 import { PRStatusBadge, QueueJobStateBadge } from "@/app/components/dashboard/StatusBadge";
 import { SkeletonCard } from "@/app/components/dashboard/Skeletons";
 import { formatRelativeTime } from "@/app/lib/dashboardFormat";
+import { signOut, useSession } from "next-auth/react";
 
 function SummaryCard({
   label,
@@ -33,27 +34,34 @@ function SummaryCard({
 }
 
 export default function DashboardPage() {
-  const { repos, prs, queue, loading, refreshQueue, refreshPRs, simulateWebhookNewPR } = useDashboard();
-
+  const { repos,stats, prs, queue, loading, refreshQueue, refreshPRs, simulateWebhookNewPR } = useDashboard();
+  const session=useSession()
   // Keep the queue fresh on the dashboard.
   // useEffect(() => {
   //   const id = window.setInterval(() => {
+  //     // console.log("hey")
   //     void refreshQueue();
   //     void refreshPRs();
   //   }, 4000);
   //   return () => window.clearInterval(id);
   // }, [refreshPRs, refreshQueue]);
 
-  const totals = useMemo(() => {
-    const completed = prs.filter((p) => p.status === "completed").length;
-    const analyzing = prs.filter((p) => p.status === "analyzing").length;
-    const pending = prs.filter((p) => p.status === "pending").length;
-    return { completed, analyzing, pending };
-  }, [prs]);
 
-  const recentPRs = useMemo(() => {
-    return [...prs].sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1)).slice(0, 6);
-  }, [prs]);
+
+  const totals = useMemo(() => {
+    const completed = stats.analyzed
+    const analyzing = stats.analyzing
+    const pending = stats.pending
+    return { completed, analyzing, pending };
+  }, [stats]);
+
+const recentPRs = useMemo(() => {
+  if (!Array.isArray(prs)) return [];
+
+  return [...prs]
+    .sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1))
+    .slice(0, 6);
+}, [prs]);
 
   return (
     <DashboardShell>
@@ -89,6 +97,7 @@ export default function DashboardPage() {
               <RotateCcw size={16} />
               Refresh
             </button>
+            {/* <button onClick={()=>signOut({ callbackUrl: "/" })}>log out</button> */}
           </div>
         </div>
 
@@ -105,7 +114,7 @@ export default function DashboardPage() {
             <>
               <SummaryCard
                 label="Total repositories connected"
-                value={`${repos.length}`}
+                value={`${repos?.length ?? 0}`}
                 sub="GitHub installations in sync"
                 trend={{ text: "+12%" }}
               />

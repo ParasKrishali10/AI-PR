@@ -13,21 +13,23 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
+  session:{
+    strategy:'jwt'
+  },
   callbacks: {
-    async jwt({ token, account }) {
-      // First time login
-      if (account?.access_token) {
-        token.accessToken = account.access_token
+    async jwt({ token, user,profile }) {
+      if(user){
+        token.id=user.id
       }
-      token.githubId=token.sub
       return token
     },
 
     async session({ session, token }) {
-      ;(session as any).accessToken = token.accessToken
-       ;(session as any).githubId = token.githubId
-      return session
-    }
+  if (session.user && token.id) {
+    session.user.id = token.id as string
+  }
+  return session
+}
   }
 }
 

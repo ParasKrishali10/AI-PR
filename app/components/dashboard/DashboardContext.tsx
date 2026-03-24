@@ -16,6 +16,7 @@ type LoadingState = {
 
 type DashboardContextValue = {
   repos: ConnectedRepository[];
+  stats:{analyzed:number,pending:number,analyzing:number};
   prs: PullRequestSummary[];
   queue: QueueSnapshot;
   loading: LoadingState;
@@ -46,27 +47,41 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
 export function DashboardProvider({ children }: { children: React.ReactNode }) {
   const [repos, setRepos] = useState<ConnectedRepository[]>([]);
   const [prs, setPRs] = useState<PullRequestSummary[]>([]);
+  const {data:session,status}=useSession()
+  const userId=session?.user.id
   const [queue, setQueue] = useState<QueueSnapshot>({
     worker: { name: "mock", lastHeartbeatAt: new Date(0).toISOString() },
     jobs: [],
     counts: { waiting: 0, active: 0, completed: 0, failed: 0 },
   });
   const [loading, setLoading] = useState<LoadingState>({ repos: true, prs: true, queue: true });
-  const session=useSession()
+  const [stats,setStats]=useState({
+    analyzed:0,
+    pending:0,
+    analyzing:0
+  })
 
   const refreshRepos = useCallback(async () => {
+    if(!session?.user.id) return
     setLoading((s) => ({ ...s, repos: true }));
-    const data = await fetchJson<ConnectedRepository[]>(`/api/repos/?${session.data?.githubId}`);
-    setRepos(data);
+  const data = await fetchJson<ConnectedRepository[]>(`/api/repos?id=${userId}`)
+setRepos(data)
     setLoading((s) => ({ ...s, repos: false }));
-  }, []);
+  }, [userId]);
 
   const refreshPRs = useCallback(async () => {
+    if(!session?.user.id) return
     setLoading((s) => ({ ...s, prs: true }));
-    const data = await fetchJson<PullRequestSummary[]>("/api/prs");
-    setPRs(data);
+    const data = await fetchJson<{
+    prs: PullRequestSummary[];
+    analyzed: number;
+    pending: number;
+    analyzing: number;
+  }>(`/api/prs?id=${userId}`);
+    setPRs(data.prs);
+    setStats({analyzed:data.analyzed,pending:data.pending,analyzing:data.analyzing})
     setLoading((s) => ({ ...s, prs: false }));
-  }, []);
+  }, [userId]);
 
   const refreshQueue = useCallback(async () => {
     setLoading((s) => ({ ...s, queue: true }));
@@ -94,12 +109,18 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
   );
 
   useEffect(() => {
-    void refreshAll();
-  }, [refreshAll]);
+    if(status==="authenticated" && userId){
+      void refreshAll();
+    }
+  }, [refreshAll,status,userId]);
 
+  useEffect(() => {
+  console.log("userId:", userId);
+}, [userId]);
   const value = useMemo<DashboardContextValue>(
     () => ({
       repos,
+      stats,
       prs,
       queue,
       loading,
@@ -109,7 +130,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
       refreshQueue,
       simulateWebhookNewPR,
     }),
-    [loading, prs, queue, refreshAll, refreshPRs, refreshQueue, refreshRepos, repos, simulateWebhookNewPR],
+    [loading, prs, queue, refreshAll, refreshPRs, refreshQueue, refreshRepos, repos,stats, simulateWebhookNewPR],
   );
 
   return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
