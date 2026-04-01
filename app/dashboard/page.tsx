@@ -34,8 +34,16 @@ function SummaryCard({
 }
 
 export default function DashboardPage() {
-  const { repos,stats, prs, queue, loading, refreshQueue, refreshPRs, simulateWebhookNewPR } = useDashboard();
+  const { repos,stats, prs, jobs, loading, refreshQueue, refreshPRs, simulateWebhookNewPR } = useDashboard();
   const session=useSession()
+  const recentJobs = [
+  ...jobs.active,
+  ...jobs.waiting,
+  ...jobs.failed,
+  ...jobs.completed,
+]
+  .sort((a, b) => b.timestamp - a.timestamp)
+  .slice(0, 6);
   // Keep the queue fresh on the dashboard.
   // useEffect(() => {
   //   const id = window.setInterval(() => {
@@ -125,7 +133,7 @@ const recentPRs = useMemo(() => {
               />
               <SummaryCard
                 label="Pending PRs in queue"
-                value={`${queue.counts.waiting}`}
+                value={`${stats.pending}`}
                 sub={`${totals.pending} awaiting worker (mock)`}
               />
               <SummaryCard
@@ -185,39 +193,43 @@ const recentPRs = useMemo(() => {
             <div className="mt-4 grid grid-cols-3 gap-3">
               <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
                 <div className="text-xs text-white/60">Waiting</div>
-                <div className="mt-2 text-2xl font-bold">{queue.counts.waiting}</div>
+                <div className="mt-2 text-2xl font-bold">{jobs.waiting.length}</div>
               </div>
               <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
                 <div className="text-xs text-white/60">Active</div>
-                <div className="mt-2 text-2xl font-bold">{queue.counts.active}</div>
+                <div className="mt-2 text-2xl font-bold">{jobs.active.length}</div>
               </div>
               <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
                 <div className="text-xs text-white/60">Failed</div>
-                <div className="mt-2 text-2xl font-bold text-rose-300">{queue.counts.failed}</div>
+                <div className="mt-2 text-2xl font-bold text-rose-300">{jobs.failed.length}</div>
               </div>
             </div>
 
             <div className="mt-4">
               <div className="flex items-center justify-between gap-2 text-xs text-white/60">
                 <span>Recent jobs</span>
-                <span>{queue.worker.name}</span>
+                {/* <span>{queue.worker.name}</span> */}
               </div>
 
               <div className="mt-3 space-y-3">
                 {loading.queue ? (
                   Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
-                ) : queue.jobs.length === 0 ? (
+                ) : jobs.active.length === 0 &&
+  jobs.completed.length === 0 &&
+  jobs.failed.length === 0 &&
+  (jobs.delayed?.length ?? 0) === 0 &&
+  jobs.waiting.length === 0 ? (
                   <div className="text-sm text-white/60 py-6">No jobs in queue.</div>
                 ) : (
-                  queue.jobs.slice(0, 6).map((j) => (
-                    <div key={j.jobId} className="flex items-start justify-between gap-3 rounded-2xl border border-white/5 bg-white/0 p-3 hover:bg-white/5">
+                  recentJobs.map((j) => (
+                    <div key={j.id} className="flex items-start justify-between gap-3 rounded-2xl border border-white/5 bg-white/0 p-3 hover:bg-white/5">
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
                           <QueueJobStateBadge state={j.state} />
-                          <div className="text-xs text-white/60">PR #{j.prNumber}</div>
+                          <div className="text-xs text-white/60">PR #{j.data.prNumber}</div>
                         </div>
                         <div className="text-xs text-white/60 mt-2">
-                          Repo ID {j.repositoryId} • {formatRelativeTime(j.updatedAt)}
+                          Repo ID {j.data?.repositoryId} • {formatRelativeTime(new Date(j.timestamp).toISOString())}
                         </div>
                         {j.state === "failed" && j.error ? (
                           <div className="text-xs text-rose-300 mt-2 line-clamp-2">{j.error}</div>

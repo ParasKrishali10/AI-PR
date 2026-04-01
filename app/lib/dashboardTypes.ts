@@ -1,5 +1,5 @@
 export type PRStatus = "pending" | "analyzing" | "completed";
-export type JobState = "waiting" | "active" | "completed" | "failed";
+export type JobState = "waiting" | "active" | "completed" | "failed"|"delayed"|"paused";
 
 export interface ConnectedRepository {
   id: number;
@@ -25,7 +25,26 @@ export interface PRDiffFile {
     content: string;
   }>;
 }
+export interface QueueJobsGrouped<T = any> {
+  waiting: QueueJob<T>[];
+  active: QueueJob<T>[];
+  completed: QueueJob<T>[];
+  failed: QueueJob<T>[];
+  delayed?: QueueJob<T>[];
+}
 
+
+export interface QueueJob<T = any> {
+  id: string;
+  name: string;
+  data: T;
+  state: JobState;
+  progress: number | object;
+  attemptsMade: number;
+  failedReason?: string;
+  returnValue?: any;
+  timestamp: number;
+}
 export interface PullRequestSummary {
   id: string; // stable identifier used by the UI
   repoId: number;
@@ -38,6 +57,7 @@ export interface PullRequestSummary {
   createdAt: string; // ISO
   prNumber: number;
 }
+
 
 export interface PullRequestDetail extends PullRequestSummary {
   branch: string;

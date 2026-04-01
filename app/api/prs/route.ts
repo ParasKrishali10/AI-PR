@@ -44,16 +44,56 @@ const formatted: PullRequestSummary[] = detail.map((pr) => ({
   prNumber: pr.prNumber,
 }));
 
-  console.log(detail)
-  console.log(formatted)
+
+  // console.log(formatted)
+const job = await prRiskQueue.getJob("cmkwvrluo0000f0vjdq9vkmzz-4");
+if (job) {
+  console.log("job send")
+  console.log(job.data);
+  console.log(job.id);
+  console.log(await job.getState());
+}
 
     const counts=await prRiskQueue.getJobCounts()
     console.log(counts)
     const analyzed=await counts.completed
     const pending=await counts.waiting
     const analyzing=counts.active
+
+    const waitingJobs=await prRiskQueue.getJobs(["waiting"],0,50)
+    const activeJobs=await prRiskQueue.getJobs(["active"],0,50)
+    const completedJobs=await prRiskQueue.getJobs(["completed"],0,50)
+    const failedJobs=await prRiskQueue.getJobs(["failed"],0,50)
+
+   const formatJobs = async (jobs: any[]) => {
+  return Promise.all(
+    jobs.map(async (job) => {
+      console.log("FULL DATA:", JSON.stringify(job.data, null, 2));
+
+      return {
+        id: job.id,
+        data: job.data,
+        name: job.name,
+        state: await job.getState(),
+        progress: job.progress,
+        attemptsMade: job.attemptsMade,
+        failedReason: job.failedReason,
+        returnvalue: job.returnvalue,
+        timestamp: job.timestamp,
+      };
+    })
+  );
+};
+    const jobsData = {
+  waiting: await formatJobs(waitingJobs),
+  active: await formatJobs(activeJobs),
+  completed: await formatJobs(completedJobs),
+  failed: await formatJobs(failedJobs),
+};
+
+
     if (!detail) return NextResponse.json({ error: "Not found" }, { status: 404 });
-    return NextResponse.json({prs:formatted,analyzed,pending,analyzing});
+    return NextResponse.json({prs:formatted,analyzed,pending,analyzing,jobs: jobsData});
   }
 
   return NextResponse.json(getMockPRs());

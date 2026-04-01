@@ -40,29 +40,30 @@ function formatCount(n: number) {
 export default function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const { queue, loading } = useDashboard();
+  const { jobs, loading } = useDashboard();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
 
   const notifications = useMemo(() => {
-    const failed = queue.jobs.filter((j) => j.state === "failed").slice(0, 3);
-    const completed = queue.jobs.filter((j) => j.state === "completed").slice(0, 3);
+  const failed = jobs.failed.slice(0, 3);
+const completed = jobs.completed.slice(0, 3);
     const items = [
       ...failed.map((j) => ({
         id: `f-${j.jobId}`,
-        title: `Worker failed job #${j.prNumber}`,
-        detail: j.error ?? "Unknown error",
-        at: j.updatedAt,
+        title: `Worker failed job #${j.data.prNumber}`,
+        detail: j.failedReason ?? "Unknown error",
+        // detail: j.attemptsMade ?? "Unknown error",
+        at: new Date(j.timestamp).toISOString(),
       })),
       ...completed.map((j) => ({
         id: `c-${j.jobId}`,
-        title: `Review completed for PR #${j.prNumber}`,
-        detail: "AI-based risk signals generated (mock).",
-        at: j.updatedAt,
+        title: `Review completed for PR #${j.data.prNumber}`,
+        detail: j.returnValue?.comment ? j.returnValue?.comment : "AI-based risk signals generated ",
+        at: new Date(j.timestamp).toISOString(),
       })),
     ];
     return items.slice(0, 5);
-  }, [queue.jobs]);
+  }, [jobs]);
 
   const notifCount = notifications.length;
 
@@ -113,15 +114,15 @@ export default function DashboardShell({ children }: { children: React.ReactNode
               <div className="mt-2 grid grid-cols-3 gap-2 text-xs">
                 <div className="rounded-xl bg-white/5 border border-white/10 px-2 py-1">
                   <div className="text-white/70">Waiting</div>
-                  <div className="font-semibold">{queue.counts.waiting}</div>
+                  <div className="font-semibold">{jobs.waiting.length}</div>
                 </div>
                 <div className="rounded-xl bg-white/5 border border-white/10 px-2 py-1">
                   <div className="text-white/70">Active</div>
-                  <div className="font-semibold">{queue.counts.active}</div>
+                  <div className="font-semibold">{jobs.active.length}</div>
                 </div>
                 <div className="rounded-xl bg-white/5 border border-white/10 px-2 py-1">
                   <div className="text-white/70">Failed</div>
-                  <div className="font-semibold text-rose-300">{queue.counts.failed}</div>
+                  <div className="font-semibold text-rose-300">{jobs.failed.length}</div>
                 </div>
               </div>
               {loading.queue ? <div className="mt-2 text-xs text-white/60">Loading…</div> : null}

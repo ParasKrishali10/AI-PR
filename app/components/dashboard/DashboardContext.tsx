@@ -4,6 +4,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import type {
   ConnectedRepository,
   PullRequestSummary,
+  QueueJobsGrouped,
   QueueSnapshot,
 } from "@/app/lib/dashboardTypes";
 import { useSession } from "next-auth/react";
@@ -18,8 +19,9 @@ type DashboardContextValue = {
   repos: ConnectedRepository[];
   stats:{analyzed:number,pending:number,analyzing:number};
   prs: PullRequestSummary[];
-  queue: QueueSnapshot;
+  // queue: QueueSnapshot;
   loading: LoadingState;
+  jobs:QueueJobsGrouped;
   refreshAll: () => Promise<void>;
   refreshRepos: () => Promise<void>;
   refreshPRs: () => Promise<void>;
@@ -49,11 +51,17 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
   const [prs, setPRs] = useState<PullRequestSummary[]>([]);
   const {data:session,status}=useSession()
   const userId=session?.user.id
-  const [queue, setQueue] = useState<QueueSnapshot>({
-    worker: { name: "mock", lastHeartbeatAt: new Date(0).toISOString() },
-    jobs: [],
-    counts: { waiting: 0, active: 0, completed: 0, failed: 0 },
-  });
+  const [jobs, setJobs] = useState<QueueJobsGrouped>({
+  waiting: [],
+  active: [],
+  completed: [],
+  failed: [],
+});
+  // const [queue, setQueue] = useState<QueueSnapshot>({
+  //   worker: { name: "mock", lastHeartbeatAt: new Date(0).toISOString() },
+  //   jobs: [],
+  //   counts: { waiting: 0, active: 0, completed: 0, failed: 0 },
+  // });
   const [loading, setLoading] = useState<LoadingState>({ repos: true, prs: true, queue: true });
   const [stats,setStats]=useState({
     analyzed:0,
@@ -77,8 +85,10 @@ setRepos(data)
     analyzed: number;
     pending: number;
     analyzing: number;
+    jobs:QueueJobsGrouped
   }>(`/api/prs?id=${userId}`);
     setPRs(data.prs);
+    setJobs(data.jobs)
     setStats({analyzed:data.analyzed,pending:data.pending,analyzing:data.analyzing})
     setLoading((s) => ({ ...s, prs: false }));
   }, [userId]);
@@ -86,7 +96,7 @@ setRepos(data)
   const refreshQueue = useCallback(async () => {
     setLoading((s) => ({ ...s, queue: true }));
     const data = await fetchJson<QueueSnapshot>("/api/queue");
-    setQueue(data);
+    // setQueue(data);
     setLoading((s) => ({ ...s, queue: false }));
   }, []);
 
@@ -122,7 +132,7 @@ setRepos(data)
       repos,
       stats,
       prs,
-      queue,
+      jobs,
       loading,
       refreshAll,
       refreshRepos,
@@ -130,7 +140,7 @@ setRepos(data)
       refreshQueue,
       simulateWebhookNewPR,
     }),
-    [loading, prs, queue, refreshAll, refreshPRs, refreshQueue, refreshRepos, repos,stats, simulateWebhookNewPR],
+    [loading, prs, refreshAll, refreshPRs, refreshQueue, refreshRepos, repos,stats, simulateWebhookNewPR],
   );
 
   return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;

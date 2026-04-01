@@ -144,6 +144,8 @@ export async function POST(req:NextRequest){
             repositoryId:repo.id,
             prNumber:pr.number
         })
+console.log("Job is added to queue for PR update")
+
 
 
 
@@ -205,14 +207,27 @@ export async function POST(req:NextRequest){
   changed_files: pr.changed_files
 })
 
+await prisma.pullRequest.upsert({
+  where: { githubPrId: pr.id },
+  update: {},
+  create: {
+    githubPrId: BigInt(pr.id),
+    prNumber: pr.number,
+    title: pr.title,
+    state: pr.state,
+    author: pr.user.login,
+    additions: pr.additions,
+    deletions: pr.deletions,
+    changedFiles: pr.changed_files,
+    repoId: dbRepo.id
+  }
+})
 
         await enqueuePRRiskJob({
             repositoryId:repo.id.toString(),
             prNumber:pr.number
         })
-
-
-
+console.log("Job is added to queue for PR update")
     }
     if(event==="pull_request" && payload.action==="synchronize"){
         const pr=payload.pull_request;
@@ -238,12 +253,29 @@ export async function POST(req:NextRequest){
   deletions: pr.deletions,
   changed_files: pr.changed_files
 })
+await prisma.pullRequest.upsert({
+  where: { githubPrId: pr.id },
+  update: {},
+  create: {
+    githubPrId: BigInt(pr.id),
+    prNumber: pr.number,
+    title: pr.title,
+    state: pr.state,
+    author: pr.user.login,
+    additions: pr.additions,
+    deletions: pr.deletions,
+    changedFiles: pr.changed_files,
+    repoId: dbRepo.id
+  }
+})
 
 
-        await enqueuePRRiskJob({
+         await enqueuePRRiskJob({
             repositoryId:repo.id.toString(),
             prNumber:pr.number
         })
+
+        console.log("Job is added to queue for PR update")
 
 
 

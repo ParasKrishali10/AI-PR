@@ -14,7 +14,10 @@ export async function enqueuePRRiskJob(data:{
 }){
     await prRiskQueue.add("analyze-pr",data,{
         jobId:`${data.repositoryId}-${data.prNumber}`,
-        removeOnComplete:true,
+        removeOnComplete:false,
         removeOnFail:false
     })
+    console.log("Job is added to queue for PR update")
+
+
 }
