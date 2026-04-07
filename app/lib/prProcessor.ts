@@ -303,9 +303,10 @@ await octokit.issues.createComment({
   body:finalComment
 })
 
-await prisma.pullRequestRisk.update({
-  where:{pullRequestId:pullRequest.id},
-  data:{commentPosted:true}
+await prisma.pullRequest.update({
+  where:{id:pullRequest.id},
+  data:{commentPosted:finalComment
+  }
 })
 
   },

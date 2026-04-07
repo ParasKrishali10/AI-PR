@@ -73,7 +73,7 @@ export default function PullRequestsPage() {
           <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
             <div className="px-5 py-4 border-b border-white/10 text-sm font-semibold flex items-center justify-between">
               <span>PRs</span>
-              <span className="text-xs text-white/60 font-medium">Mock AI review summaries</span>
+              <span className="text-xs text-white/60 font-medium"> AI review summaries</span>
             </div>
 
             <div className="overflow-auto">

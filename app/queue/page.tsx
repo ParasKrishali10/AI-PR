@@ -10,28 +10,39 @@ import { formatRelativeTime } from "@/app/lib/dashboardFormat";
 
 function Bar({ value, total, cls }: { value: number; total: number; cls: string }) {
   const pct = total === 0 ? 0 : (value / total) * 100;
+
   return (
-    <div className="flex items-center gap-2">
-      <div className="text-xs text-white/60 w-20">{value}</div>
+    <div className="flex-1 flex items-center gap-2">
+      <div className="text-xs text-white/60 w-10 text-right">{value}</div>
+
       <div className="flex-1 h-3 rounded-full bg-white/5 border border-white/10 overflow-hidden">
-        <div className={`${cls} h-full`} style={{ width: `${pct}%` }} />
+        <div
+          className={`${cls} h-full transition-all duration-500`}
+          style={{ width: `${pct}%` }}
+        />
       </div>
     </div>
   );
 }
 
 export default function QueueMonitoringPage() {
-  const { queue, loading, refreshQueue } = useDashboard();
+  const { jobs, loading, refreshQueue } = useDashboard();
 
-  useEffect(() => {
-    const id = window.setInterval(() => void refreshQueue(), 4000);
-    return () => window.clearInterval(id);
-  }, [refreshQueue]);
+  // useEffect(() => {
+  //   const id = window.setInterval(() => void refreshQueue(), 4000);
+  //   return () => window.clearInterval(id);
+  // }, [refreshQueue]);
 
   const total = useMemo(
-    () => queue.counts.waiting + queue.counts.active + queue.counts.completed + queue.counts.failed,
-    [queue.counts],
+    () => jobs.waiting.length + jobs.active.length + jobs.completed.length + jobs.failed.length,
+    [jobs],
   );
+  const allJobs = [
+  ...jobs.waiting,
+  ...jobs.active,
+  ...jobs.completed,
+  ...jobs.failed,
+];
 
   return (
     <DashboardShell>
@@ -41,8 +52,7 @@ export default function QueueMonitoringPage() {
             <div className="text-xs text-white/60 font-medium">Queue Monitoring</div>
             <h1 className="text-3xl font-bold tracking-tight mt-1">BullMQ Job States (Mock)</h1>
             <p className="text-sm text-white/65 mt-2">
-              Simulated Redis queue data that mimics `waiting` → `active` → `completed` / `failed`.
-            </p>
+Tracks job progression through Redis-backed queues from waiting to execution and final states.            </p>
           </div>
 
           <button
@@ -64,15 +74,32 @@ export default function QueueMonitoringPage() {
                   <div className="text-sm font-semibold">Job counts</div>
                   <div className="text-xs text-white/60 mt-1">Total tracked: {total}</div>
                 </div>
-                <div className="text-xs text-white/60">Worker: {queue.worker.name}</div>
+                <div className="text-xs text-white/60">Worker: {"Unknown"}</div>
               </div>
 
               <div className="mt-4 space-y-4">
-                <Bar value={queue.counts.waiting} total={total} cls="bg-amber-400/70" />
-                <Bar value={queue.counts.active} total={total} cls="bg-sky-400/70" />
-                <Bar value={queue.counts.completed} total={total} cls="bg-emerald-400/70" />
-                <Bar value={queue.counts.failed} total={total} cls="bg-rose-400/70" />
-              </div>
+
+  <div className="flex items-center gap-3">
+    <div className="w-24 text-sm text-white/70">Waiting</div>
+    <Bar value={jobs.waiting.length} total={total} cls="bg-amber-400/70" />
+  </div>
+
+  <div className="flex items-center gap-3">
+    <div className="w-24 text-sm text-white/70">Active</div>
+    <Bar value={jobs.active.length} total={total} cls="bg-sky-400/70" />
+  </div>
+
+  <div className="flex items-center gap-3">
+    <div className="w-24 text-sm text-white/70">Completed</div>
+    <Bar value={jobs.completed.length} total={total} cls="bg-emerald-400/70" />
+  </div>
+
+  <div className="flex items-center gap-3">
+    <div className="w-24 text-sm text-white/70">Failed</div>
+    <Bar value={jobs.failed.length} total={total} cls="bg-rose-400/70" />
+  </div>
+
+</div>
 
               <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4">
                 <div className="text-xs uppercase tracking-wider text-white/60 font-bold">Legend</div>
@@ -87,7 +114,8 @@ export default function QueueMonitoringPage() {
                   </div>
                 </div>
                 <div className="mt-3 text-xs text-white/55">
-                  Heartbeat: {formatRelativeTime(queue.worker.lastHeartbeatAt)}
+                  {/* Heartbeat: {formatRelativeTime(queue.worker.lastHeartbeatAt )} */}
+                  Heartbeat: {formatRelativeTime("90000")}
                 </div>
               </div>
             </div>
@@ -109,33 +137,41 @@ export default function QueueMonitoringPage() {
                     <div>Updated</div>
                   </div>
 
-                  {queue.jobs.length === 0 ? (
-                    <div className="px-5 py-14 text-center text-sm text-white/60">
-                      No jobs. Use “Simulate New PR” from the dashboard.
-                    </div>
-                  ) : (
-                    queue.jobs.map((j) => (
-                      <div
-                        key={j.jobId}
-                        className="grid grid-cols-[1.2fr_0.8fr_0.9fr_1fr] px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-colors"
-                      >
-                        <div>
-                          <div className="font-semibold text-sm">PR #{j.prNumber}</div>
-                          <div className="text-xs text-white/60 mt-1">
-                            Repo ID {j.repositoryId} • Job ID {j.jobId}
-                          </div>
-                          {j.state === "failed" && j.error ? (
-                            <div className="text-xs text-rose-200 mt-2 line-clamp-2">{j.error}</div>
-                          ) : null}
-                        </div>
-                        <div className="flex items-center">
-                          <QueueJobStateBadge state={j.state} />
-                        </div>
-                        <div className="text-xs text-white/60">{j.attemptsMade}</div>
-                        <div className="text-xs text-white/60">{formatRelativeTime(j.updatedAt)}</div>
-                      </div>
-                    ))
-                  )}
+                  {allJobs.length === 0 ? (
+  <div className="px-5 py-14 text-center text-sm text-white/60">
+    No jobs. Use “Simulate New PR” from the dashboard.
+  </div>
+) : (
+  allJobs.map((j) => (
+    <div
+      key={j.id}
+      className="grid grid-cols-[1.2fr_0.8fr_0.9fr_1fr] px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-colors"
+    >
+      <div>
+        <div className="font-semibold text-sm">PR #{j.data.prNumber}</div>
+        <div className="text-xs text-white/60 mt-1">
+          Repo ID {j.data.repositoryId} • Job ID {j.id}
+        </div>
+
+        {j.state === "failed" && j.failedReason ? (
+          <div className="text-xs text-rose-200 mt-2 line-clamp-2">
+            {j.failedReason}
+          </div>
+        ) : null}
+      </div>
+
+      <div className="flex items-center">
+        <QueueJobStateBadge state={j.state} />
+      </div>
+
+      <div className="text-xs text-white/60">{j.attemptsMade}</div>
+
+      <div className="text-xs text-white/60">
+        {formatRelativeTime(new Date(j.timestamp).toISOString())}
+      </div>
+    </div>
+  ))
+)}
                 </div>
               </div>
             </div>

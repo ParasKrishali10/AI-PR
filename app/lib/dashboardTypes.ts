@@ -58,8 +58,25 @@ export interface PullRequestSummary {
   prNumber: number;
 }
 
+export interface PullRequestListResponse{
+ id:string
+ githubPrId:string
+ prNumber:number
+ title:string
+ state:string
+ author:string
+ additions:number
+ deletions:number
+ changedFiles:number
+ repoId:string
+ commentPosted:string
+ createdAt:string
+ repoName:string
+ affectedFiles:string []
+}
 
 export interface PullRequestDetail extends PullRequestSummary {
+
   branch: string;
   diffFiles: PRDiffFile[];
   comments: PRReviewComment[];

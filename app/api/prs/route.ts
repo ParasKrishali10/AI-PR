@@ -29,6 +29,9 @@ export async function GET(req: NextRequest) {
         state:"merged"
       },include:{
         repository:true,
+        risk:true
+      },orderBy:{
+        createdAt:"desc"
       }
     })
 const formatted: PullRequestSummary[] = detail.map((pr) => ({
@@ -43,9 +46,6 @@ const formatted: PullRequestSummary[] = detail.map((pr) => ({
   createdAt: pr.createdAt.toISOString(),
   prNumber: pr.prNumber,
 }));
-
-
-  // console.log(formatted)
 const job = await prRiskQueue.getJob("cmkwvrluo0000f0vjdq9vkmzz-4");
 if (job) {
   console.log("job send")

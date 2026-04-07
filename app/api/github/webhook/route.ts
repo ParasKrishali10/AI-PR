@@ -277,8 +277,6 @@ await prisma.pullRequest.upsert({
 
         console.log("Job is added to queue for PR update")
 
-
-
     }
 
     return NextResponse.json({ok:true})

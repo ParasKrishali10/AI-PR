@@ -34,6 +34,11 @@ export type PullRequest = $Result.DefaultSelection<Prisma.$PullRequestPayload>
  */
 export type PullRequestRisk = $Result.DefaultSelection<Prisma.$PullRequestRiskPayload>
 /**
+ * Model Settings
+ * 
+ */
+export type Settings = $Result.DefaultSelection<Prisma.$SettingsPayload>
+/**
  * Model WebhookEvent
  * 
  */
@@ -195,6 +200,16 @@ export class PrismaClient<
     * ```
     */
   get pullRequestRisk(): Prisma.PullRequestRiskDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.settings`: Exposes CRUD operations for the **Settings** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Settings
+    * const settings = await prisma.settings.findMany()
+    * ```
+    */
+  get settings(): Prisma.SettingsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.webhookEvent`: Exposes CRUD operations for the **WebhookEvent** model.
@@ -643,6 +658,7 @@ export namespace Prisma {
     Repository: 'Repository',
     PullRequest: 'PullRequest',
     PullRequestRisk: 'PullRequestRisk',
+    Settings: 'Settings',
     WebhookEvent: 'WebhookEvent'
   };
 
@@ -659,7 +675,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "repository" | "pullRequest" | "pullRequestRisk" | "webhookEvent"
+      modelProps: "user" | "repository" | "pullRequest" | "pullRequestRisk" | "settings" | "webhookEvent"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -959,6 +975,80 @@ export namespace Prisma {
           }
         }
       }
+      Settings: {
+        payload: Prisma.$SettingsPayload<ExtArgs>
+        fields: Prisma.SettingsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SettingsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SettingsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>
+          }
+          findFirst: {
+            args: Prisma.SettingsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SettingsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>
+          }
+          findMany: {
+            args: Prisma.SettingsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>[]
+          }
+          create: {
+            args: Prisma.SettingsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>
+          }
+          createMany: {
+            args: Prisma.SettingsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SettingsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>[]
+          }
+          delete: {
+            args: Prisma.SettingsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>
+          }
+          update: {
+            args: Prisma.SettingsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>
+          }
+          deleteMany: {
+            args: Prisma.SettingsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SettingsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SettingsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>[]
+          }
+          upsert: {
+            args: Prisma.SettingsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SettingsPayload>
+          }
+          aggregate: {
+            args: Prisma.SettingsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSettings>
+          }
+          groupBy: {
+            args: Prisma.SettingsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SettingsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SettingsCountArgs<ExtArgs>
+            result: $Utils.Optional<SettingsCountAggregateOutputType> | number
+          }
+        }
+      }
       WebhookEvent: {
         payload: Prisma.$WebhookEventPayload<ExtArgs>
         fields: Prisma.WebhookEventFieldRefs
@@ -1145,6 +1235,7 @@ export namespace Prisma {
     repository?: RepositoryOmit
     pullRequest?: PullRequestOmit
     pullRequestRisk?: PullRequestRiskOmit
+    settings?: SettingsOmit
     webhookEvent?: WebhookEventOmit
   }
 
@@ -1227,10 +1318,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     repos: number
+    settings: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     repos?: boolean | UserCountOutputTypeCountReposArgs
+    settings?: boolean | UserCountOutputTypeCountSettingsArgs
   }
 
   // Custom InputTypes
@@ -1249,6 +1342,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RepositoryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSettingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SettingsWhereInput
   }
 
 
@@ -1467,6 +1567,7 @@ export namespace Prisma {
     githubId?: boolean
     name?: boolean
     repos?: boolean | User$reposArgs<ExtArgs>
+    settings?: boolean | User$settingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1491,6 +1592,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "githubId" | "name", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     repos?: boolean | User$reposArgs<ExtArgs>
+    settings?: boolean | User$settingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1500,6 +1602,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       repos: Prisma.$RepositoryPayload<ExtArgs>[]
+      settings: Prisma.$SettingsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1900,6 +2003,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     repos<T extends User$reposArgs<ExtArgs> = {}>(args?: Subset<T, User$reposArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepositoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    settings<T extends User$settingsArgs<ExtArgs> = {}>(args?: Subset<T, User$settingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2341,6 +2445,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RepositoryScalarFieldEnum | RepositoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.settings
+   */
+  export type User$settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    where?: SettingsWhereInput
+    orderBy?: SettingsOrderByWithRelationInput | SettingsOrderByWithRelationInput[]
+    cursor?: SettingsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SettingsScalarFieldEnum | SettingsScalarFieldEnum[]
   }
 
   /**
@@ -3553,6 +3681,7 @@ export namespace Prisma {
     deletions: number | null
     changedFiles: number | null
     repoId: string | null
+    commentPosted: string | null
     createdAt: Date | null
   }
 
@@ -3567,6 +3696,7 @@ export namespace Prisma {
     deletions: number | null
     changedFiles: number | null
     repoId: string | null
+    commentPosted: string | null
     createdAt: Date | null
   }
 
@@ -3581,6 +3711,7 @@ export namespace Prisma {
     deletions: number
     changedFiles: number
     repoId: number
+    commentPosted: number
     createdAt: number
     _all: number
   }
@@ -3613,6 +3744,7 @@ export namespace Prisma {
     deletions?: true
     changedFiles?: true
     repoId?: true
+    commentPosted?: true
     createdAt?: true
   }
 
@@ -3627,6 +3759,7 @@ export namespace Prisma {
     deletions?: true
     changedFiles?: true
     repoId?: true
+    commentPosted?: true
     createdAt?: true
   }
 
@@ -3641,6 +3774,7 @@ export namespace Prisma {
     deletions?: true
     changedFiles?: true
     repoId?: true
+    commentPosted?: true
     createdAt?: true
     _all?: true
   }
@@ -3742,6 +3876,7 @@ export namespace Prisma {
     deletions: number
     changedFiles: number
     repoId: string
+    commentPosted: string
     createdAt: Date
     _count: PullRequestCountAggregateOutputType | null
     _avg: PullRequestAvgAggregateOutputType | null
@@ -3775,6 +3910,7 @@ export namespace Prisma {
     deletions?: boolean
     changedFiles?: boolean
     repoId?: boolean
+    commentPosted?: boolean
     createdAt?: boolean
     repository?: boolean | RepositoryDefaultArgs<ExtArgs>
     risk?: boolean | PullRequest$riskArgs<ExtArgs>
@@ -3792,6 +3928,7 @@ export namespace Prisma {
     deletions?: boolean
     changedFiles?: boolean
     repoId?: boolean
+    commentPosted?: boolean
     createdAt?: boolean
     repository?: boolean | RepositoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pullRequest"]>
@@ -3807,6 +3944,7 @@ export namespace Prisma {
     deletions?: boolean
     changedFiles?: boolean
     repoId?: boolean
+    commentPosted?: boolean
     createdAt?: boolean
     repository?: boolean | RepositoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pullRequest"]>
@@ -3822,10 +3960,11 @@ export namespace Prisma {
     deletions?: boolean
     changedFiles?: boolean
     repoId?: boolean
+    commentPosted?: boolean
     createdAt?: boolean
   }
 
-  export type PullRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "githubPrId" | "prNumber" | "title" | "state" | "author" | "additions" | "deletions" | "changedFiles" | "repoId" | "createdAt", ExtArgs["result"]["pullRequest"]>
+  export type PullRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "githubPrId" | "prNumber" | "title" | "state" | "author" | "additions" | "deletions" | "changedFiles" | "repoId" | "commentPosted" | "createdAt", ExtArgs["result"]["pullRequest"]>
   export type PullRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     repository?: boolean | RepositoryDefaultArgs<ExtArgs>
     risk?: boolean | PullRequest$riskArgs<ExtArgs>
@@ -3855,6 +3994,7 @@ export namespace Prisma {
       deletions: number
       changedFiles: number
       repoId: string
+      commentPosted: string
       createdAt: Date
     }, ExtArgs["result"]["pullRequest"]>
     composites: {}
@@ -4291,6 +4431,7 @@ export namespace Prisma {
     readonly deletions: FieldRef<"PullRequest", 'Int'>
     readonly changedFiles: FieldRef<"PullRequest", 'Int'>
     readonly repoId: FieldRef<"PullRequest", 'String'>
+    readonly commentPosted: FieldRef<"PullRequest", 'String'>
     readonly createdAt: FieldRef<"PullRequest", 'DateTime'>
   }
     
@@ -4747,6 +4888,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean | null
     hasAuthRisk: boolean | null
     hasMalciousRisk: boolean | null
+    comment: string | null
     createdAt: Date | null
   }
 
@@ -4757,6 +4899,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean | null
     hasAuthRisk: boolean | null
     hasMalciousRisk: boolean | null
+    comment: string | null
     createdAt: Date | null
   }
 
@@ -4767,6 +4910,7 @@ export namespace Prisma {
     hasDependencyRisk: number
     hasAuthRisk: number
     hasMalciousRisk: number
+    comment: number
     malciousReasons: number
     affectedFiles: number
     createdAt: number
@@ -4781,6 +4925,7 @@ export namespace Prisma {
     hasDependencyRisk?: true
     hasAuthRisk?: true
     hasMalciousRisk?: true
+    comment?: true
     createdAt?: true
   }
 
@@ -4791,6 +4936,7 @@ export namespace Prisma {
     hasDependencyRisk?: true
     hasAuthRisk?: true
     hasMalciousRisk?: true
+    comment?: true
     createdAt?: true
   }
 
@@ -4801,6 +4947,7 @@ export namespace Prisma {
     hasDependencyRisk?: true
     hasAuthRisk?: true
     hasMalciousRisk?: true
+    comment?: true
     malciousReasons?: true
     affectedFiles?: true
     createdAt?: true
@@ -4886,6 +5033,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean
     hasAuthRisk: boolean
     hasMalciousRisk: boolean
+    comment: string
     malciousReasons: string[]
     affectedFiles: string[]
     createdAt: Date
@@ -4915,6 +5063,7 @@ export namespace Prisma {
     hasDependencyRisk?: boolean
     hasAuthRisk?: boolean
     hasMalciousRisk?: boolean
+    comment?: boolean
     malciousReasons?: boolean
     affectedFiles?: boolean
     createdAt?: boolean
@@ -4928,6 +5077,7 @@ export namespace Prisma {
     hasDependencyRisk?: boolean
     hasAuthRisk?: boolean
     hasMalciousRisk?: boolean
+    comment?: boolean
     malciousReasons?: boolean
     affectedFiles?: boolean
     createdAt?: boolean
@@ -4941,6 +5091,7 @@ export namespace Prisma {
     hasDependencyRisk?: boolean
     hasAuthRisk?: boolean
     hasMalciousRisk?: boolean
+    comment?: boolean
     malciousReasons?: boolean
     affectedFiles?: boolean
     createdAt?: boolean
@@ -4954,12 +5105,13 @@ export namespace Prisma {
     hasDependencyRisk?: boolean
     hasAuthRisk?: boolean
     hasMalciousRisk?: boolean
+    comment?: boolean
     malciousReasons?: boolean
     affectedFiles?: boolean
     createdAt?: boolean
   }
 
-  export type PullRequestRiskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pullRequestId" | "commentPosted" | "hasDependencyRisk" | "hasAuthRisk" | "hasMalciousRisk" | "malciousReasons" | "affectedFiles" | "createdAt", ExtArgs["result"]["pullRequestRisk"]>
+  export type PullRequestRiskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pullRequestId" | "commentPosted" | "hasDependencyRisk" | "hasAuthRisk" | "hasMalciousRisk" | "comment" | "malciousReasons" | "affectedFiles" | "createdAt", ExtArgs["result"]["pullRequestRisk"]>
   export type PullRequestRiskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pullRequest?: boolean | PullRequestDefaultArgs<ExtArgs>
   }
@@ -4982,6 +5134,7 @@ export namespace Prisma {
       hasDependencyRisk: boolean
       hasAuthRisk: boolean
       hasMalciousRisk: boolean
+      comment: string
       malciousReasons: string[]
       affectedFiles: string[]
       createdAt: Date
@@ -5415,6 +5568,7 @@ export namespace Prisma {
     readonly hasDependencyRisk: FieldRef<"PullRequestRisk", 'Boolean'>
     readonly hasAuthRisk: FieldRef<"PullRequestRisk", 'Boolean'>
     readonly hasMalciousRisk: FieldRef<"PullRequestRisk", 'Boolean'>
+    readonly comment: FieldRef<"PullRequestRisk", 'String'>
     readonly malciousReasons: FieldRef<"PullRequestRisk", 'String[]'>
     readonly affectedFiles: FieldRef<"PullRequestRisk", 'String[]'>
     readonly createdAt: FieldRef<"PullRequestRisk", 'DateTime'>
@@ -5829,6 +5983,1186 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PullRequestRiskInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Settings
+   */
+
+  export type AggregateSettings = {
+    _count: SettingsCountAggregateOutputType | null
+    _min: SettingsMinAggregateOutputType | null
+    _max: SettingsMaxAggregateOutputType | null
+  }
+
+  export type SettingsMinAggregateOutputType = {
+    id: string | null
+    enableDependencyRisk: boolean | null
+    enableAuthRisk: boolean | null
+    enableMalciousRisk: boolean | null
+    riskLevel: string | null
+    enableEval: boolean | null
+    enableExec: boolean | null
+    enableChildProcess: boolean | null
+    enableExternalFetch: boolean | null
+    userId: string | null
+    commentStyle: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SettingsMaxAggregateOutputType = {
+    id: string | null
+    enableDependencyRisk: boolean | null
+    enableAuthRisk: boolean | null
+    enableMalciousRisk: boolean | null
+    riskLevel: string | null
+    enableEval: boolean | null
+    enableExec: boolean | null
+    enableChildProcess: boolean | null
+    enableExternalFetch: boolean | null
+    userId: string | null
+    commentStyle: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SettingsCountAggregateOutputType = {
+    id: number
+    enableDependencyRisk: number
+    enableAuthRisk: number
+    enableMalciousRisk: number
+    riskLevel: number
+    ignoredPaths: number
+    allowedExtensions: number
+    enableEval: number
+    enableExec: number
+    enableChildProcess: number
+    enableExternalFetch: number
+    userId: number
+    commentStyle: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SettingsMinAggregateInputType = {
+    id?: true
+    enableDependencyRisk?: true
+    enableAuthRisk?: true
+    enableMalciousRisk?: true
+    riskLevel?: true
+    enableEval?: true
+    enableExec?: true
+    enableChildProcess?: true
+    enableExternalFetch?: true
+    userId?: true
+    commentStyle?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SettingsMaxAggregateInputType = {
+    id?: true
+    enableDependencyRisk?: true
+    enableAuthRisk?: true
+    enableMalciousRisk?: true
+    riskLevel?: true
+    enableEval?: true
+    enableExec?: true
+    enableChildProcess?: true
+    enableExternalFetch?: true
+    userId?: true
+    commentStyle?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SettingsCountAggregateInputType = {
+    id?: true
+    enableDependencyRisk?: true
+    enableAuthRisk?: true
+    enableMalciousRisk?: true
+    riskLevel?: true
+    ignoredPaths?: true
+    allowedExtensions?: true
+    enableEval?: true
+    enableExec?: true
+    enableChildProcess?: true
+    enableExternalFetch?: true
+    userId?: true
+    commentStyle?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SettingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Settings to aggregate.
+     */
+    where?: SettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Settings to fetch.
+     */
+    orderBy?: SettingsOrderByWithRelationInput | SettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Settings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Settings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Settings
+    **/
+    _count?: true | SettingsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SettingsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SettingsMaxAggregateInputType
+  }
+
+  export type GetSettingsAggregateType<T extends SettingsAggregateArgs> = {
+        [P in keyof T & keyof AggregateSettings]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSettings[P]>
+      : GetScalarType<T[P], AggregateSettings[P]>
+  }
+
+
+
+
+  export type SettingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SettingsWhereInput
+    orderBy?: SettingsOrderByWithAggregationInput | SettingsOrderByWithAggregationInput[]
+    by: SettingsScalarFieldEnum[] | SettingsScalarFieldEnum
+    having?: SettingsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SettingsCountAggregateInputType | true
+    _min?: SettingsMinAggregateInputType
+    _max?: SettingsMaxAggregateInputType
+  }
+
+  export type SettingsGroupByOutputType = {
+    id: string
+    enableDependencyRisk: boolean
+    enableAuthRisk: boolean
+    enableMalciousRisk: boolean
+    riskLevel: string
+    ignoredPaths: string[]
+    allowedExtensions: string[]
+    enableEval: boolean
+    enableExec: boolean
+    enableChildProcess: boolean
+    enableExternalFetch: boolean
+    userId: string
+    commentStyle: string
+    createdAt: Date
+    updatedAt: Date
+    _count: SettingsCountAggregateOutputType | null
+    _min: SettingsMinAggregateOutputType | null
+    _max: SettingsMaxAggregateOutputType | null
+  }
+
+  type GetSettingsGroupByPayload<T extends SettingsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SettingsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SettingsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SettingsGroupByOutputType[P]>
+            : GetScalarType<T[P], SettingsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SettingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: boolean
+    ignoredPaths?: boolean
+    allowedExtensions?: boolean
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    userId?: boolean
+    commentStyle?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["settings"]>
+
+  export type SettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: boolean
+    ignoredPaths?: boolean
+    allowedExtensions?: boolean
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    userId?: boolean
+    commentStyle?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["settings"]>
+
+  export type SettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: boolean
+    ignoredPaths?: boolean
+    allowedExtensions?: boolean
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    userId?: boolean
+    commentStyle?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["settings"]>
+
+  export type SettingsSelectScalar = {
+    id?: boolean
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: boolean
+    ignoredPaths?: boolean
+    allowedExtensions?: boolean
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    userId?: boolean
+    commentStyle?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "enableDependencyRisk" | "enableAuthRisk" | "enableMalciousRisk" | "riskLevel" | "ignoredPaths" | "allowedExtensions" | "enableEval" | "enableExec" | "enableChildProcess" | "enableExternalFetch" | "userId" | "commentStyle" | "createdAt" | "updatedAt", ExtArgs["result"]["settings"]>
+  export type SettingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SettingsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SettingsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Settings"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      enableDependencyRisk: boolean
+      enableAuthRisk: boolean
+      enableMalciousRisk: boolean
+      riskLevel: string
+      ignoredPaths: string[]
+      allowedExtensions: string[]
+      enableEval: boolean
+      enableExec: boolean
+      enableChildProcess: boolean
+      enableExternalFetch: boolean
+      userId: string
+      commentStyle: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["settings"]>
+    composites: {}
+  }
+
+  type SettingsGetPayload<S extends boolean | null | undefined | SettingsDefaultArgs> = $Result.GetResult<Prisma.$SettingsPayload, S>
+
+  type SettingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SettingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SettingsCountAggregateInputType | true
+    }
+
+  export interface SettingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Settings'], meta: { name: 'Settings' } }
+    /**
+     * Find zero or one Settings that matches the filter.
+     * @param {SettingsFindUniqueArgs} args - Arguments to find a Settings
+     * @example
+     * // Get one Settings
+     * const settings = await prisma.settings.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SettingsFindUniqueArgs>(args: SelectSubset<T, SettingsFindUniqueArgs<ExtArgs>>): Prisma__SettingsClient<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Settings that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SettingsFindUniqueOrThrowArgs} args - Arguments to find a Settings
+     * @example
+     * // Get one Settings
+     * const settings = await prisma.settings.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SettingsFindUniqueOrThrowArgs>(args: SelectSubset<T, SettingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SettingsClient<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Settings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingsFindFirstArgs} args - Arguments to find a Settings
+     * @example
+     * // Get one Settings
+     * const settings = await prisma.settings.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SettingsFindFirstArgs>(args?: SelectSubset<T, SettingsFindFirstArgs<ExtArgs>>): Prisma__SettingsClient<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Settings that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingsFindFirstOrThrowArgs} args - Arguments to find a Settings
+     * @example
+     * // Get one Settings
+     * const settings = await prisma.settings.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SettingsFindFirstOrThrowArgs>(args?: SelectSubset<T, SettingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__SettingsClient<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Settings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Settings
+     * const settings = await prisma.settings.findMany()
+     * 
+     * // Get first 10 Settings
+     * const settings = await prisma.settings.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const settingsWithIdOnly = await prisma.settings.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SettingsFindManyArgs>(args?: SelectSubset<T, SettingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Settings.
+     * @param {SettingsCreateArgs} args - Arguments to create a Settings.
+     * @example
+     * // Create one Settings
+     * const Settings = await prisma.settings.create({
+     *   data: {
+     *     // ... data to create a Settings
+     *   }
+     * })
+     * 
+     */
+    create<T extends SettingsCreateArgs>(args: SelectSubset<T, SettingsCreateArgs<ExtArgs>>): Prisma__SettingsClient<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Settings.
+     * @param {SettingsCreateManyArgs} args - Arguments to create many Settings.
+     * @example
+     * // Create many Settings
+     * const settings = await prisma.settings.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SettingsCreateManyArgs>(args?: SelectSubset<T, SettingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Settings and returns the data saved in the database.
+     * @param {SettingsCreateManyAndReturnArgs} args - Arguments to create many Settings.
+     * @example
+     * // Create many Settings
+     * const settings = await prisma.settings.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Settings and only return the `id`
+     * const settingsWithIdOnly = await prisma.settings.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SettingsCreateManyAndReturnArgs>(args?: SelectSubset<T, SettingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Settings.
+     * @param {SettingsDeleteArgs} args - Arguments to delete one Settings.
+     * @example
+     * // Delete one Settings
+     * const Settings = await prisma.settings.delete({
+     *   where: {
+     *     // ... filter to delete one Settings
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SettingsDeleteArgs>(args: SelectSubset<T, SettingsDeleteArgs<ExtArgs>>): Prisma__SettingsClient<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Settings.
+     * @param {SettingsUpdateArgs} args - Arguments to update one Settings.
+     * @example
+     * // Update one Settings
+     * const settings = await prisma.settings.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SettingsUpdateArgs>(args: SelectSubset<T, SettingsUpdateArgs<ExtArgs>>): Prisma__SettingsClient<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Settings.
+     * @param {SettingsDeleteManyArgs} args - Arguments to filter Settings to delete.
+     * @example
+     * // Delete a few Settings
+     * const { count } = await prisma.settings.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SettingsDeleteManyArgs>(args?: SelectSubset<T, SettingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Settings
+     * const settings = await prisma.settings.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SettingsUpdateManyArgs>(args: SelectSubset<T, SettingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Settings and returns the data updated in the database.
+     * @param {SettingsUpdateManyAndReturnArgs} args - Arguments to update many Settings.
+     * @example
+     * // Update many Settings
+     * const settings = await prisma.settings.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Settings and only return the `id`
+     * const settingsWithIdOnly = await prisma.settings.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SettingsUpdateManyAndReturnArgs>(args: SelectSubset<T, SettingsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Settings.
+     * @param {SettingsUpsertArgs} args - Arguments to update or create a Settings.
+     * @example
+     * // Update or create a Settings
+     * const settings = await prisma.settings.upsert({
+     *   create: {
+     *     // ... data to create a Settings
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Settings we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SettingsUpsertArgs>(args: SelectSubset<T, SettingsUpsertArgs<ExtArgs>>): Prisma__SettingsClient<$Result.GetResult<Prisma.$SettingsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingsCountArgs} args - Arguments to filter Settings to count.
+     * @example
+     * // Count the number of Settings
+     * const count = await prisma.settings.count({
+     *   where: {
+     *     // ... the filter for the Settings we want to count
+     *   }
+     * })
+    **/
+    count<T extends SettingsCountArgs>(
+      args?: Subset<T, SettingsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SettingsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SettingsAggregateArgs>(args: Subset<T, SettingsAggregateArgs>): Prisma.PrismaPromise<GetSettingsAggregateType<T>>
+
+    /**
+     * Group by Settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SettingsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SettingsGroupByArgs['orderBy'] }
+        : { orderBy?: SettingsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SettingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSettingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Settings model
+   */
+  readonly fields: SettingsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Settings.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SettingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Settings model
+   */
+  interface SettingsFieldRefs {
+    readonly id: FieldRef<"Settings", 'String'>
+    readonly enableDependencyRisk: FieldRef<"Settings", 'Boolean'>
+    readonly enableAuthRisk: FieldRef<"Settings", 'Boolean'>
+    readonly enableMalciousRisk: FieldRef<"Settings", 'Boolean'>
+    readonly riskLevel: FieldRef<"Settings", 'String'>
+    readonly ignoredPaths: FieldRef<"Settings", 'String[]'>
+    readonly allowedExtensions: FieldRef<"Settings", 'String[]'>
+    readonly enableEval: FieldRef<"Settings", 'Boolean'>
+    readonly enableExec: FieldRef<"Settings", 'Boolean'>
+    readonly enableChildProcess: FieldRef<"Settings", 'Boolean'>
+    readonly enableExternalFetch: FieldRef<"Settings", 'Boolean'>
+    readonly userId: FieldRef<"Settings", 'String'>
+    readonly commentStyle: FieldRef<"Settings", 'String'>
+    readonly createdAt: FieldRef<"Settings", 'DateTime'>
+    readonly updatedAt: FieldRef<"Settings", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Settings findUnique
+   */
+  export type SettingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * Filter, which Settings to fetch.
+     */
+    where: SettingsWhereUniqueInput
+  }
+
+  /**
+   * Settings findUniqueOrThrow
+   */
+  export type SettingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * Filter, which Settings to fetch.
+     */
+    where: SettingsWhereUniqueInput
+  }
+
+  /**
+   * Settings findFirst
+   */
+  export type SettingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * Filter, which Settings to fetch.
+     */
+    where?: SettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Settings to fetch.
+     */
+    orderBy?: SettingsOrderByWithRelationInput | SettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Settings.
+     */
+    cursor?: SettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Settings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Settings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Settings.
+     */
+    distinct?: SettingsScalarFieldEnum | SettingsScalarFieldEnum[]
+  }
+
+  /**
+   * Settings findFirstOrThrow
+   */
+  export type SettingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * Filter, which Settings to fetch.
+     */
+    where?: SettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Settings to fetch.
+     */
+    orderBy?: SettingsOrderByWithRelationInput | SettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Settings.
+     */
+    cursor?: SettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Settings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Settings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Settings.
+     */
+    distinct?: SettingsScalarFieldEnum | SettingsScalarFieldEnum[]
+  }
+
+  /**
+   * Settings findMany
+   */
+  export type SettingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * Filter, which Settings to fetch.
+     */
+    where?: SettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Settings to fetch.
+     */
+    orderBy?: SettingsOrderByWithRelationInput | SettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Settings.
+     */
+    cursor?: SettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Settings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Settings.
+     */
+    skip?: number
+    distinct?: SettingsScalarFieldEnum | SettingsScalarFieldEnum[]
+  }
+
+  /**
+   * Settings create
+   */
+  export type SettingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Settings.
+     */
+    data: XOR<SettingsCreateInput, SettingsUncheckedCreateInput>
+  }
+
+  /**
+   * Settings createMany
+   */
+  export type SettingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Settings.
+     */
+    data: SettingsCreateManyInput | SettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Settings createManyAndReturn
+   */
+  export type SettingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * The data used to create many Settings.
+     */
+    data: SettingsCreateManyInput | SettingsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Settings update
+   */
+  export type SettingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Settings.
+     */
+    data: XOR<SettingsUpdateInput, SettingsUncheckedUpdateInput>
+    /**
+     * Choose, which Settings to update.
+     */
+    where: SettingsWhereUniqueInput
+  }
+
+  /**
+   * Settings updateMany
+   */
+  export type SettingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Settings.
+     */
+    data: XOR<SettingsUpdateManyMutationInput, SettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which Settings to update
+     */
+    where?: SettingsWhereInput
+    /**
+     * Limit how many Settings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Settings updateManyAndReturn
+   */
+  export type SettingsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * The data used to update Settings.
+     */
+    data: XOR<SettingsUpdateManyMutationInput, SettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which Settings to update
+     */
+    where?: SettingsWhereInput
+    /**
+     * Limit how many Settings to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Settings upsert
+   */
+  export type SettingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Settings to update in case it exists.
+     */
+    where: SettingsWhereUniqueInput
+    /**
+     * In case the Settings found by the `where` argument doesn't exist, create a new Settings with this data.
+     */
+    create: XOR<SettingsCreateInput, SettingsUncheckedCreateInput>
+    /**
+     * In case the Settings was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SettingsUpdateInput, SettingsUncheckedUpdateInput>
+  }
+
+  /**
+   * Settings delete
+   */
+  export type SettingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
+    /**
+     * Filter which Settings to delete.
+     */
+    where: SettingsWhereUniqueInput
+  }
+
+  /**
+   * Settings deleteMany
+   */
+  export type SettingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Settings to delete
+     */
+    where?: SettingsWhereInput
+    /**
+     * Limit how many Settings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Settings without action
+   */
+  export type SettingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Settings
+     */
+    select?: SettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Settings
+     */
+    omit?: SettingsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SettingsInclude<ExtArgs> | null
   }
 
 
@@ -6882,6 +8216,7 @@ export namespace Prisma {
     deletions: 'deletions',
     changedFiles: 'changedFiles',
     repoId: 'repoId',
+    commentPosted: 'commentPosted',
     createdAt: 'createdAt'
   };
 
@@ -6895,12 +8230,34 @@ export namespace Prisma {
     hasDependencyRisk: 'hasDependencyRisk',
     hasAuthRisk: 'hasAuthRisk',
     hasMalciousRisk: 'hasMalciousRisk',
+    comment: 'comment',
     malciousReasons: 'malciousReasons',
     affectedFiles: 'affectedFiles',
     createdAt: 'createdAt'
   };
 
   export type PullRequestRiskScalarFieldEnum = (typeof PullRequestRiskScalarFieldEnum)[keyof typeof PullRequestRiskScalarFieldEnum]
+
+
+  export const SettingsScalarFieldEnum: {
+    id: 'id',
+    enableDependencyRisk: 'enableDependencyRisk',
+    enableAuthRisk: 'enableAuthRisk',
+    enableMalciousRisk: 'enableMalciousRisk',
+    riskLevel: 'riskLevel',
+    ignoredPaths: 'ignoredPaths',
+    allowedExtensions: 'allowedExtensions',
+    enableEval: 'enableEval',
+    enableExec: 'enableExec',
+    enableChildProcess: 'enableChildProcess',
+    enableExternalFetch: 'enableExternalFetch',
+    userId: 'userId',
+    commentStyle: 'commentStyle',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum]
 
 
   export const WebhookEventScalarFieldEnum: {
@@ -7029,6 +8386,7 @@ export namespace Prisma {
     githubId?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
     repos?: RepositoryListRelationFilter
+    settings?: SettingsListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7036,6 +8394,7 @@ export namespace Prisma {
     githubId?: SortOrder
     name?: SortOrderInput | SortOrder
     repos?: RepositoryOrderByRelationAggregateInput
+    settings?: SettingsOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7046,6 +8405,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
     repos?: RepositoryListRelationFilter
+    settings?: SettingsListRelationFilter
   }, "id" | "githubId">
 
   export type UserOrderByWithAggregationInput = {
@@ -7150,6 +8510,7 @@ export namespace Prisma {
     deletions?: IntFilter<"PullRequest"> | number
     changedFiles?: IntFilter<"PullRequest"> | number
     repoId?: StringFilter<"PullRequest"> | string
+    commentPosted?: StringFilter<"PullRequest"> | string
     createdAt?: DateTimeFilter<"PullRequest"> | Date | string
     repository?: XOR<RepositoryScalarRelationFilter, RepositoryWhereInput>
     risk?: PullRequestRiskListRelationFilter
@@ -7166,6 +8527,7 @@ export namespace Prisma {
     deletions?: SortOrder
     changedFiles?: SortOrder
     repoId?: SortOrder
+    commentPosted?: SortOrder
     createdAt?: SortOrder
     repository?: RepositoryOrderByWithRelationInput
     risk?: PullRequestRiskOrderByRelationAggregateInput
@@ -7185,6 +8547,7 @@ export namespace Prisma {
     deletions?: IntFilter<"PullRequest"> | number
     changedFiles?: IntFilter<"PullRequest"> | number
     repoId?: StringFilter<"PullRequest"> | string
+    commentPosted?: StringFilter<"PullRequest"> | string
     createdAt?: DateTimeFilter<"PullRequest"> | Date | string
     repository?: XOR<RepositoryScalarRelationFilter, RepositoryWhereInput>
     risk?: PullRequestRiskListRelationFilter
@@ -7201,6 +8564,7 @@ export namespace Prisma {
     deletions?: SortOrder
     changedFiles?: SortOrder
     repoId?: SortOrder
+    commentPosted?: SortOrder
     createdAt?: SortOrder
     _count?: PullRequestCountOrderByAggregateInput
     _avg?: PullRequestAvgOrderByAggregateInput
@@ -7223,6 +8587,7 @@ export namespace Prisma {
     deletions?: IntWithAggregatesFilter<"PullRequest"> | number
     changedFiles?: IntWithAggregatesFilter<"PullRequest"> | number
     repoId?: StringWithAggregatesFilter<"PullRequest"> | string
+    commentPosted?: StringWithAggregatesFilter<"PullRequest"> | string
     createdAt?: DateTimeWithAggregatesFilter<"PullRequest"> | Date | string
   }
 
@@ -7236,6 +8601,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFilter<"PullRequestRisk"> | boolean
     hasAuthRisk?: BoolFilter<"PullRequestRisk"> | boolean
     hasMalciousRisk?: BoolFilter<"PullRequestRisk"> | boolean
+    comment?: StringFilter<"PullRequestRisk"> | string
     malciousReasons?: StringNullableListFilter<"PullRequestRisk">
     affectedFiles?: StringNullableListFilter<"PullRequestRisk">
     createdAt?: DateTimeFilter<"PullRequestRisk"> | Date | string
@@ -7249,6 +8615,7 @@ export namespace Prisma {
     hasDependencyRisk?: SortOrder
     hasAuthRisk?: SortOrder
     hasMalciousRisk?: SortOrder
+    comment?: SortOrder
     malciousReasons?: SortOrder
     affectedFiles?: SortOrder
     createdAt?: SortOrder
@@ -7265,6 +8632,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFilter<"PullRequestRisk"> | boolean
     hasAuthRisk?: BoolFilter<"PullRequestRisk"> | boolean
     hasMalciousRisk?: BoolFilter<"PullRequestRisk"> | boolean
+    comment?: StringFilter<"PullRequestRisk"> | string
     malciousReasons?: StringNullableListFilter<"PullRequestRisk">
     affectedFiles?: StringNullableListFilter<"PullRequestRisk">
     createdAt?: DateTimeFilter<"PullRequestRisk"> | Date | string
@@ -7278,6 +8646,7 @@ export namespace Prisma {
     hasDependencyRisk?: SortOrder
     hasAuthRisk?: SortOrder
     hasMalciousRisk?: SortOrder
+    comment?: SortOrder
     malciousReasons?: SortOrder
     affectedFiles?: SortOrder
     createdAt?: SortOrder
@@ -7296,9 +8665,115 @@ export namespace Prisma {
     hasDependencyRisk?: BoolWithAggregatesFilter<"PullRequestRisk"> | boolean
     hasAuthRisk?: BoolWithAggregatesFilter<"PullRequestRisk"> | boolean
     hasMalciousRisk?: BoolWithAggregatesFilter<"PullRequestRisk"> | boolean
+    comment?: StringWithAggregatesFilter<"PullRequestRisk"> | string
     malciousReasons?: StringNullableListFilter<"PullRequestRisk">
     affectedFiles?: StringNullableListFilter<"PullRequestRisk">
     createdAt?: DateTimeWithAggregatesFilter<"PullRequestRisk"> | Date | string
+  }
+
+  export type SettingsWhereInput = {
+    AND?: SettingsWhereInput | SettingsWhereInput[]
+    OR?: SettingsWhereInput[]
+    NOT?: SettingsWhereInput | SettingsWhereInput[]
+    id?: StringFilter<"Settings"> | string
+    enableDependencyRisk?: BoolFilter<"Settings"> | boolean
+    enableAuthRisk?: BoolFilter<"Settings"> | boolean
+    enableMalciousRisk?: BoolFilter<"Settings"> | boolean
+    riskLevel?: StringFilter<"Settings"> | string
+    ignoredPaths?: StringNullableListFilter<"Settings">
+    allowedExtensions?: StringNullableListFilter<"Settings">
+    enableEval?: BoolFilter<"Settings"> | boolean
+    enableExec?: BoolFilter<"Settings"> | boolean
+    enableChildProcess?: BoolFilter<"Settings"> | boolean
+    enableExternalFetch?: BoolFilter<"Settings"> | boolean
+    userId?: StringFilter<"Settings"> | string
+    commentStyle?: StringFilter<"Settings"> | string
+    createdAt?: DateTimeFilter<"Settings"> | Date | string
+    updatedAt?: DateTimeFilter<"Settings"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SettingsOrderByWithRelationInput = {
+    id?: SortOrder
+    enableDependencyRisk?: SortOrder
+    enableAuthRisk?: SortOrder
+    enableMalciousRisk?: SortOrder
+    riskLevel?: SortOrder
+    ignoredPaths?: SortOrder
+    allowedExtensions?: SortOrder
+    enableEval?: SortOrder
+    enableExec?: SortOrder
+    enableChildProcess?: SortOrder
+    enableExternalFetch?: SortOrder
+    userId?: SortOrder
+    commentStyle?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SettingsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SettingsWhereInput | SettingsWhereInput[]
+    OR?: SettingsWhereInput[]
+    NOT?: SettingsWhereInput | SettingsWhereInput[]
+    enableDependencyRisk?: BoolFilter<"Settings"> | boolean
+    enableAuthRisk?: BoolFilter<"Settings"> | boolean
+    enableMalciousRisk?: BoolFilter<"Settings"> | boolean
+    riskLevel?: StringFilter<"Settings"> | string
+    ignoredPaths?: StringNullableListFilter<"Settings">
+    allowedExtensions?: StringNullableListFilter<"Settings">
+    enableEval?: BoolFilter<"Settings"> | boolean
+    enableExec?: BoolFilter<"Settings"> | boolean
+    enableChildProcess?: BoolFilter<"Settings"> | boolean
+    enableExternalFetch?: BoolFilter<"Settings"> | boolean
+    userId?: StringFilter<"Settings"> | string
+    commentStyle?: StringFilter<"Settings"> | string
+    createdAt?: DateTimeFilter<"Settings"> | Date | string
+    updatedAt?: DateTimeFilter<"Settings"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type SettingsOrderByWithAggregationInput = {
+    id?: SortOrder
+    enableDependencyRisk?: SortOrder
+    enableAuthRisk?: SortOrder
+    enableMalciousRisk?: SortOrder
+    riskLevel?: SortOrder
+    ignoredPaths?: SortOrder
+    allowedExtensions?: SortOrder
+    enableEval?: SortOrder
+    enableExec?: SortOrder
+    enableChildProcess?: SortOrder
+    enableExternalFetch?: SortOrder
+    userId?: SortOrder
+    commentStyle?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SettingsCountOrderByAggregateInput
+    _max?: SettingsMaxOrderByAggregateInput
+    _min?: SettingsMinOrderByAggregateInput
+  }
+
+  export type SettingsScalarWhereWithAggregatesInput = {
+    AND?: SettingsScalarWhereWithAggregatesInput | SettingsScalarWhereWithAggregatesInput[]
+    OR?: SettingsScalarWhereWithAggregatesInput[]
+    NOT?: SettingsScalarWhereWithAggregatesInput | SettingsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Settings"> | string
+    enableDependencyRisk?: BoolWithAggregatesFilter<"Settings"> | boolean
+    enableAuthRisk?: BoolWithAggregatesFilter<"Settings"> | boolean
+    enableMalciousRisk?: BoolWithAggregatesFilter<"Settings"> | boolean
+    riskLevel?: StringWithAggregatesFilter<"Settings"> | string
+    ignoredPaths?: StringNullableListFilter<"Settings">
+    allowedExtensions?: StringNullableListFilter<"Settings">
+    enableEval?: BoolWithAggregatesFilter<"Settings"> | boolean
+    enableExec?: BoolWithAggregatesFilter<"Settings"> | boolean
+    enableChildProcess?: BoolWithAggregatesFilter<"Settings"> | boolean
+    enableExternalFetch?: BoolWithAggregatesFilter<"Settings"> | boolean
+    userId?: StringWithAggregatesFilter<"Settings"> | string
+    commentStyle?: StringWithAggregatesFilter<"Settings"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Settings"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Settings"> | Date | string
   }
 
   export type WebhookEventWhereInput = {
@@ -7350,6 +8825,7 @@ export namespace Prisma {
     githubId: string
     name?: string | null
     repos?: RepositoryCreateNestedManyWithoutUserInput
+    settings?: SettingsCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7357,6 +8833,7 @@ export namespace Prisma {
     githubId: string
     name?: string | null
     repos?: RepositoryUncheckedCreateNestedManyWithoutUserInput
+    settings?: SettingsUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -7364,6 +8841,7 @@ export namespace Prisma {
     githubId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     repos?: RepositoryUpdateManyWithoutUserNestedInput
+    settings?: SettingsUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7371,6 +8849,7 @@ export namespace Prisma {
     githubId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     repos?: RepositoryUncheckedUpdateManyWithoutUserNestedInput
+    settings?: SettingsUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7474,6 +8953,7 @@ export namespace Prisma {
     additions: number
     deletions: number
     changedFiles: number
+    commentPosted?: string
     createdAt?: Date | string
     repository: RepositoryCreateNestedOneWithoutPullRequestsInput
     risk?: PullRequestRiskCreateNestedManyWithoutPullRequestInput
@@ -7490,6 +8970,7 @@ export namespace Prisma {
     deletions: number
     changedFiles: number
     repoId: string
+    commentPosted?: string
     createdAt?: Date | string
     risk?: PullRequestRiskUncheckedCreateNestedManyWithoutPullRequestInput
   }
@@ -7504,6 +8985,7 @@ export namespace Prisma {
     additions?: IntFieldUpdateOperationsInput | number
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     repository?: RepositoryUpdateOneRequiredWithoutPullRequestsNestedInput
     risk?: PullRequestRiskUpdateManyWithoutPullRequestNestedInput
@@ -7520,6 +9002,7 @@ export namespace Prisma {
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
     repoId?: StringFieldUpdateOperationsInput | string
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     risk?: PullRequestRiskUncheckedUpdateManyWithoutPullRequestNestedInput
   }
@@ -7535,6 +9018,7 @@ export namespace Prisma {
     deletions: number
     changedFiles: number
     repoId: string
+    commentPosted?: string
     createdAt?: Date | string
   }
 
@@ -7548,6 +9032,7 @@ export namespace Prisma {
     additions?: IntFieldUpdateOperationsInput | number
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7562,6 +9047,7 @@ export namespace Prisma {
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
     repoId?: StringFieldUpdateOperationsInput | string
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7571,6 +9057,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean
     hasAuthRisk: boolean
     hasMalciousRisk: boolean
+    comment?: string
     malciousReasons?: PullRequestRiskCreatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskCreateaffectedFilesInput | string[]
     createdAt?: Date | string
@@ -7584,6 +9071,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean
     hasAuthRisk: boolean
     hasMalciousRisk: boolean
+    comment?: string
     malciousReasons?: PullRequestRiskCreatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskCreateaffectedFilesInput | string[]
     createdAt?: Date | string
@@ -7595,6 +9083,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     hasAuthRisk?: BoolFieldUpdateOperationsInput | boolean
     hasMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    comment?: StringFieldUpdateOperationsInput | string
     malciousReasons?: PullRequestRiskUpdatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskUpdateaffectedFilesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7608,6 +9097,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     hasAuthRisk?: BoolFieldUpdateOperationsInput | boolean
     hasMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    comment?: StringFieldUpdateOperationsInput | string
     malciousReasons?: PullRequestRiskUpdatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskUpdateaffectedFilesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7620,6 +9110,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean
     hasAuthRisk: boolean
     hasMalciousRisk: boolean
+    comment?: string
     malciousReasons?: PullRequestRiskCreatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskCreateaffectedFilesInput | string[]
     createdAt?: Date | string
@@ -7631,6 +9122,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     hasAuthRisk?: BoolFieldUpdateOperationsInput | boolean
     hasMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    comment?: StringFieldUpdateOperationsInput | string
     malciousReasons?: PullRequestRiskUpdatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskUpdateaffectedFilesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7643,9 +9135,135 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     hasAuthRisk?: BoolFieldUpdateOperationsInput | boolean
     hasMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    comment?: StringFieldUpdateOperationsInput | string
     malciousReasons?: PullRequestRiskUpdatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskUpdateaffectedFilesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SettingsCreateInput = {
+    id?: string
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: string
+    ignoredPaths?: SettingsCreateignoredPathsInput | string[]
+    allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    commentStyle?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutSettingsInput
+  }
+
+  export type SettingsUncheckedCreateInput = {
+    id?: string
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: string
+    ignoredPaths?: SettingsCreateignoredPathsInput | string[]
+    allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    userId: string
+    commentStyle?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SettingsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
+    allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
+    enableEval?: BoolFieldUpdateOperationsInput | boolean
+    enableExec?: BoolFieldUpdateOperationsInput | boolean
+    enableChildProcess?: BoolFieldUpdateOperationsInput | boolean
+    enableExternalFetch?: BoolFieldUpdateOperationsInput | boolean
+    commentStyle?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSettingsNestedInput
+  }
+
+  export type SettingsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
+    allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
+    enableEval?: BoolFieldUpdateOperationsInput | boolean
+    enableExec?: BoolFieldUpdateOperationsInput | boolean
+    enableChildProcess?: BoolFieldUpdateOperationsInput | boolean
+    enableExternalFetch?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    commentStyle?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SettingsCreateManyInput = {
+    id?: string
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: string
+    ignoredPaths?: SettingsCreateignoredPathsInput | string[]
+    allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    userId: string
+    commentStyle?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SettingsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
+    allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
+    enableEval?: BoolFieldUpdateOperationsInput | boolean
+    enableExec?: BoolFieldUpdateOperationsInput | boolean
+    enableChildProcess?: BoolFieldUpdateOperationsInput | boolean
+    enableExternalFetch?: BoolFieldUpdateOperationsInput | boolean
+    commentStyle?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SettingsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
+    allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
+    enableEval?: BoolFieldUpdateOperationsInput | boolean
+    enableExec?: BoolFieldUpdateOperationsInput | boolean
+    enableChildProcess?: BoolFieldUpdateOperationsInput | boolean
+    enableExternalFetch?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    commentStyle?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WebhookEventCreateInput = {
@@ -7723,12 +9341,22 @@ export namespace Prisma {
     none?: RepositoryWhereInput
   }
 
+  export type SettingsListRelationFilter = {
+    every?: SettingsWhereInput
+    some?: SettingsWhereInput
+    none?: SettingsWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type RepositoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SettingsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -7930,6 +9558,7 @@ export namespace Prisma {
     deletions?: SortOrder
     changedFiles?: SortOrder
     repoId?: SortOrder
+    commentPosted?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -7952,6 +9581,7 @@ export namespace Prisma {
     deletions?: SortOrder
     changedFiles?: SortOrder
     repoId?: SortOrder
+    commentPosted?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -7966,6 +9596,7 @@ export namespace Prisma {
     deletions?: SortOrder
     changedFiles?: SortOrder
     repoId?: SortOrder
+    commentPosted?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -8018,6 +9649,7 @@ export namespace Prisma {
     hasDependencyRisk?: SortOrder
     hasAuthRisk?: SortOrder
     hasMalciousRisk?: SortOrder
+    comment?: SortOrder
     malciousReasons?: SortOrder
     affectedFiles?: SortOrder
     createdAt?: SortOrder
@@ -8030,6 +9662,7 @@ export namespace Prisma {
     hasDependencyRisk?: SortOrder
     hasAuthRisk?: SortOrder
     hasMalciousRisk?: SortOrder
+    comment?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -8040,6 +9673,7 @@ export namespace Prisma {
     hasDependencyRisk?: SortOrder
     hasAuthRisk?: SortOrder
     hasMalciousRisk?: SortOrder
+    comment?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -8049,6 +9683,56 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type SettingsCountOrderByAggregateInput = {
+    id?: SortOrder
+    enableDependencyRisk?: SortOrder
+    enableAuthRisk?: SortOrder
+    enableMalciousRisk?: SortOrder
+    riskLevel?: SortOrder
+    ignoredPaths?: SortOrder
+    allowedExtensions?: SortOrder
+    enableEval?: SortOrder
+    enableExec?: SortOrder
+    enableChildProcess?: SortOrder
+    enableExternalFetch?: SortOrder
+    userId?: SortOrder
+    commentStyle?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SettingsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    enableDependencyRisk?: SortOrder
+    enableAuthRisk?: SortOrder
+    enableMalciousRisk?: SortOrder
+    riskLevel?: SortOrder
+    enableEval?: SortOrder
+    enableExec?: SortOrder
+    enableChildProcess?: SortOrder
+    enableExternalFetch?: SortOrder
+    userId?: SortOrder
+    commentStyle?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SettingsMinOrderByAggregateInput = {
+    id?: SortOrder
+    enableDependencyRisk?: SortOrder
+    enableAuthRisk?: SortOrder
+    enableMalciousRisk?: SortOrder
+    riskLevel?: SortOrder
+    enableEval?: SortOrder
+    enableExec?: SortOrder
+    enableChildProcess?: SortOrder
+    enableExternalFetch?: SortOrder
+    userId?: SortOrder
+    commentStyle?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type WebhookEventCountOrderByAggregateInput = {
@@ -8084,11 +9768,25 @@ export namespace Prisma {
     connect?: RepositoryWhereUniqueInput | RepositoryWhereUniqueInput[]
   }
 
+  export type SettingsCreateNestedManyWithoutUserInput = {
+    create?: XOR<SettingsCreateWithoutUserInput, SettingsUncheckedCreateWithoutUserInput> | SettingsCreateWithoutUserInput[] | SettingsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SettingsCreateOrConnectWithoutUserInput | SettingsCreateOrConnectWithoutUserInput[]
+    createMany?: SettingsCreateManyUserInputEnvelope
+    connect?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+  }
+
   export type RepositoryUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RepositoryCreateWithoutUserInput, RepositoryUncheckedCreateWithoutUserInput> | RepositoryCreateWithoutUserInput[] | RepositoryUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RepositoryCreateOrConnectWithoutUserInput | RepositoryCreateOrConnectWithoutUserInput[]
     createMany?: RepositoryCreateManyUserInputEnvelope
     connect?: RepositoryWhereUniqueInput | RepositoryWhereUniqueInput[]
+  }
+
+  export type SettingsUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SettingsCreateWithoutUserInput, SettingsUncheckedCreateWithoutUserInput> | SettingsCreateWithoutUserInput[] | SettingsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SettingsCreateOrConnectWithoutUserInput | SettingsCreateOrConnectWithoutUserInput[]
+    createMany?: SettingsCreateManyUserInputEnvelope
+    connect?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8113,6 +9811,20 @@ export namespace Prisma {
     deleteMany?: RepositoryScalarWhereInput | RepositoryScalarWhereInput[]
   }
 
+  export type SettingsUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SettingsCreateWithoutUserInput, SettingsUncheckedCreateWithoutUserInput> | SettingsCreateWithoutUserInput[] | SettingsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SettingsCreateOrConnectWithoutUserInput | SettingsCreateOrConnectWithoutUserInput[]
+    upsert?: SettingsUpsertWithWhereUniqueWithoutUserInput | SettingsUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SettingsCreateManyUserInputEnvelope
+    set?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+    disconnect?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+    delete?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+    connect?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+    update?: SettingsUpdateWithWhereUniqueWithoutUserInput | SettingsUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SettingsUpdateManyWithWhereWithoutUserInput | SettingsUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SettingsScalarWhereInput | SettingsScalarWhereInput[]
+  }
+
   export type RepositoryUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RepositoryCreateWithoutUserInput, RepositoryUncheckedCreateWithoutUserInput> | RepositoryCreateWithoutUserInput[] | RepositoryUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RepositoryCreateOrConnectWithoutUserInput | RepositoryCreateOrConnectWithoutUserInput[]
@@ -8125,6 +9837,20 @@ export namespace Prisma {
     update?: RepositoryUpdateWithWhereUniqueWithoutUserInput | RepositoryUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: RepositoryUpdateManyWithWhereWithoutUserInput | RepositoryUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: RepositoryScalarWhereInput | RepositoryScalarWhereInput[]
+  }
+
+  export type SettingsUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SettingsCreateWithoutUserInput, SettingsUncheckedCreateWithoutUserInput> | SettingsCreateWithoutUserInput[] | SettingsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SettingsCreateOrConnectWithoutUserInput | SettingsCreateOrConnectWithoutUserInput[]
+    upsert?: SettingsUpsertWithWhereUniqueWithoutUserInput | SettingsUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SettingsCreateManyUserInputEnvelope
+    set?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+    disconnect?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+    delete?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+    connect?: SettingsWhereUniqueInput | SettingsWhereUniqueInput[]
+    update?: SettingsUpdateWithWhereUniqueWithoutUserInput | SettingsUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SettingsUpdateManyWithWhereWithoutUserInput | SettingsUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SettingsScalarWhereInput | SettingsScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutReposInput = {
@@ -8293,6 +10019,38 @@ export namespace Prisma {
     upsert?: PullRequestUpsertWithoutRiskInput
     connect?: PullRequestWhereUniqueInput
     update?: XOR<XOR<PullRequestUpdateToOneWithWhereWithoutRiskInput, PullRequestUpdateWithoutRiskInput>, PullRequestUncheckedUpdateWithoutRiskInput>
+  }
+
+  export type SettingsCreateignoredPathsInput = {
+    set: string[]
+  }
+
+  export type SettingsCreateallowedExtensionsInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutSettingsInput = {
+    create?: XOR<UserCreateWithoutSettingsInput, UserUncheckedCreateWithoutSettingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSettingsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SettingsUpdateignoredPathsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type SettingsUpdateallowedExtensionsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserUpdateOneRequiredWithoutSettingsNestedInput = {
+    create?: XOR<UserCreateWithoutSettingsInput, UserUncheckedCreateWithoutSettingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSettingsInput
+    upsert?: UserUpsertWithoutSettingsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSettingsInput, UserUpdateWithoutSettingsInput>, UserUncheckedUpdateWithoutSettingsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8501,6 +10259,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SettingsCreateWithoutUserInput = {
+    id?: string
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: string
+    ignoredPaths?: SettingsCreateignoredPathsInput | string[]
+    allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    commentStyle?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SettingsUncheckedCreateWithoutUserInput = {
+    id?: string
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: string
+    ignoredPaths?: SettingsCreateignoredPathsInput | string[]
+    allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    commentStyle?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SettingsCreateOrConnectWithoutUserInput = {
+    where: SettingsWhereUniqueInput
+    create: XOR<SettingsCreateWithoutUserInput, SettingsUncheckedCreateWithoutUserInput>
+  }
+
+  export type SettingsCreateManyUserInputEnvelope = {
+    data: SettingsCreateManyUserInput | SettingsCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RepositoryUpsertWithWhereUniqueWithoutUserInput = {
     where: RepositoryWhereUniqueInput
     update: XOR<RepositoryUpdateWithoutUserInput, RepositoryUncheckedUpdateWithoutUserInput>
@@ -8530,16 +10332,55 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Repository"> | Date | string
   }
 
+  export type SettingsUpsertWithWhereUniqueWithoutUserInput = {
+    where: SettingsWhereUniqueInput
+    update: XOR<SettingsUpdateWithoutUserInput, SettingsUncheckedUpdateWithoutUserInput>
+    create: XOR<SettingsCreateWithoutUserInput, SettingsUncheckedCreateWithoutUserInput>
+  }
+
+  export type SettingsUpdateWithWhereUniqueWithoutUserInput = {
+    where: SettingsWhereUniqueInput
+    data: XOR<SettingsUpdateWithoutUserInput, SettingsUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SettingsUpdateManyWithWhereWithoutUserInput = {
+    where: SettingsScalarWhereInput
+    data: XOR<SettingsUpdateManyMutationInput, SettingsUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SettingsScalarWhereInput = {
+    AND?: SettingsScalarWhereInput | SettingsScalarWhereInput[]
+    OR?: SettingsScalarWhereInput[]
+    NOT?: SettingsScalarWhereInput | SettingsScalarWhereInput[]
+    id?: StringFilter<"Settings"> | string
+    enableDependencyRisk?: BoolFilter<"Settings"> | boolean
+    enableAuthRisk?: BoolFilter<"Settings"> | boolean
+    enableMalciousRisk?: BoolFilter<"Settings"> | boolean
+    riskLevel?: StringFilter<"Settings"> | string
+    ignoredPaths?: StringNullableListFilter<"Settings">
+    allowedExtensions?: StringNullableListFilter<"Settings">
+    enableEval?: BoolFilter<"Settings"> | boolean
+    enableExec?: BoolFilter<"Settings"> | boolean
+    enableChildProcess?: BoolFilter<"Settings"> | boolean
+    enableExternalFetch?: BoolFilter<"Settings"> | boolean
+    userId?: StringFilter<"Settings"> | string
+    commentStyle?: StringFilter<"Settings"> | string
+    createdAt?: DateTimeFilter<"Settings"> | Date | string
+    updatedAt?: DateTimeFilter<"Settings"> | Date | string
+  }
+
   export type UserCreateWithoutReposInput = {
     id?: string
     githubId: string
     name?: string | null
+    settings?: SettingsCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReposInput = {
     id?: string
     githubId: string
     name?: string | null
+    settings?: SettingsUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReposInput = {
@@ -8557,6 +10398,7 @@ export namespace Prisma {
     additions: number
     deletions: number
     changedFiles: number
+    commentPosted?: string
     createdAt?: Date | string
     risk?: PullRequestRiskCreateNestedManyWithoutPullRequestInput
   }
@@ -8571,6 +10413,7 @@ export namespace Prisma {
     additions: number
     deletions: number
     changedFiles: number
+    commentPosted?: string
     createdAt?: Date | string
     risk?: PullRequestRiskUncheckedCreateNestedManyWithoutPullRequestInput
   }
@@ -8600,12 +10443,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     githubId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    settings?: SettingsUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReposInput = {
     id?: StringFieldUpdateOperationsInput | string
     githubId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    settings?: SettingsUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PullRequestUpsertWithWhereUniqueWithoutRepositoryInput = {
@@ -8638,6 +10483,7 @@ export namespace Prisma {
     deletions?: IntFilter<"PullRequest"> | number
     changedFiles?: IntFilter<"PullRequest"> | number
     repoId?: StringFilter<"PullRequest"> | string
+    commentPosted?: StringFilter<"PullRequest"> | string
     createdAt?: DateTimeFilter<"PullRequest"> | Date | string
   }
 
@@ -8672,6 +10518,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean
     hasAuthRisk: boolean
     hasMalciousRisk: boolean
+    comment?: string
     malciousReasons?: PullRequestRiskCreatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskCreateaffectedFilesInput | string[]
     createdAt?: Date | string
@@ -8683,6 +10530,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean
     hasAuthRisk: boolean
     hasMalciousRisk: boolean
+    comment?: string
     malciousReasons?: PullRequestRiskCreatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskCreateaffectedFilesInput | string[]
     createdAt?: Date | string
@@ -8755,6 +10603,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFilter<"PullRequestRisk"> | boolean
     hasAuthRisk?: BoolFilter<"PullRequestRisk"> | boolean
     hasMalciousRisk?: BoolFilter<"PullRequestRisk"> | boolean
+    comment?: StringFilter<"PullRequestRisk"> | string
     malciousReasons?: StringNullableListFilter<"PullRequestRisk">
     affectedFiles?: StringNullableListFilter<"PullRequestRisk">
     createdAt?: DateTimeFilter<"PullRequestRisk"> | Date | string
@@ -8770,6 +10619,7 @@ export namespace Prisma {
     additions: number
     deletions: number
     changedFiles: number
+    commentPosted?: string
     createdAt?: Date | string
     repository: RepositoryCreateNestedOneWithoutPullRequestsInput
   }
@@ -8785,6 +10635,7 @@ export namespace Prisma {
     deletions: number
     changedFiles: number
     repoId: string
+    commentPosted?: string
     createdAt?: Date | string
   }
 
@@ -8814,6 +10665,7 @@ export namespace Prisma {
     additions?: IntFieldUpdateOperationsInput | number
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     repository?: RepositoryUpdateOneRequiredWithoutPullRequestsNestedInput
   }
@@ -8829,7 +10681,52 @@ export namespace Prisma {
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
     repoId?: StringFieldUpdateOperationsInput | string
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateWithoutSettingsInput = {
+    id?: string
+    githubId: string
+    name?: string | null
+    repos?: RepositoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSettingsInput = {
+    id?: string
+    githubId: string
+    name?: string | null
+    repos?: RepositoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSettingsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSettingsInput, UserUncheckedCreateWithoutSettingsInput>
+  }
+
+  export type UserUpsertWithoutSettingsInput = {
+    update: XOR<UserUpdateWithoutSettingsInput, UserUncheckedUpdateWithoutSettingsInput>
+    create: XOR<UserCreateWithoutSettingsInput, UserUncheckedCreateWithoutSettingsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSettingsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSettingsInput, UserUncheckedUpdateWithoutSettingsInput>
+  }
+
+  export type UserUpdateWithoutSettingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    githubId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    repos?: RepositoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSettingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    githubId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    repos?: RepositoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RepositoryCreateManyUserInput = {
@@ -8839,6 +10736,23 @@ export namespace Prisma {
     owner: string
     installationId: number
     createdAt?: Date | string
+  }
+
+  export type SettingsCreateManyUserInput = {
+    id?: string
+    enableDependencyRisk?: boolean
+    enableAuthRisk?: boolean
+    enableMalciousRisk?: boolean
+    riskLevel?: string
+    ignoredPaths?: SettingsCreateignoredPathsInput | string[]
+    allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
+    enableEval?: boolean
+    enableExec?: boolean
+    enableChildProcess?: boolean
+    enableExternalFetch?: boolean
+    commentStyle?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type RepositoryUpdateWithoutUserInput = {
@@ -8870,6 +10784,57 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SettingsUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
+    allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
+    enableEval?: BoolFieldUpdateOperationsInput | boolean
+    enableExec?: BoolFieldUpdateOperationsInput | boolean
+    enableChildProcess?: BoolFieldUpdateOperationsInput | boolean
+    enableExternalFetch?: BoolFieldUpdateOperationsInput | boolean
+    commentStyle?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SettingsUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
+    allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
+    enableEval?: BoolFieldUpdateOperationsInput | boolean
+    enableExec?: BoolFieldUpdateOperationsInput | boolean
+    enableChildProcess?: BoolFieldUpdateOperationsInput | boolean
+    enableExternalFetch?: BoolFieldUpdateOperationsInput | boolean
+    commentStyle?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SettingsUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
+    allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
+    enableEval?: BoolFieldUpdateOperationsInput | boolean
+    enableExec?: BoolFieldUpdateOperationsInput | boolean
+    enableChildProcess?: BoolFieldUpdateOperationsInput | boolean
+    enableExternalFetch?: BoolFieldUpdateOperationsInput | boolean
+    commentStyle?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PullRequestCreateManyRepositoryInput = {
     id?: string
     githubPrId: bigint | number
@@ -8880,6 +10845,7 @@ export namespace Prisma {
     additions: number
     deletions: number
     changedFiles: number
+    commentPosted?: string
     createdAt?: Date | string
   }
 
@@ -8893,6 +10859,7 @@ export namespace Prisma {
     additions?: IntFieldUpdateOperationsInput | number
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     risk?: PullRequestRiskUpdateManyWithoutPullRequestNestedInput
   }
@@ -8907,6 +10874,7 @@ export namespace Prisma {
     additions?: IntFieldUpdateOperationsInput | number
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     risk?: PullRequestRiskUncheckedUpdateManyWithoutPullRequestNestedInput
   }
@@ -8921,6 +10889,7 @@ export namespace Prisma {
     additions?: IntFieldUpdateOperationsInput | number
     deletions?: IntFieldUpdateOperationsInput | number
     changedFiles?: IntFieldUpdateOperationsInput | number
+    commentPosted?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8930,6 +10899,7 @@ export namespace Prisma {
     hasDependencyRisk: boolean
     hasAuthRisk: boolean
     hasMalciousRisk: boolean
+    comment?: string
     malciousReasons?: PullRequestRiskCreatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskCreateaffectedFilesInput | string[]
     createdAt?: Date | string
@@ -8941,6 +10911,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     hasAuthRisk?: BoolFieldUpdateOperationsInput | boolean
     hasMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    comment?: StringFieldUpdateOperationsInput | string
     malciousReasons?: PullRequestRiskUpdatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskUpdateaffectedFilesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8952,6 +10923,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     hasAuthRisk?: BoolFieldUpdateOperationsInput | boolean
     hasMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    comment?: StringFieldUpdateOperationsInput | string
     malciousReasons?: PullRequestRiskUpdatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskUpdateaffectedFilesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8963,6 +10935,7 @@ export namespace Prisma {
     hasDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     hasAuthRisk?: BoolFieldUpdateOperationsInput | boolean
     hasMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    comment?: StringFieldUpdateOperationsInput | string
     malciousReasons?: PullRequestRiskUpdatemalciousReasonsInput | string[]
     affectedFiles?: PullRequestRiskUpdateaffectedFilesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

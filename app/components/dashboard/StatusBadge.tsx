@@ -1,10 +1,10 @@
 import React from "react";
 import type { JobState, PRStatus } from "@/app/lib/dashboardTypes";
 
-export function PRStatusBadge({ status }: { status: PRStatus }) {
+export function   PRStatusBadge({ status }: { status: string }) {
   const cfg =
-    status === "completed"
-      ? { bg: "bg-emerald-500/10 border-emerald-500/20 text-emerald-300", label: "Completed" }
+    status === "merged" || status === "completed"
+      ? { bg: "bg-emerald-500/10 border-emerald-500/20 text-emerald-300", label: status === "merged" ? "Merged" : "Completed" }
       : status === "analyzing"
         ? { bg: "bg-sky-500/10 border-sky-500/20 text-sky-300", label: "Analyzing" }
         : { bg: "bg-amber-500/10 border-amber-500/20 text-amber-300", label: "Pending" };

@@ -18,6 +18,18 @@ export default function RepositoriesPage() {
     return repos.filter((r) => r.fullName.toLowerCase().includes(q) || r.owner.toLowerCase().includes(q));
   }, [repos, query]);
 
+  const handleConnect=async()=>{
+      try{
+        window.location.href="https://github.com/apps/AI-PR-RISK/installations/new"
+        // alert("succes")
+      }catch(error)
+      {
+        console.log(error)
+        // alert("error happens")
+      }
+
+  }
+
   return (
     <DashboardShell>
       <div className="space-y-6">
@@ -41,11 +53,8 @@ export default function RepositoriesPage() {
           </div>
 
           <button
-            className="inline-flex items-center gap-2 rounded-2xl px-4 py-3 bg-white/10 border border-white/10 hover:bg-white/15 transition-colors w-full lg:w-auto justify-center"
-            onClick={() => {
-              // UI-only (required by prompt)
-              alert("Connect Repo UI only. Hook this to GitHub app installation flow.");
-            }}
+            className="cursor-pointer inline-flex items-center gap-2 rounded-2xl px-4 py-3 bg-white/10 border border-white/10 hover:bg-white/15 transition-colors w-full lg:w-auto justify-center"
+            onClick={handleConnect}
           >
             <Plus size={18} className="text-teal-200" />
             Connect new repo
@@ -73,11 +82,11 @@ export default function RepositoriesPage() {
                 >
                   <div className="min-w-0">
                     <div className="font-semibold text-sm truncate">{r.fullName}</div>
+                  </div>
                     <div className="text-xs text-white/60 mt-1">Owner: {r.owner}</div>
-                  </div>
-                  <div className={cn("text-xs text-white/60 whitespace-nowrap")}>
+                  {/* <div className={cn("text-xs text-white/60 whitespace-nowrap")}>
                     Last sync: {formatDateTime(r.lastSyncAt)}
-                  </div>
+                  </div> */}
                 </div>
               ))}
               {filtered.length === 0 ? (

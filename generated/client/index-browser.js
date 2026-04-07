@@ -147,6 +147,7 @@ exports.Prisma.PullRequestScalarFieldEnum = {
   deletions: 'deletions',
   changedFiles: 'changedFiles',
   repoId: 'repoId',
+  commentPosted: 'commentPosted',
   createdAt: 'createdAt'
 };
 
@@ -157,9 +158,28 @@ exports.Prisma.PullRequestRiskScalarFieldEnum = {
   hasDependencyRisk: 'hasDependencyRisk',
   hasAuthRisk: 'hasAuthRisk',
   hasMalciousRisk: 'hasMalciousRisk',
+  comment: 'comment',
   malciousReasons: 'malciousReasons',
   affectedFiles: 'affectedFiles',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.SettingsScalarFieldEnum = {
+  id: 'id',
+  enableDependencyRisk: 'enableDependencyRisk',
+  enableAuthRisk: 'enableAuthRisk',
+  enableMalciousRisk: 'enableMalciousRisk',
+  riskLevel: 'riskLevel',
+  ignoredPaths: 'ignoredPaths',
+  allowedExtensions: 'allowedExtensions',
+  enableEval: 'enableEval',
+  enableExec: 'enableExec',
+  enableChildProcess: 'enableChildProcess',
+  enableExternalFetch: 'enableExternalFetch',
+  userId: 'userId',
+  commentStyle: 'commentStyle',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.WebhookEventScalarFieldEnum = {
@@ -189,6 +209,7 @@ exports.Prisma.ModelName = {
   Repository: 'Repository',
   PullRequest: 'PullRequest',
   PullRequestRisk: 'PullRequestRisk',
+  Settings: 'Settings',
   WebhookEvent: 'WebhookEvent'
 };
 
