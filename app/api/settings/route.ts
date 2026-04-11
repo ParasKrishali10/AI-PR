@@ -24,7 +24,7 @@ export async function GET(req:NextRequest,res:NextResponse){
     return NextResponse.json(settings)
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const session = await getServerSession()
   const userId = session?.user?.id
 

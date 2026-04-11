@@ -142,7 +142,8 @@ export async function POST(req:NextRequest){
 
         await enqueuePRRiskJob({
             repositoryId:repo.id,
-            prNumber:pr.number
+            prNumber:pr.number,
+            userId:pr.user.id
         })
 console.log("Job is added to queue for PR update")
 
@@ -225,7 +226,8 @@ await prisma.pullRequest.upsert({
 
         await enqueuePRRiskJob({
             repositoryId:repo.id.toString(),
-            prNumber:pr.number
+            prNumber:pr.number,
+            userId:pr.user.id
         })
 console.log("Job is added to queue for PR update")
     }
@@ -272,7 +274,8 @@ await prisma.pullRequest.upsert({
 
          await enqueuePRRiskJob({
             repositoryId:repo.id.toString(),
-            prNumber:pr.number
+            prNumber:pr.number,
+            userId:pr.user.id
         })
 
         console.log("Job is added to queue for PR update")

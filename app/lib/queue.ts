@@ -10,7 +10,8 @@ export const prRiskQueue=new Queue("pr-risk-analysis",{
 
 export async function enqueuePRRiskJob(data:{
     repositoryId:number,
-    prNumber:number
+    prNumber:number,
+    userId:number
 }){
     await prRiskQueue.add("analyze-pr",data,{
         jobId:`${data.repositoryId}-${data.prNumber}`,

@@ -1,3 +1,4 @@
+import { prisma } from "@/app/lib/prisma"
 import NextAuth, { NextAuthOptions } from "next-auth"
 import GitHubProvider from "next-auth/providers/github"
 
@@ -17,7 +18,26 @@ export const authOptions: NextAuthOptions = {
     strategy:'jwt'
   },
   callbacks: {
-    async jwt({ token, user,profile }) {
+    async signIn({user,account,profile}){
+      const existingUser=await prisma.user.findUnique({
+        where:{githubId:account?.providerAccountId}
+      })
+      if(!existingUser){
+        await prisma.user.create({
+          data:{
+            githubId:account?.providerAccountId!,
+            name:profile?.name || ""
+          }
+        })
+        await prisma.settings.create({
+          data:{
+            userId:account?.providerAccountId!,
+          }
+        })
+      }
+return true
+    }
+    ,async jwt({ token, user,profile }) {
       if(user){
         token.id=user.id
       }

@@ -79,7 +79,7 @@ model Settings {
   enableExec           Boolean  @default(false)
   enableChildProcess   Boolean  @default(false)
   enableExternalFetch  Boolean  @default(false)
-  userId               String
+  userId               String   @unique
   user                 User     @relation(fields: [userId], references: [id])
   commentStyle         String   @default("detailed")
   createdAt            DateTime @default(now())

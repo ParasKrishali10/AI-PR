@@ -38,7 +38,7 @@ const worker = new Worker(
     console.log("📥 PR Risk Job received")
     console.log("Job data:", job.data)
 
-    const {repositoryId,prNumber}=job.data
+    const {repositoryId,prNumber,userId}=job.data
 
     const githubRepoId = Number(repositoryId)
 
@@ -54,6 +54,10 @@ console.log("converted type:", typeof githubRepoId)
       console.log("Repository not found")
       return;
     }
+
+    const settings=await prisma.settings.findUnique({
+      where:{userId}
+    })
 
     const privateKey=process.env.GITHUB_PRIVATE_KEY!.replace(/\n/g,'\n')
 

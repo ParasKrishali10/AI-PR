@@ -8714,6 +8714,7 @@ export namespace Prisma {
 
   export type SettingsWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    userId?: string
     AND?: SettingsWhereInput | SettingsWhereInput[]
     OR?: SettingsWhereInput[]
     NOT?: SettingsWhereInput | SettingsWhereInput[]
@@ -8727,12 +8728,11 @@ export namespace Prisma {
     enableExec?: BoolFilter<"Settings"> | boolean
     enableChildProcess?: BoolFilter<"Settings"> | boolean
     enableExternalFetch?: BoolFilter<"Settings"> | boolean
-    userId?: StringFilter<"Settings"> | string
     commentStyle?: StringFilter<"Settings"> | string
     createdAt?: DateTimeFilter<"Settings"> | Date | string
     updatedAt?: DateTimeFilter<"Settings"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "userId">
 
   export type SettingsOrderByWithAggregationInput = {
     id?: SortOrder
