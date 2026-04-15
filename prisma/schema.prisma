@@ -69,11 +69,12 @@ model PullRequestRisk{
 
 }
 
+
 model Settings{
   id String @id @default(cuid())
   enableDependencyRisk Boolean @default(true)
   enableAuthRisk Boolean @default(true)
-  enableMalciousRisk Boolean @default(true)
+  enableMaliciousRisk Boolean @default(true)
   riskLevel String @default("medium")
   ignoredPaths String[]
   allowedExtensions String[]
@@ -82,7 +83,7 @@ model Settings{
   enableChildProcess Boolean @default(false)
   enableExternalFetch Boolean @default(false)
   userId String @unique
-  user User @relation(fields: [userId],references: [id])
+  user User @relation(fields: [userId],references: [githubId])
   commentStyle String @default("detailed")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

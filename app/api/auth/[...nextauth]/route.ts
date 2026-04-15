@@ -37,9 +37,9 @@ export const authOptions: NextAuthOptions = {
       }
 return true
     }
-    ,async jwt({ token, user,profile }) {
-      if(user){
-        token.id=user.id
+    ,async jwt({ token, user,profile,account }) {
+      if(account?.providerAccountId){
+        token.id=account?.providerAccountId;
       }
       return token
     },

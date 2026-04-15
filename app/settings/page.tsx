@@ -1,12 +1,78 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardShell from "@/app/components/dashboard/DashboardShell";
 import { Fingerprint, Save, ShieldAlert } from "lucide-react";
+import Toggle from "../components/Toggle"
+
+
+const DetectionToggles=[{
+  id: 1,
+  name: "Block high-risk signals",
+  key:"blockHighRisk",
+}, {
+  id: 2,
+  name: "Detect Dependency Changes",
+  key: "detectDependencyChanges",
+  // description: "Simulates review enforcement"
+}, {
+  id: 3,
+  name: "Detect auth/middleware changes",
+  // description: "Simulates review enforcement"
+  key: "detectAuthMiddlewareChanges"
+},{
+  id: 4,
+  name: "Detect Malcious Patterns",
+  // description: "Simulates review enforcement"
+  key:"detectMaliciousPatterns"
+}
+
+];
+const SecurityToggles=[{
+  id: 1,
+  name: "Detect eval() usage",
+  description: "Simulates review enforcement",
+  key: "detectEvalUsage"
+}, {
+  id: 2,
+  name: "Detect exec/spawn usage",
+  description: "Simulates review enforcement",
+  key: "detectExecSpawnUsage"
+}, {
+  id: 3,
+  name: "Detect child_process usage",
+  description: "Simulates review enforcement",
+  key: "detectChildProcessUsage"
+}
+];
+
+
 
 export default function SettingsPage() {
+  type Settings=Record<string,boolean>
+
   const [sensitivity, setSensitivity] = useState(75);
-  const [enabled, setEnabled] = useState(true);
+  const [settings, setSettings] = useState<Settings>({});
+
+  useEffect(()=>{
+  const allToggles=[...DetectionToggles,...SecurityToggles]
+  const initialState=Object.fromEntries(
+    allToggles.map(t=>[t.key,true])
+  )
+  setSettings(initialState)
+},[])
+
+const saveSettings=async()=>{
+  const p=await fetch("/api/settings",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+    },
+    body:JSON.stringify(settings)
+  })
+
+  console.log("Settings Saved")
+}
 
   return (
     <DashboardShell>
@@ -56,31 +122,60 @@ export default function SettingsPage() {
               <ShieldAlert size={16} className="text-rose-200" />
               Features
             </div>
-            <div className="text-xs text-white/60 mt-1">Mock toggles</div>
-
-            <div className="mt-5 space-y-4">
+            <div className="text-xs text-white/60 mt-1">Detection toggles</div>
+          {DetectionToggles.map((toggle)=>{
+            return <div key={toggle.id} className="mt-5 space-y-4">
               <label className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
                 <div>
-                  <div className="text-sm font-semibold">Block high-risk signals</div>
+                  <div className="text-sm font-semibold">{toggle.name}</div>
                   <div className="text-xs text-white/60 mt-1">Simulates review enforcement</div>
                 </div>
-                <input
-                  type="checkbox"
-                  checked={enabled}
-                  onChange={(e) => setEnabled(e.target.checked)}
-                  className="h-5 w-5 accent-teal-300"
-                />
+                 <Toggle
+  checked={!!settings[toggle.key]}
+  onChange={(value) =>
+  setSettings(prev => ({
+    ...prev,
+    [toggle.key]: value,
+  }))
+}
+/>
               </label>
+              </div>
+          })}
+          <div className="mt-7 text-sm font-semibold flex items-center gap-2">
+              <ShieldAlert size={16} className="text-rose-200" />
+              Features
             </div>
+            <div className="text-xs text-white/60 mt-1">Detection toggles</div>
+          {SecurityToggles.map((toggle)=>{
+            return <div key={toggle.id} className="mt-5 space-y-4">
+              <label className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
+                <div>
+                  <div className="text-sm font-semibold">{toggle.name}</div>
+                  <div className="text-xs text-white/60 mt-1">Simulates review enforcement</div>
+                </div>
+               <Toggle
+  checked={!!settings[toggle.key]}
+  onChange={(value) =>
+  setSettings(prev => ({
+    ...prev,
+    [toggle.key]: value,
+  }))
+}
+/>
+              </label>
+              </div>
+          })}
 
             <button
-              onClick={() => alert("Settings saved (mock).")}
-              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white/10 border border-white/10 px-4 py-3 hover:bg-white/15 transition-colors"
+              onClick={saveSettings}
+              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white/10 border border-white/10 px-4 py-3 hover:bg-white/15 transition-colors cursor-pointer"
             >
               <Save size={16} />
               Save changes
             </button>
           </div>
+
         </div>
       </div>
     </DashboardShell>

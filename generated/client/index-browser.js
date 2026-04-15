@@ -168,7 +168,7 @@ exports.Prisma.SettingsScalarFieldEnum = {
   id: 'id',
   enableDependencyRisk: 'enableDependencyRisk',
   enableAuthRisk: 'enableAuthRisk',
-  enableMalciousRisk: 'enableMalciousRisk',
+  enableMaliciousRisk: 'enableMaliciousRisk',
   riskLevel: 'riskLevel',
   ignoredPaths: 'ignoredPaths',
   allowedExtensions: 'allowedExtensions',

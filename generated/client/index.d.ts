@@ -6000,7 +6000,7 @@ export namespace Prisma {
     id: string | null
     enableDependencyRisk: boolean | null
     enableAuthRisk: boolean | null
-    enableMalciousRisk: boolean | null
+    enableMaliciousRisk: boolean | null
     riskLevel: string | null
     enableEval: boolean | null
     enableExec: boolean | null
@@ -6016,7 +6016,7 @@ export namespace Prisma {
     id: string | null
     enableDependencyRisk: boolean | null
     enableAuthRisk: boolean | null
-    enableMalciousRisk: boolean | null
+    enableMaliciousRisk: boolean | null
     riskLevel: string | null
     enableEval: boolean | null
     enableExec: boolean | null
@@ -6032,7 +6032,7 @@ export namespace Prisma {
     id: number
     enableDependencyRisk: number
     enableAuthRisk: number
-    enableMalciousRisk: number
+    enableMaliciousRisk: number
     riskLevel: number
     ignoredPaths: number
     allowedExtensions: number
@@ -6052,7 +6052,7 @@ export namespace Prisma {
     id?: true
     enableDependencyRisk?: true
     enableAuthRisk?: true
-    enableMalciousRisk?: true
+    enableMaliciousRisk?: true
     riskLevel?: true
     enableEval?: true
     enableExec?: true
@@ -6068,7 +6068,7 @@ export namespace Prisma {
     id?: true
     enableDependencyRisk?: true
     enableAuthRisk?: true
-    enableMalciousRisk?: true
+    enableMaliciousRisk?: true
     riskLevel?: true
     enableEval?: true
     enableExec?: true
@@ -6084,7 +6084,7 @@ export namespace Prisma {
     id?: true
     enableDependencyRisk?: true
     enableAuthRisk?: true
-    enableMalciousRisk?: true
+    enableMaliciousRisk?: true
     riskLevel?: true
     ignoredPaths?: true
     allowedExtensions?: true
@@ -6175,7 +6175,7 @@ export namespace Prisma {
     id: string
     enableDependencyRisk: boolean
     enableAuthRisk: boolean
-    enableMalciousRisk: boolean
+    enableMaliciousRisk: boolean
     riskLevel: string
     ignoredPaths: string[]
     allowedExtensions: string[]
@@ -6210,7 +6210,7 @@ export namespace Prisma {
     id?: boolean
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: boolean
     ignoredPaths?: boolean
     allowedExtensions?: boolean
@@ -6229,7 +6229,7 @@ export namespace Prisma {
     id?: boolean
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: boolean
     ignoredPaths?: boolean
     allowedExtensions?: boolean
@@ -6248,7 +6248,7 @@ export namespace Prisma {
     id?: boolean
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: boolean
     ignoredPaths?: boolean
     allowedExtensions?: boolean
@@ -6267,7 +6267,7 @@ export namespace Prisma {
     id?: boolean
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: boolean
     ignoredPaths?: boolean
     allowedExtensions?: boolean
@@ -6281,7 +6281,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "enableDependencyRisk" | "enableAuthRisk" | "enableMalciousRisk" | "riskLevel" | "ignoredPaths" | "allowedExtensions" | "enableEval" | "enableExec" | "enableChildProcess" | "enableExternalFetch" | "userId" | "commentStyle" | "createdAt" | "updatedAt", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "enableDependencyRisk" | "enableAuthRisk" | "enableMaliciousRisk" | "riskLevel" | "ignoredPaths" | "allowedExtensions" | "enableEval" | "enableExec" | "enableChildProcess" | "enableExternalFetch" | "userId" | "commentStyle" | "createdAt" | "updatedAt", ExtArgs["result"]["settings"]>
   export type SettingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6301,7 +6301,7 @@ export namespace Prisma {
       id: string
       enableDependencyRisk: boolean
       enableAuthRisk: boolean
-      enableMalciousRisk: boolean
+      enableMaliciousRisk: boolean
       riskLevel: string
       ignoredPaths: string[]
       allowedExtensions: string[]
@@ -6740,7 +6740,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Settings", 'String'>
     readonly enableDependencyRisk: FieldRef<"Settings", 'Boolean'>
     readonly enableAuthRisk: FieldRef<"Settings", 'Boolean'>
-    readonly enableMalciousRisk: FieldRef<"Settings", 'Boolean'>
+    readonly enableMaliciousRisk: FieldRef<"Settings", 'Boolean'>
     readonly riskLevel: FieldRef<"Settings", 'String'>
     readonly ignoredPaths: FieldRef<"Settings", 'String[]'>
     readonly allowedExtensions: FieldRef<"Settings", 'String[]'>
@@ -8243,7 +8243,7 @@ export namespace Prisma {
     id: 'id',
     enableDependencyRisk: 'enableDependencyRisk',
     enableAuthRisk: 'enableAuthRisk',
-    enableMalciousRisk: 'enableMalciousRisk',
+    enableMaliciousRisk: 'enableMaliciousRisk',
     riskLevel: 'riskLevel',
     ignoredPaths: 'ignoredPaths',
     allowedExtensions: 'allowedExtensions',
@@ -8678,7 +8678,7 @@ export namespace Prisma {
     id?: StringFilter<"Settings"> | string
     enableDependencyRisk?: BoolFilter<"Settings"> | boolean
     enableAuthRisk?: BoolFilter<"Settings"> | boolean
-    enableMalciousRisk?: BoolFilter<"Settings"> | boolean
+    enableMaliciousRisk?: BoolFilter<"Settings"> | boolean
     riskLevel?: StringFilter<"Settings"> | string
     ignoredPaths?: StringNullableListFilter<"Settings">
     allowedExtensions?: StringNullableListFilter<"Settings">
@@ -8697,7 +8697,7 @@ export namespace Prisma {
     id?: SortOrder
     enableDependencyRisk?: SortOrder
     enableAuthRisk?: SortOrder
-    enableMalciousRisk?: SortOrder
+    enableMaliciousRisk?: SortOrder
     riskLevel?: SortOrder
     ignoredPaths?: SortOrder
     allowedExtensions?: SortOrder
@@ -8720,7 +8720,7 @@ export namespace Prisma {
     NOT?: SettingsWhereInput | SettingsWhereInput[]
     enableDependencyRisk?: BoolFilter<"Settings"> | boolean
     enableAuthRisk?: BoolFilter<"Settings"> | boolean
-    enableMalciousRisk?: BoolFilter<"Settings"> | boolean
+    enableMaliciousRisk?: BoolFilter<"Settings"> | boolean
     riskLevel?: StringFilter<"Settings"> | string
     ignoredPaths?: StringNullableListFilter<"Settings">
     allowedExtensions?: StringNullableListFilter<"Settings">
@@ -8738,7 +8738,7 @@ export namespace Prisma {
     id?: SortOrder
     enableDependencyRisk?: SortOrder
     enableAuthRisk?: SortOrder
-    enableMalciousRisk?: SortOrder
+    enableMaliciousRisk?: SortOrder
     riskLevel?: SortOrder
     ignoredPaths?: SortOrder
     allowedExtensions?: SortOrder
@@ -8762,7 +8762,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Settings"> | string
     enableDependencyRisk?: BoolWithAggregatesFilter<"Settings"> | boolean
     enableAuthRisk?: BoolWithAggregatesFilter<"Settings"> | boolean
-    enableMalciousRisk?: BoolWithAggregatesFilter<"Settings"> | boolean
+    enableMaliciousRisk?: BoolWithAggregatesFilter<"Settings"> | boolean
     riskLevel?: StringWithAggregatesFilter<"Settings"> | string
     ignoredPaths?: StringNullableListFilter<"Settings">
     allowedExtensions?: StringNullableListFilter<"Settings">
@@ -9145,7 +9145,7 @@ export namespace Prisma {
     id?: string
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: string
     ignoredPaths?: SettingsCreateignoredPathsInput | string[]
     allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
@@ -9163,7 +9163,7 @@ export namespace Prisma {
     id?: string
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: string
     ignoredPaths?: SettingsCreateignoredPathsInput | string[]
     allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
@@ -9181,7 +9181,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
-    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMaliciousRisk?: BoolFieldUpdateOperationsInput | boolean
     riskLevel?: StringFieldUpdateOperationsInput | string
     ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
     allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
@@ -9199,7 +9199,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
-    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMaliciousRisk?: BoolFieldUpdateOperationsInput | boolean
     riskLevel?: StringFieldUpdateOperationsInput | string
     ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
     allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
@@ -9217,7 +9217,7 @@ export namespace Prisma {
     id?: string
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: string
     ignoredPaths?: SettingsCreateignoredPathsInput | string[]
     allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
@@ -9235,7 +9235,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
-    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMaliciousRisk?: BoolFieldUpdateOperationsInput | boolean
     riskLevel?: StringFieldUpdateOperationsInput | string
     ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
     allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
@@ -9252,7 +9252,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
-    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMaliciousRisk?: BoolFieldUpdateOperationsInput | boolean
     riskLevel?: StringFieldUpdateOperationsInput | string
     ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
     allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
@@ -9689,7 +9689,7 @@ export namespace Prisma {
     id?: SortOrder
     enableDependencyRisk?: SortOrder
     enableAuthRisk?: SortOrder
-    enableMalciousRisk?: SortOrder
+    enableMaliciousRisk?: SortOrder
     riskLevel?: SortOrder
     ignoredPaths?: SortOrder
     allowedExtensions?: SortOrder
@@ -9707,7 +9707,7 @@ export namespace Prisma {
     id?: SortOrder
     enableDependencyRisk?: SortOrder
     enableAuthRisk?: SortOrder
-    enableMalciousRisk?: SortOrder
+    enableMaliciousRisk?: SortOrder
     riskLevel?: SortOrder
     enableEval?: SortOrder
     enableExec?: SortOrder
@@ -9723,7 +9723,7 @@ export namespace Prisma {
     id?: SortOrder
     enableDependencyRisk?: SortOrder
     enableAuthRisk?: SortOrder
-    enableMalciousRisk?: SortOrder
+    enableMaliciousRisk?: SortOrder
     riskLevel?: SortOrder
     enableEval?: SortOrder
     enableExec?: SortOrder
@@ -10263,7 +10263,7 @@ export namespace Prisma {
     id?: string
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: string
     ignoredPaths?: SettingsCreateignoredPathsInput | string[]
     allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
@@ -10280,7 +10280,7 @@ export namespace Prisma {
     id?: string
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: string
     ignoredPaths?: SettingsCreateignoredPathsInput | string[]
     allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
@@ -10355,7 +10355,7 @@ export namespace Prisma {
     id?: StringFilter<"Settings"> | string
     enableDependencyRisk?: BoolFilter<"Settings"> | boolean
     enableAuthRisk?: BoolFilter<"Settings"> | boolean
-    enableMalciousRisk?: BoolFilter<"Settings"> | boolean
+    enableMaliciousRisk?: BoolFilter<"Settings"> | boolean
     riskLevel?: StringFilter<"Settings"> | string
     ignoredPaths?: StringNullableListFilter<"Settings">
     allowedExtensions?: StringNullableListFilter<"Settings">
@@ -10742,7 +10742,7 @@ export namespace Prisma {
     id?: string
     enableDependencyRisk?: boolean
     enableAuthRisk?: boolean
-    enableMalciousRisk?: boolean
+    enableMaliciousRisk?: boolean
     riskLevel?: string
     ignoredPaths?: SettingsCreateignoredPathsInput | string[]
     allowedExtensions?: SettingsCreateallowedExtensionsInput | string[]
@@ -10788,7 +10788,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
-    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMaliciousRisk?: BoolFieldUpdateOperationsInput | boolean
     riskLevel?: StringFieldUpdateOperationsInput | string
     ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
     allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
@@ -10805,7 +10805,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
-    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMaliciousRisk?: BoolFieldUpdateOperationsInput | boolean
     riskLevel?: StringFieldUpdateOperationsInput | string
     ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
     allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]
@@ -10822,7 +10822,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     enableDependencyRisk?: BoolFieldUpdateOperationsInput | boolean
     enableAuthRisk?: BoolFieldUpdateOperationsInput | boolean
-    enableMalciousRisk?: BoolFieldUpdateOperationsInput | boolean
+    enableMaliciousRisk?: BoolFieldUpdateOperationsInput | boolean
     riskLevel?: StringFieldUpdateOperationsInput | string
     ignoredPaths?: SettingsUpdateignoredPathsInput | string[]
     allowedExtensions?: SettingsUpdateallowedExtensionsInput | string[]

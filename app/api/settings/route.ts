@@ -26,22 +26,34 @@ export async function GET(req:NextRequest,res:NextResponse){
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession()
-  const userId = session?.user?.id
-
+  const user=await prisma.user.findFirst({
+    where:{name:session?.user.name}
+  })
+  // console.log(session)
+  const userId=user?.githubId
+  const body=await req.json()
+  // console.log("Received settings update:", body)
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
+const mappedData = {
+  enableDependencyRisk: body.detectDependencyChanges,
+  enableAuthRisk: body.detectAuthMiddlewareChanges,
+  enableMaliciousRisk: body.detectMaliciousPatterns,
+  enableEval: body.detectEvalUsage,
+  enableExec: body.detectExecSpawnUsage,
+  enableChildProcess: body.detectChildProcessUsage,
 
-  const body = await req.json()
-
-  const updated = await prisma.settings.upsert({
+};
+  const updated=await prisma.settings.upsert({
     where:{userId},
-    update: body,
-    create: {
+    update:mappedData,
+    create:{
       userId,
-      ...body
+      ...mappedData
     }
-  })
 
+  })
+  console.log("Updated settings:", updated)
   return NextResponse.json(updated)
 }
