@@ -5,6 +5,7 @@
 ![Redis](https://img.shields.io/badge/Redis-Queue-red)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
 
 A GitHub App backend that analyzes pull requests, extracts deterministic risk signals, and uses AI **only for explanation — never decision-making**.
 
