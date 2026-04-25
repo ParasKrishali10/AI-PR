@@ -1,4 +1,4 @@
-# 🛡️ AI-PR-RISK (Backend)
+# 🛡️ AI-PR-RISK 
 
 ![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
 ![Next.js](https://img.shields.io/badge/Next.js-AppRouter-black)
@@ -8,390 +8,297 @@
 
 A GitHub App backend that analyzes pull requests, extracts deterministic risk signals, and uses AI **only for explanation — never decision-making**.
 
+
 ---
 
-# 🚩 Problem
+## 🚀 Tech Stack
 
-Pull requests often contain:
+**Frontend**
+- Next.js (App Router)
+- Tailwind CSS
+- TypeScript
 
-* Dependency changes
-* Auth / permission updates
-* Risky execution patterns
+**Backend**
+- Node.js (Next.js API routes)
+- GitHub Webhooks + OAuth
+
+**Processing**
+- BullMQ (Queue)
+- Redis
+
+**Database**
+- PostgreSQL
+
+**AI**
+- Gemini API (explanation only)
+
+---
+
+## 🚩 Problem
+
+Pull requests often include:
+- Dependency updates
+- Auth / permission changes
+- Risky execution patterns
 
 Reviewers:
-
-* Don’t have enough time
-* Miss subtle interactions
-* Lack historical context
-
-👉 This system helps **prioritize review effort**, not replace it.
+- Miss subtle risks
+- Lack time for deep reviews
+- Have no prioritization system
 
 ---
 
-# 💡 What This Backend Does
+## 💡 Solution
 
-* Listens to GitHub webhooks
-* Queues PR events (BullMQ)
-* Extracts deterministic risk signals
-* Stores results (PostgreSQL)
-* Uses AI to explain risks
-* Posts advisory comments on PRs
-
-⚠️ Does NOT approve, block, or reject PRs.
+AI PR Analyzer:
+- Detects **risk signals deterministically**
+- Uses AI to **explain risks clearly**
+- Helps developers **prioritize reviews**
+- Provides a **dashboard for visibility**
 
 ---
 
-# 🧠 Core Philosophy
+## 🧠 Core Philosophy
 
-* **Rules → Facts**
-* **AI → Explanation**
-* **Humans → Judgment**
-
----
-
-# 🏗️ Architecture Diagram
-
-```
-                ┌────────────────────┐
-                │   GitHub Webhook   │
-                └─────────┬──────────┘
-                          │
-                          ▼
-                ┌────────────────────┐
-                │   API Server       │
-                │ (Next.js Routes)   │
-                └─────────┬──────────┘
-                          │ enqueue job
-                          ▼
-                ┌────────────────────┐
-                │   Redis Queue      │
-                │    (BullMQ)        │
-                └─────────┬──────────┘
-                          │
-                          ▼
-                ┌────────────────────┐
-                │     Worker         │
-                │  (Background Job)  │
-                └─────────┬──────────┘
-                          │
-        ┌─────────────────┼──────────────────┐
-        ▼                 ▼                  ▼
- Fetch PR Files   Extract Risk Signals   Store in DB
-        │                 │                  │
-        └────────────┬────┴──────┬──────────┘
-                     ▼           ▼
-              Generate AI   Post GitHub
-              Explanation     Comment
-```
+- **Rules → Facts**
+- **AI → Explanation**
+- **Humans → Judgment**
 
 ---
 
-# 🔁 Execution Flow
+## 🏗️ System Overview
 
-```
-Webhook → API → Queue → Worker → DB + AI → GitHub Comment
-```
+### Flow
 
----
-
-# 🧱 Project Structure
-
-```
-AI-PR-RISK/
-├── app/
-│   ├── api/
-│   │   ├── github/
-│   │   ├── queue/
-│   │   ├── repos/
-│   │   └── prs/
-│   │
-│   ├── lib/
-│   │   ├── github.ts
-│   │   ├── prProcessor.ts
-│   │   ├── queue.ts
-│   │   └── utils.ts
-│   │
-│   ├── pull-requests/
-│   ├── queue/
-│   ├── repos/
-│   └── settings/
-```
+1. GitHub sends a webhook on PR events  
+2. Backend validates and queues the job  
+3. Worker processes the PR asynchronously  
+4. Risk signals are extracted  
+5. AI generates explanation  
+6. Comment is posted on GitHub  
+7. Data is stored and shown in dashboard  
 
 ---
 
-# ⚙️ Local Setup
+## ⚙️ Backend Features
 
-## Install
+### 🔗 GitHub Integration
+- GitHub App installation
+- Webhook handling (PR events)
+- Secure signature validation
+- OAuth flow for repo access
+
+---
+
+### 🔄 Event Processing
+- Fully async pipeline
+- Webhook → Queue → Worker
+- Reliable and scalable design
+
+---
+
+### 📦 Queue System (BullMQ + Redis)
+- Background job processing
+- Retry support for failed jobs
+- Job states tracking:
+  - Waiting
+  - Active
+  - Completed
+  - Failed
+
+---
+
+### 🧠 Risk Detection Engine
+
+Detects **deterministic signals**:
+
+**Dependency Risk**
+- package.json
+- yarn.lock
+- requirements.txt
+
+**Auth Risk**
+- middleware
+- guards
+- permission logic
+
+**Suspicious Patterns**
+- eval()
+- exec()
+- spawn()
+- destructive commands
+
+⚠️ These are signals — NOT vulnerabilities
+
+---
+
+### 🤖 AI Explanation Layer
+- Converts signals → human-readable insights
+- Summarizes PR risks
+
+❌ AI does NOT:
+- Approve PRs
+- Reject PRs
+- Make decisions
+
+---
+
+### 🗄️ Data Layer
+Stores:
+- Repositories
+- Pull Requests
+- Risk signals
+- AI explanations
+- Processing status
+
+---
+
+### 💬 GitHub PR Comments
+- Automatically posts analysis on PRs
+- Helps developers review faster
+
+---
+
+## 🖥️ Frontend Features
+
+### 📊 Dashboard
+- Total repositories
+- PRs analyzed
+- Queue health
+- Recent activity
+
+---
+
+### 📦 Repositories
+- View connected repos
+- Search repos
+- Connect new repositories
+
+---
+
+### 🔍 Pull Requests
+- View all PRs
+- Filter by status:
+  - Pending
+  - Analyzing
+  - Completed
+- AI-generated summaries
+
+---
+
+### ⚙️ Queue Monitoring
+- Track job lifecycle
+- Debug failed jobs
+
+---
+
+### 🛠️ Settings (Policy Engine)
+- AI strictness slider
+- Toggle detection rules
+
+---
+
+## 🧱 Project Structure
+
+    AI-PR-ANALYZER/
+    
+    ├── app/  
+    │ ├── api/ # Backend routes  
+    │ ├── dashboard/ # Dashboard UI  
+    │ ├── pull-requests/ # PR page  
+    │ ├── repos/ # Repo management  
+    │ ├── queue/ # Queue UI  
+    │ ├── settings/ # Config UI  
+    │ └── lib/ # Core logic  
+    │  
+    ├── worker/ # Background worker  
+    ├── prisma/ # Database schema  
+    └── README.md
+
+
+---
+
+## ⚙️ Local Setup
+
+### 1. Install
 
 ```bash
 npm install
 ```
+### 2. Environment Variables
 
-## Environment Variables
+Create `.env`:
 
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/pr_risk
-REDIS_URL=redis://localhost:6379
+    DATABASE_URL=postgresql://user:password@localhost:5432/pr_risk
+    REDIS_URL=redis://localhost:6379
+    
+    GITHUB_APP_ID=your_app_id
+    GITHUB_PRIVATE_KEY=your_private_key
+    GITHUB_WEBHOOK_SECRET=your_secret
+    
+    GEMINI_API_KEY=your_key
+    NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-GITHUB_APP_ID=your_app_id
-GITHUB_PRIVATE_KEY=your_private_key
-GITHUB_WEBHOOK_SECRET=your_secret
+### 3. Run Services
 
-GEMINI_API_KEY=your_key
-```
+**Start app (frontend + backend)**
 
----
+    npm run dev
 
-## Run Services
+**Start worker**
 
-### Backend
+    npm run worker
 
-```bash
-npm run dev
-```
+**Start Redis**
 
-### Worker (REQUIRED)
+    docker run -d -p 6379:6379 redis
 
-```bash
-npm run worker
-```
+**Start Redis**
 
----
+    ngrok http 3000
 
-## Redis
+**Webhook URL:**
 
-```bash
-docker run -d -p 6379:6379 redis
-```
+    https://<ngrok-url>/api/github/webhook
 
----
+## 📡 API Endpoints
 
-## Webhook (ngrok)
+-   `POST /api/github/webhook` → Handle PR events
+-   `GET /api/github/connect` → Start OAuth
+-   `GET /api/github/callback` → OAuth callback
+-   `GET /api/github/repos` → Fetch repos
+-   `POST /api/queue` → Trigger job manually
+-   `GET /api/prs` → Fetch PR data
 
-```bash
-ngrok http 3000
-```
+## 🚀 Key Features
 
-Webhook URL:
+-   Event-driven architecture
+-   Async job processing
+-   Scalable worker system
+-   Deterministic risk detection
+-   AI-assisted explanations
+-   Full monitoring dashboard
 
-```
-https://<ngrok-url>/api/webhook
-```
+## ❌ What This Is NOT
 
----
+-   Not a vulnerability scanner
+-   Not an auto-approval system
+-   Not replacing human reviewers
 
-# 📡 API Documentation
+----------
 
-## 🔗 Base URL
+## 📌 Future Improvements
 
-```
-http://localhost:3000/api
-```
+-   Real-time updates (WebSockets)
+-   Observability (logs, metrics)
+-   Multi-repo support
+-   Role-based access control
 
----
+## ⭐ Summary
+AI PR Analyzer helps developers:
 
-## 1️⃣ GitHub Webhook
-
-### POST `/api/github/webhook`
-
-Handles GitHub events.
-
-### Headers
-
-```
-x-github-event: pull_request
-x-hub-signature-256: <signature>
-```
-
-### Body
-
-GitHub webhook payload
-
-### Behavior
-
-* Validates signature
-* Enqueues job
-
----
-
-## 2️⃣ Connect GitHub
-
-### GET `/api/github/connect`
-
-Initiates GitHub OAuth flow.
-
----
-
-## 3️⃣ OAuth Callback
-
-### GET `/api/github/callback`
-
-Handles GitHub OAuth response.
-
----
-
-## 4️⃣ Fetch Repositories
-
-### GET `/api/github/repos`
-
-Returns connected repositories.
-
----
-
-## 5️⃣ Queue Trigger (Internal)
-
-### POST `/api/queue`
-
-Adds job manually (for testing)
-
-```json
-{
-  "repo": "owner/repo",
-  "prNumber": 123
-}
-```
-
----
-
-## 6️⃣ PR Processing
-
-### GET `/api/prs`
-
-Fetch PR-related data (if implemented)
-
----
-
-# 🔍 Risk Signals
-
-### Dependency Risk
-
-* package.json
-* yarn.lock
-* requirements.txt
-
----
-
-### Auth Risk
-
-* middleware
-* guards
-* permissions
-
----
-
-### Suspicious Code
-
-* eval()
-* exec()
-* spawn()
-* rm -rf
-
-⚠️ These are signals — NOT vulnerabilities.
-
----
-
-# 🤖 AI Usage
-
-### ❌ NOT used for:
-
-* vulnerability detection
-* correctness checks
-* approvals
-
-### ✅ Used for:
-
-* explanation
-* summarization
-* context building
-
----
-
-# 🗄️ Data Model
-
-Tables:
-
-* Repository
-* PullRequest
-* PullRequestRisk
-
-Includes:
-
-* risk flags
-* reasons
-* affected files
-* comment status
-
----
-
-# ⚠️ Common Issues
-
-### Worker not running
-
-```bash
-npm run worker
-```
-
----
-
-### Redis not running
-
-```bash
-docker run -d -p 6379:6379 redis
-```
-
----
-
-### Webhook not triggering
-
-```bash
-ngrok http 3000
-```
-
----
-
-# 🚀 Key Features
-
-* Event-driven architecture
-* Async job processing
-* Retry-safe system
-* AI-assisted explanations
-* Clean separation of concerns
-
----
-
-# ❌ What This Is NOT
-
-* Not a vulnerability scanner
-* Not an auto-approval system
-* Not replacing human reviewers
-
----
-
-# 🧠 Developer Notes
-
-* Worker is horizontally scalable
-* Queue ensures reliability
-* Fully async pipeline
-* Designed for real GitHub workflows
-
----
-
-# 📌 Future Improvements
-
-* Add dashboard UI
-* Metrics & monitoring
-* Multi-repo scaling
-* Role-based access
-* Advanced heuristics
-
----
-
-# ⭐ Summary
-
-This backend helps developers **focus on risky PRs first**, using:
-
-✔ deterministic signals
-✔ async processing
-✔ AI explanations
-
-👉 Without replacing human judgment.
+✔ Focus on high-risk PRs  
+✔ Understand risks clearly  
+✔ Stay in control of decisions
+AI PR Analyzer helps developers:stand risks clearly  
+✔ Stay in control of decisions
