@@ -3,7 +3,7 @@
 import React from "react";
 
 export function SkeletonLine({ w = "w-full" }: { w?: string }) {
-  return <div className={`h-3 rounded bg-white/5 ${w} animate-pulse`} />;
+  return <div className={`h-3 rounded ${w} shimmer-bg`} />;
 }
 
 export function SkeletonCard() {

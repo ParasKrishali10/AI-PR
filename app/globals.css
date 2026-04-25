@@ -23,12 +23,37 @@
   --foreground: 0 0% 98%;
 }
 
-body {
-background: #0a0a0a; /* Very dark teal, almost black */
+html {
+  scroll-behavior: smooth;
+}
 
-  background-attachment: fixed; /* Keeps the glow in place when scrolling */
+section[id] {
+  scroll-margin-top: 90px;
+}
+
+body {
+  background: #0b1120;
+  background-image: linear-gradient(to bottom, #0b1120 0%, #0d1324 100%);
+  background-attachment: scroll;
   color: white;
   min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 @layer utilities {
   .hero-glow-exact {
@@ -47,6 +72,34 @@ background: #0a0a0a; /* Very dark teal, almost black */
     filter: blur(120px);
     pointer-events: none;
     z-index: 0;
+  }
+
+  .shimmer-bg {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.04) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite ease-in-out;
+  }
+
+  .soft-card {
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    transition: transform 0.24s ease, background-color 0.24s ease, box-shadow 0.24s ease;
+  }
+
+  .soft-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+  }
+
+  .btn-ghost {
+    transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .btn-ghost:hover {
+    transform: translateY(-1px);
+    background-color: rgba(255, 255, 255, 0.1);
   }
 }
   .spotlight-background {

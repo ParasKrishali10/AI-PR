@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { ArrowLeft, RefreshCcw } from "lucide-react";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import DashboardShell from "@/app/components/dashboard/DashboardShell";
 import type { PullRequestDetail, PullRequestListResponse } from "@/app/lib/dashboardTypes";
 import { PRStatusBadge } from "@/app/components/dashboard/StatusBadge";
 import { SkeletonCard } from "@/app/components/dashboard/Skeletons";
+import { fadeInUp } from "@/app/lib/animations";
 import { formatDateTime } from "@/app/lib/dashboardFormat";
 
 async function fetchJson<T>(url: string) {
@@ -76,7 +78,7 @@ export default function PullRequestDetailPage() {
 
   return (
     <DashboardShell>
-      <div className="space-y-6">
+      <motion.div className="space-y-6" initial="initial" animate="animate" variants={fadeInUp}>
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
             <Link
@@ -221,7 +223,7 @@ export default function PullRequestDetailPage() {
             </div>
           </>
         ) : null}
-      </div>
+      </motion.div>
     </DashboardShell>
   );
 }

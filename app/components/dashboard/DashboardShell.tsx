@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Bell,
   Menu,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import { useDashboard } from "./DashboardContext";
 import { cn } from "@/app/lib/utils";
+import { fadeInUp } from "@/app/lib/animations";
 
 type NavItem = {
   href: string;
@@ -131,17 +133,28 @@ const completed = jobs.completed.slice(0, 3);
         </aside>
 
         {/* Mobile nav overlay */}
-        {mobileNavOpen ? (
-          <div
-            className="lg:hidden fixed inset-0 z-50 bg-black/60"
-            onClick={() => setMobileNavOpen(false)}
-          />
-        ) : null}
+        <AnimatePresence>
+          {mobileNavOpen ? (
+            <motion.div
+              className="lg:hidden fixed inset-0 z-50 bg-black/60"
+              onClick={() => setMobileNavOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+            />
+          ) : null}
+        </AnimatePresence>
 
         {/* Main content */}
         <div className="lg:pl-72">
           {/* Top navbar */}
-          <header className="sticky top-0 z-40 bg-[#020a0a]/80 backdrop-blur border-b border-white/5">
+          <motion.header
+            className="sticky top-0 z-40 bg-[#020a0a]/80 backdrop-blur border-b border-white/5"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.26, ease: "easeOut" }}
+          >
             <div className="px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <button
@@ -174,34 +187,42 @@ const completed = jobs.completed.slice(0, 3);
                     ) : null}
                   </button>
 
-                  {notifOpen ? (
-                    <div className="absolute right-0 mt-2 w-[360px] rounded-2xl bg-[#050a0a] border border-white/10 shadow-xl overflow-hidden">
-                      <div className="px-4 py-3 border-b border-white/10">
-                        <div className="text-sm font-semibold">Notifications</div>
-                        <div className="text-xs text-white/60">
-                          {notifCount > 0 ? `${notifCount} items` : "No new items"}
+                  <AnimatePresence>
+                    {notifOpen ? (
+                      <motion.div
+                        className="absolute right-0 mt-2 w-[360px] rounded-2xl bg-[#050a0a] border border-white/10 shadow-xl overflow-hidden"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.22, ease: "easeOut" }}
+                      >
+                        <div className="px-4 py-3 border-b border-white/10">
+                          <div className="text-sm font-semibold">Notifications</div>
+                          <div className="text-xs text-white/60">
+                            {notifCount > 0 ? `${notifCount} items` : "No new items"}
+                          </div>
                         </div>
-                      </div>
-                      <div className="max-h-[320px] overflow-auto">
-                        {notifications.length === 0 ? (
-                          <div className="px-4 py-6 text-sm text-white/60">You're all caught up.</div>
-                        ) : (
-                          notifications.map((n) => (
-                            <div
-                              key={n.id}
-                              className="px-4 py-3 border-b border-white/5 last:border-b-0 hover:bg-white/5"
-                            >
-                              <div className="text-sm font-semibold">{n.title}</div>
-                              <div className="text-xs text-white/65 mt-1">{n.detail}</div>
-                              <div className="text-[11px] text-white/45 mt-2">
-                                {new Date(n.at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                        <div className="max-h-[320px] overflow-auto">
+                          {notifications.length === 0 ? (
+                            <div className="px-4 py-6 text-sm text-white/60">You're all caught up.</div>
+                          ) : (
+                            notifications.map((n) => (
+                              <div
+                                key={n.id}
+                                className="px-4 py-3 border-b border-white/5 last:border-b-0 hover:bg-white/5"
+                              >
+                                <div className="text-sm font-semibold">{n.title}</div>
+                                <div className="text-xs text-white/65 mt-1">{n.detail}</div>
+                                <div className="text-[11px] text-white/45 mt-2">
+                                  {new Date(n.at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                                </div>
                               </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                  ) : null}
+                            ))
+                          )}
+                        </div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
                 </div>
 
                 <div className="flex items-center gap-3 rounded-2xl bg-white/5 border border-white/10 px-3 py-2">
@@ -215,54 +236,62 @@ const completed = jobs.completed.slice(0, 3);
                 </div>
               </div>
             </div>
-          </header>
+          </motion.header>
 
           {/* Mobile sidebar */}
-          {mobileNavOpen ? (
-            <aside className="lg:hidden fixed z-50 inset-y-0 left-0 w-80 bg-[#050a0a] border-r border-white/10 p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3 px-1 py-2">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400/20 to-sky-400/20 border border-white/10 flex items-center justify-center">
-                    <Sparkles size={18} className="text-teal-300" />
+          <AnimatePresence>
+            {mobileNavOpen ? (
+              <motion.aside
+                className="lg:hidden fixed z-50 inset-y-0 left-0 w-80 bg-[#050a0a] border-r border-white/10 p-4"
+                initial={{ opacity: 0, x: -24 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -24 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3 px-1 py-2">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400/20 to-sky-400/20 border border-white/10 flex items-center justify-center">
+                      <Sparkles size={18} className="text-teal-300" />
+                    </div>
+                    <div className="leading-tight">
+                      <div className="font-semibold">AI PR Analyzer</div>
+                      <div className="text-xs text-white/60">Dashboard</div>
+                    </div>
                   </div>
-                  <div className="leading-tight">
-                    <div className="font-semibold">AI PR Analyzer</div>
-                    <div className="text-xs text-white/60">Dashboard</div>
-                  </div>
+                  <button
+                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+                    onClick={() => setMobileNavOpen(false)}
+                    aria-label="Close navigation"
+                  >
+                    ✕
+                  </button>
                 </div>
-                <button
-                  className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-                  onClick={() => setMobileNavOpen(false)}
-                  aria-label="Close navigation"
-                >
-                  ✕
-                </button>
-              </div>
 
-              <nav className="mt-3 space-y-1">
-                {navItems.map((item) => {
-                  const active = pathname === item.href;
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "group flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors",
-                        active
-                          ? "bg-white/5 border-white/10 text-white"
-                          : "border-transparent text-white/70 hover:text-white hover:bg-white/5 hover:border-white/10",
-                      )}
-                      onClick={() => setMobileNavOpen(false)}
-                    >
-                      <Icon size={18} />
-                      <span className="text-sm font-medium">{item.label}</span>
-                    </Link>
-                  );
-                })}
-              </nav>
-            </aside>
-          ) : null}
+                <nav className="mt-3 space-y-1">
+                  {navItems.map((item) => {
+                    const active = pathname === item.href;
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                          "group flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors",
+                          active
+                            ? "bg-white/5 border-white/10 text-white"
+                            : "border-transparent text-white/70 hover:text-white hover:bg-white/5 hover:border-white/10",
+                        )}
+                        onClick={() => setMobileNavOpen(false)}
+                      >
+                        <Icon size={18} />
+                        <span className="text-sm font-medium">{item.label}</span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </motion.aside>
+            ) : null}
+          </AnimatePresence>
 
           <main className="px-4 sm:px-6 py-6">
             <div className="max-w-7xl mx-auto">{children}</div>

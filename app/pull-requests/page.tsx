@@ -2,11 +2,13 @@
 
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ArrowUpRight, Filter } from "lucide-react";
 import DashboardShell from "@/app/components/dashboard/DashboardShell";
 import { useDashboard } from "@/app/components/dashboard/DashboardContext";
 import { PRStatusBadge } from "@/app/components/dashboard/StatusBadge";
 import { SkeletonTable } from "@/app/components/dashboard/Skeletons";
+import { fadeInUp, itemMotion } from "@/app/lib/animations";
 import type { PRStatus } from "@/app/lib/dashboardTypes";
 import { formatRelativeTime } from "@/app/lib/dashboardFormat";
 
@@ -29,7 +31,7 @@ export default function PullRequestsPage() {
 
   return (
     <DashboardShell>
-      <div className="space-y-6">
+      <motion.div className="space-y-6" initial="initial" animate="animate" variants={fadeInUp}>
         <div>
           <div className="text-xs text-white/60 font-medium">Pull Requests</div>
           <h1 className="text-3xl font-bold tracking-tight mt-1">AI Review Queue</h1>
@@ -46,9 +48,11 @@ export default function PullRequestsPage() {
               {statusOptions.map((opt) => {
                 const active = opt.value === statusFilter;
                 return (
-                  <button
+                  <motion.button
                     key={opt.value}
                     onClick={() => setStatusFilter(opt.value)}
+                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ y: -1 }}
                     className={`rounded-2xl px-3 py-2 text-sm border transition-colors ${
                       active
                         ? "bg-white/10 border-white/20 text-white"
@@ -56,7 +60,7 @@ export default function PullRequestsPage() {
                     }`}
                   >
                     {opt.label}
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
@@ -92,7 +96,13 @@ export default function PullRequestsPage() {
                     href={`/pull-requests/${encodeURIComponent(pr.id)}`}
                     className="block"
                   >
-                    <div className="grid grid-cols-[2fr_1.5fr_0.9fr_2fr_0.8fr] px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-colors">
+                    <motion.div
+                      className="grid grid-cols-[2fr_1.5fr_0.9fr_2fr_0.8fr] px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-colors"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.22, ease: "easeOut" }}
+                      whileHover={{ y: -2 }}
+                    >
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 min-w-0">
                           <div className="truncate font-semibold text-sm">{pr.title}</div>
@@ -113,7 +123,7 @@ export default function PullRequestsPage() {
                         </div>
                       </div>
                       <div className="text-xs text-white/60 whitespace-nowrap">{formatRelativeTime(pr.updatedAt)}</div>
-                    </div>
+                    </motion.div>
                   </Link>
                 ))}
 
@@ -124,7 +134,7 @@ export default function PullRequestsPage() {
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
     </DashboardShell>
   );
 }

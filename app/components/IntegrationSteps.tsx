@@ -29,19 +29,20 @@ export default function IntegrationSteps() {
 
   return (
     <section
+      id="integration"
       ref={containerRef}
-      className={`relative w-full py-32 flex flex-col items-center bg-[#020808] overflow-hidden ${inter.className}`}
+      className={`relative w-full py-16 sm:py-20 lg:py-24 flex flex-col items-center bg-[#0b1120] overflow-hidden ${inter.className}`}
     >
-      <div className="mb-24 text-center max-w-2xl px-6 relative z-10">
-        <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tighter">
+      <div className="mb-12 sm:mb-16 text-center max-w-2xl px-6 relative z-10">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-white mb-5 tracking-tighter">
           Ready in <span className="text-[#00a2ff]">minutes</span>, not days.
         </h2>
-        <p className="text-zinc-400 text-lg">
+        <p className="text-zinc-400 text-base sm:text-lg">
           No complex CI/CD pipelines to rewrite. Just install the app and protect your main branch.
         </p>
       </div>
 
-      <div className="relative w-full max-w-4xl px-6">
+      <div className="relative w-full max-w-5xl px-4 sm:px-6">
 
         {/* VERTICAL GLOWING LINE */}
         <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-0.5 bg-zinc-800 -translate-x-1/2 z-0 hidden md:block">
@@ -52,20 +53,20 @@ export default function IntegrationSteps() {
         </div>
 
         {/* STEP 1: INSTALL */}
-        <div className="relative flex flex-col md:flex-row items-center gap-8 mb-24">
-          <div className="absolute left-0 md:left-1/2 w-14 h-14 bg-[#020808] border-2 border-zinc-800 rounded-full -translate-x-1/2 flex items-center justify-center z-10 shadow-xl">
+        <div className="relative flex flex-col md:flex-row items-stretch md:items-center gap-6 sm:gap-8 mb-12 sm:mb-16 lg:mb-20">
+          <div className="absolute left-0 md:left-1/2 top-2 w-12 h-12 bg-[#0b1120] border-2 border-zinc-800 rounded-full -translate-x-1/2 flex items-center justify-center z-10 shadow-xl">
              <div className="w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,1)]" />
           </div>
 
-          <div className="w-full md:w-1/2 md:pr-16 text-left md:text-right">
-            <h3 className="text-2xl font-semibold text-white mb-2 tracking-tight">Install GitHub App</h3>
+          <div className="w-full md:w-1/2 md:pr-16 pl-8 md:pl-0 text-left md:text-right">
+            <h3 className="text-xl sm:text-2xl font-semibold text-white mb-2 tracking-tight">Install GitHub App</h3>
             <p className="text-zinc-400 leading-relaxed">
               Grant read-access to your repository. We only read metadata and PR content—your source code is never stored.
             </p>
           </div>
 
-          <div className="w-full md:w-1/2 md:pl-16">
-             <div className="bg-[#0a0a0a] border border-zinc-800 rounded-xl p-6 shadow-2xl relative group hover:border-blue-500/30 transition-colors">
+          <div className="w-full md:w-1/2 md:pl-16 pl-8 md:pl-16">
+             <div className="bg-[#0a0a0a] border border-zinc-800 rounded-xl p-5 sm:p-6 shadow-2xl relative group hover:border-blue-500/30 transition-colors duration-300">
                 <div className="flex items-center gap-3 mb-4">
                    <Github className="text-white" size={24} />
                    <span className="text-zinc-300 font-medium">PR Risk Analyzer</span>
@@ -79,21 +80,21 @@ export default function IntegrationSteps() {
         </div>
 
         {/* STEP 2: ZERO CONFIG (Updated) */}
-        <div className="relative flex flex-col md:flex-row-reverse items-center gap-8 mb-24">
-          <div className="absolute left-0 md:left-1/2 w-14 h-14 bg-[#020808] border-2 border-zinc-800 rounded-full -translate-x-1/2 flex items-center justify-center z-10 shadow-xl">
+        <div className="relative flex flex-col md:flex-row-reverse items-stretch md:items-center gap-6 sm:gap-8 mb-12 sm:mb-16 lg:mb-20">
+          <div className="absolute left-0 md:left-1/2 top-2 w-12 h-12 bg-[#0b1120] border-2 border-zinc-800 rounded-full -translate-x-1/2 flex items-center justify-center z-10 shadow-xl">
              <div className="w-3 h-3 bg-teal-400 rounded-full shadow-[0_0_10px_rgba(45,212,191,1)]" />
           </div>
 
-          <div className="w-full md:w-1/2 md:pl-16 text-left">
-            <h3 className="text-2xl font-semibold text-white mb-2 tracking-tight">Zero Configuration</h3>
+          <div className="w-full md:w-1/2 md:pl-16 pl-8 md:pl-16 text-left">
+            <h3 className="text-xl sm:text-2xl font-semibold text-white mb-2 tracking-tight">Zero Configuration</h3>
             <p className="text-zinc-400 leading-relaxed">
               Don't waste time writing config files. We automatically scan your <code className="text-teal-400 bg-teal-500/10 px-1 rounded text-sm">package.json</code> and structure to understand your architecture instantly.
             </p>
           </div>
 
           {/* New "Auto-Detect" Visual */}
-          <div className="w-full md:w-1/2 md:pr-16">
-             <div className="bg-[#0a0a0a] border border-zinc-800 rounded-xl p-5 shadow-2xl relative overflow-hidden">
+          <div className="w-full md:w-1/2 md:pr-16 pl-8 md:pl-0">
+             <div className="bg-[#0a0a0a] border border-zinc-800 rounded-xl p-4 sm:p-5 shadow-2xl relative overflow-hidden">
                 <div className="flex items-center justify-between mb-4 border-b border-zinc-800 pb-3">
                    <div className="flex items-center gap-2">
                       <Zap size={16} className="text-teal-400" />
@@ -135,20 +136,20 @@ export default function IntegrationSteps() {
         </div>
 
         {/* STEP 3: PROTECT */}
-        <div className="relative flex flex-col md:flex-row items-center gap-8">
-          <div className="absolute left-0 md:left-1/2 w-14 h-14 bg-[#020808] border-2 border-zinc-800 rounded-full -translate-x-1/2 flex items-center justify-center z-10 shadow-xl">
+        <div className="relative flex flex-col md:flex-row items-stretch md:items-center gap-6 sm:gap-8">
+          <div className="absolute left-0 md:left-1/2 top-2 w-12 h-12 bg-[#0b1120] border-2 border-zinc-800 rounded-full -translate-x-1/2 flex items-center justify-center z-10 shadow-xl">
              <div className="w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,1)]" />
           </div>
 
-          <div className="w-full md:w-1/2 md:pr-16 text-left md:text-right">
-            <h3 className="text-2xl font-semibold text-white mb-2 tracking-tight">Merge with Confidence</h3>
+          <div className="w-full md:w-1/2 md:pr-16 pl-8 md:pl-0 text-left md:text-right">
+            <h3 className="text-xl sm:text-2xl font-semibold text-white mb-2 tracking-tight">Merge with Confidence</h3>
             <p className="text-zinc-400 leading-relaxed">
               We automatically comment on risky PRs and can even block merging until a human admin approves.
             </p>
           </div>
 
-          <div className="w-full md:w-1/2 md:pl-16">
-             <div className="bg-[#0a0a0a] border border-zinc-800 rounded-xl p-6 shadow-2xl flex items-center gap-4 hover:border-emerald-500/30 transition-colors">
+          <div className="w-full md:w-1/2 md:pl-16 pl-8 md:pl-16">
+             <div className="bg-[#0a0a0a] border border-zinc-800 rounded-xl p-5 sm:p-6 shadow-2xl flex items-center gap-4 hover:border-emerald-500/30 transition-colors duration-300">
                 <div className="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/20">
                    <ShieldCheck className="text-emerald-400" size={24} />
                 </div>

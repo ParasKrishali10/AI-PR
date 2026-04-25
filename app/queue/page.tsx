@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import { RefreshCcw, PlayCircle, AlertTriangle } from "lucide-react";
 import DashboardShell from "@/app/components/dashboard/DashboardShell";
 import { useDashboard } from "@/app/components/dashboard/DashboardContext";
 import { QueueJobStateBadge } from "@/app/components/dashboard/StatusBadge";
 import { SkeletonTable } from "@/app/components/dashboard/Skeletons";
+import { fadeInUp } from "@/app/lib/animations";
 import { formatRelativeTime } from "@/app/lib/dashboardFormat";
 
 function Bar({ value, total, cls }: { value: number; total: number; cls: string }) {
@@ -46,7 +48,7 @@ export default function QueueMonitoringPage() {
 
   return (
     <DashboardShell>
-      <div className="space-y-6">
+      <motion.div className="space-y-6" initial="initial" animate="animate" variants={fadeInUp}>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <div className="text-xs text-white/60 font-medium">Queue Monitoring</div>
@@ -55,13 +57,15 @@ export default function QueueMonitoringPage() {
 Tracks job progression through Redis-backed queues from waiting to execution and final states.            </p>
           </div>
 
-          <button
+          <motion.button
             className="inline-flex items-center gap-2 rounded-2xl bg-white/5 border border-white/10 px-4 py-2.5 hover:bg-white/10 transition-colors"
             onClick={() => void refreshQueue()}
+            whileTap={{ scale: 0.98 }}
+            whileHover={{ y: -1 }}
           >
             <RefreshCcw size={16} />
             Refresh
-          </button>
+          </motion.button>
         </div>
 
         {loading.queue ? (
@@ -143,9 +147,13 @@ Tracks job progression through Redis-backed queues from waiting to execution and
   </div>
 ) : (
   allJobs.map((j) => (
-    <div
+    <motion.div
       key={j.id}
       className="grid grid-cols-[1.2fr_0.8fr_0.9fr_1fr] px-5 py-4 border-b border-white/5 hover:bg-white/5 transition-colors"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
+      whileHover={{ y: -2 }}
     >
       <div>
         <div className="font-semibold text-sm">PR #{j.data.prNumber}</div>
@@ -169,7 +177,7 @@ Tracks job progression through Redis-backed queues from waiting to execution and
       <div className="text-xs text-white/60">
         {formatRelativeTime(new Date(j.timestamp).toISOString())}
       </div>
-    </div>
+    </motion.div>
   ))
 )}
                 </div>
@@ -177,7 +185,7 @@ Tracks job progression through Redis-backed queues from waiting to execution and
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
     </DashboardShell>
   );
 }

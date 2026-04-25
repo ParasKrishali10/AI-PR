@@ -1,53 +1,43 @@
 "use client"
 import CountUp from "react-countup"
-export async function SubHeading() {
+
+export function SubHeading() {
   return (
-    <section className="relative w-full bg-[#020617] flex flex-col items-center justify-center overflow-hidden py-24 mt-[100px]">
-
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[radial-gradient(white_1px,transparent_1px)] bg-[size:30px_30px] opacity-[0.1] [mask-image:radial-gradient(ellipse_at_top,white,transparent_70%)] "></div>
-
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-[100%] border-t border-slate-300/60 bg-gradient-to-b from-slate-800/40 to-transparent [mask-image:radial-gradient(ellipse_at_top,white,transparent_70%)] ">
-        <div className="absolute inset-0 rounded-[100%] shadow-[inset_0_50px_100px_-20px_rgba(148,163,184,0.2)]"></div>
-      </div>
-
-      <div className="relative z-10 max-w-5xl px-4 text-center mt-12 text-white">
-
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
-bg-[#0f1f2a] text-white
-border border-slate-700
-shadow-[0_0_20px_rgba(120,160,255,0.4)]
-backdrop-blur-md text-sm mb-8">
-
-  <span className="text-blue-400">✦</span>
-  AI Risk Intelligence
-</div>
-
-        <h2 className="text-3xl md:text-5xl font-medium leading-tight mb-16 text-slate-200">
-          Our AI analyzes pull requests to detect hidden risks, summarize<span className="text-slate-500"> complex changes, and help engineering teams ship secure and reliable code faster.</span>
-        </h2>
-
-        <div className="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-24 text-center border-t border-slate-800/80 pt-10">
-          <div>
-            <div className="text-4xl font-semibold mb-2">
-                 10K+
-              </div>
-            <div className="text-slate-500 text-sm font-medium">Pull Requests Analyzed</div>
+    <section
+      id="insights"
+      className="relative w-full bg-[#0b1120] overflow-hidden px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_45%)]" />
+      <div className="mx-auto max-w-6xl">
+        <div className="relative z-10 rounded-3xl border border-slate-800/80 bg-slate-950/60 p-6 sm:p-10 lg:p-12 text-center text-white">
+          <div className="inline-flex items-center gap-2 rounded-full bg-sky-500/10 border border-sky-300/20 px-4 py-1.5 text-xs sm:text-sm text-sky-200">
+            <span className="text-blue-400">✦</span>
+            AI Risk Intelligence
           </div>
-          <div className="hidden md:block w-px h-16 bg-slate-800/80"></div>
-          <div>
-            <div className="text-4xl font-semibold mb-2">
-              <CountUp end={98} duration={2}/>%
+
+          <h2 className="mt-6 text-2xl sm:text-3xl lg:text-4xl font-medium leading-tight text-slate-100">
+            Our AI analyzes pull requests to detect hidden risks, summarize complex changes, and help engineering teams ship secure and reliable code faster.
+          </h2>
+
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 text-left sm:text-center">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+              <div className="text-3xl sm:text-4xl font-semibold text-white">10K+</div>
+              <div className="mt-1 text-slate-400 text-sm">Pull Requests Analyzed</div>
+            </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+              <div className="text-3xl sm:text-4xl font-semibold text-white">
+                <CountUp end={98} duration={2} />%
               </div>
-            <div className="text-slate-500 text-sm font-medium">Risk Detection Accuracy</div>
-          </div>
-          <div className="hidden md:block w-px h-16 bg-slate-800/80"></div>
-          <div>
-            <div className="text-4xl font-semibold mb-2">
-              <CountUp end={40} duration={2}/>%</div>
-            <div className="text-slate-500 text-sm font-medium">Faster Code Reviews</div>
+              <div className="mt-1 text-slate-400 text-sm">Risk Detection Accuracy</div>
+            </div>
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+              <div className="text-3xl sm:text-4xl font-semibold text-white">
+                <CountUp end={40} duration={2} />%
+              </div>
+              <div className="mt-1 text-slate-400 text-sm">Faster Code Reviews</div>
+            </div>
           </div>
         </div>
-
       </div>
     </section>
   );

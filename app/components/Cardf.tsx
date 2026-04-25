@@ -1,64 +1,24 @@
 interface CardProps {
-  top: string
-  center: string
-  bottom: string
+  top: string;
+  center: string;
+  bottom: string;
 }
 
 export function Cardf({ top, center, bottom }: CardProps) {
   return (
-    <div className="container noselect">
-      <div className="canvas">
-
-        <div className="tracker tr-1"></div>
-        <div className="tracker tr-2"></div>
-        <div className="tracker tr-3"></div>
-        <div className="tracker tr-4"></div>
-        <div className="tracker tr-5"></div>
-        <div className="tracker tr-6"></div>
-        <div className="tracker tr-7"></div>
-        <div className="tracker tr-8"></div>
-        <div className="tracker tr-9"></div>
-
-        <div id="card">
-          <div className="card-content">
-
-            <div className="card-glare"></div>
-
-            <div className="cyber-lines">
-              <span></span><span></span><span></span><span></span>
-            </div>
-
-            <div className="title">{top}</div>
-
-            <p className="description">
-              {center}
-            </p>
-
-            <div className="glowing-elements">
-              <div className="glow-1"></div>
-              <div className="glow-2"></div>
-              <div className="glow-3"></div>
-            </div>
-
-            <div className="subtitle">
-              <span>{bottom}</span>
-            </div>
-
-            <div className="card-particles">
-              <span></span><span></span><span></span>
-              <span></span><span></span><span></span>
-            </div>
-
-            <div className="corner-elements">
-              <span></span><span></span><span></span><span></span>
-            </div>
-
-            <div className="scan-line"></div>
-
-          </div>
+    <article className="group relative w-full h-full rounded-2xl border border-slate-800/80 bg-slate-950/70 p-6 sm:p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-sky-400/40 hover:shadow-[0_20px_45px_-20px_rgba(56,189,248,0.35)]">
+      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.15),transparent_50%)]" />
+      <div className="relative">
+        <p className="inline-flex text-[11px] sm:text-xs tracking-[0.2em] uppercase font-semibold text-sky-200/80 rounded-full border border-sky-300/25 px-3 py-1 bg-sky-500/10">
+          {top}
+        </p>
+        <p className="mt-5 text-sm sm:text-base leading-relaxed text-slate-300">{center}</p>
+        <div className="mt-7 pt-4 border-t border-slate-800/80">
+          <span className="text-[11px] sm:text-xs tracking-[0.18em] uppercase text-slate-500 font-medium">
+            {bottom}
+          </span>
         </div>
-
       </div>
-    </div>
-  )
+    </article>
+  );
 }

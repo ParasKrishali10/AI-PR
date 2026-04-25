@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import DashboardShell from "@/app/components/dashboard/DashboardShell";
 import { Fingerprint, Save, ShieldAlert } from "lucide-react";
 import Toggle from "../components/Toggle"
+import { fadeInUp } from "@/app/lib/animations";
 
 
 const DetectionToggles=[{
@@ -76,7 +78,12 @@ const saveSettings=async()=>{
 
   return (
     <DashboardShell>
-      <div className="space-y-6">
+      <motion.div
+        className="space-y-6"
+        initial="initial"
+        animate="animate"
+        variants={fadeInUp}
+      >
         <div>
           <div className="text-xs text-white/60 font-medium">Settings</div>
           <h1 className="text-3xl font-bold tracking-tight mt-1">Policy Engine</h1>
@@ -86,7 +93,11 @@ const saveSettings=async()=>{
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-5">
+          <motion.div
+            className="lg:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-5"
+            whileHover={{ y: -2 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-3">
                 <div className="w-11 h-11 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
@@ -115,9 +126,13 @@ const saveSettings=async()=>{
                 <span>Paranoid</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <motion.div
+            className="rounded-2xl border border-white/10 bg-white/5 p-5"
+            whileHover={{ y: -2 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
             <div className="text-sm font-semibold flex items-center gap-2">
               <ShieldAlert size={16} className="text-rose-200" />
               Features
@@ -174,10 +189,10 @@ const saveSettings=async()=>{
               <Save size={16} />
               Save changes
             </button>
-          </div>
+          </motion.div>
 
         </div>
-      </div>
+      </motion.div>
     </DashboardShell>
   );
 }
