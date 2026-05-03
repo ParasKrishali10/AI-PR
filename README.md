@@ -288,13 +288,6 @@ Create `.env`:
 
 ----------
 
-## 📌 Future Improvements
-
--   Real-time updates (WebSockets)
--   Observability (logs, metrics)
--   Multi-repo support
--   Role-based access control
-
 ## ⭐ Summary
 AI PR Analyzer helps developers:
 
