@@ -2,7 +2,7 @@ export const pageTransition = {
   initial: { opacity: 0, y: 18 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -12 },
-  transition: { duration: 0.28, ease: [0.22, 0.8, 0.36, 1] },
+  transition: { duration: 0.28, ease: [0.22, 0.8, 0.36, 1] as const},
 };
 
 export const fadeInUp = {

@@ -221,14 +221,20 @@ function createMockStore() {
   for (const pr of seededJobIds) {
     const state: JobState = pr.status === "pending" ? "waiting" : "active";
     jobs.set(pr.id, {
-      jobId: pr.id,
-      repositoryId: pr.repoId,
-      prNumber: pr.prNumber,
-      state,
-      attemptsMade: state === "active" ? 1 : 0,
-      createdAt: new Date(Date.now() - randomInt(1000 * 20, 1000 * 60 * 30)).toISOString(),
-      updatedAt: isoNow(),
-    });
+  id: pr.id,
+  name: `pr-${pr.prNumber}`,
+  data: {},
+  progress: 0,
+  timestamp: Date.now(),
+
+  jobId: pr.id,
+  repositoryId: pr.repoId,
+  prNumber: pr.prNumber,
+  state,
+  attemptsMade: 0,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+});
   }
 
   const worker = {
@@ -262,6 +268,8 @@ function createMockStore() {
       active: 0,
       completed: 0,
       failed: 0,
+      delayed:0,
+      paused:0
     };
     for (const j of list) counts[j.state] += 1;
 
@@ -334,14 +342,20 @@ function createMockStore() {
     }
 
     const job: QueueJob = {
-      jobId,
-      repositoryId,
-      prNumber,
-      state: "waiting",
-      attemptsMade: 0,
-      createdAt: now,
-      updatedAt: now,
-    };
+  id: jobId,
+  name: `pr-${prNumber}`,
+  data: {},
+  progress: 0,
+  timestamp: Date.now(),
+
+  jobId,
+  repositoryId,
+  prNumber,
+  state: "waiting",
+  attemptsMade: 0,
+  createdAt: now,
+  updatedAt: now,
+};
     jobs.set(jobId, job);
     syncPRWithJob(pr, job);
 

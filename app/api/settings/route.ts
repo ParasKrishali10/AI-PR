@@ -2,7 +2,7 @@ import { prisma } from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextRequest,res:NextResponse){
+export async function GET(req:NextRequest){
     const session=await getServerSession()
     const userId=session?.user.id
     if(!userId){
